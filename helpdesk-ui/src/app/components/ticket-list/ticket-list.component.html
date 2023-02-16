@@ -1,0 +1,58 @@
+<!-- <h1 *ngIf="!isLoaded">Loading Tickets</h1>
+<div class="ticket-list-container" *ngIf="isLoaded">
+    <h1>{{titleText}}</h1>
+    <ng-container *ngIf="isDev">
+        <app-dev-ticket-view *ngFor="let devTicket of devTickets" [devTicket]="devTicket" [user]="user" [viewDevTickets]="viewDevTickets" class="ticket-view"></app-dev-ticket-view>
+    </ng-container>
+    <ng-container *ngIf="!isDev">
+        <app-user-ticket-view *ngFor="let ticket of tickets" [ticket]="ticket" [user]="user" class="ticket-view"></app-user-ticket-view>
+    </ng-container>
+    <div class="buttons">
+        <button class="btn btn-primary" (click)="goToHome()">Home</button>
+    </div>
+</div> -->
+
+<h1 *ngIf="!isLoaded">Loading Tickets</h1>
+<div class="ticket-list-container" *ngIf="isLoaded">
+    <div class="dev-ticket-list" *ngIf="userRole === 'app-dev'">
+        <div class="dev-header">
+            <h1 *ngIf="pickedTickets.length > 0">Picked Up Tickets:</h1>
+        </div>
+        <div class="picked-up-tickets">
+            <app-dev-ticket-view
+                *ngFor="let pickedTicket of pickedTickets" [devTicket]="pickedTicket" [canResolve]="canResolve" [userRole]="userRole"
+                [user]="user!"
+                class="ticket-view">
+            </app-dev-ticket-view>
+        </div>
+        <div class="dev-header">
+            <h1>Current Active Tickets:</h1>
+        </div>
+        <div class="tickets-to-pick-up">
+            <app-dev-ticket-view
+                *ngFor="let availableTicket of availableTickets" [devTicket]="availableTicket" [canPickup]="canPickup" 
+                [userRole]="userRole" (pickedUp)="getPickedUpTickets()" [user]="user!"
+                class="ticket-view">
+            </app-dev-ticket-view>
+        </div>
+    </div>
+    <div class="admin-ticket-list" *ngIf="userRole === 'app-admin'">
+        <div class="dev-header">
+            <h1 class="dev-header">All Tickets:</h1>
+        </div>
+        <app-dev-ticket-view
+            *ngFor="let devTicket of allDevTickets" [devTicket]="devTicket" [userRole]="userRole" [user]="user!"
+            class="ticket-list">
+        </app-dev-ticket-view>
+    </div>
+    <div class="user-ticket-list" *ngIf="userRole === 'app-user'">
+        <div class="user-header">
+            <h1>My Tickets:</h1>
+            <button type="button" class="btn btn-warning" (click)="createTicket()">Create New Ticket</button>
+        </div>
+        <app-user-ticket-view
+            *ngFor="let userTicket of userTickets" [ticket]="userTicket" [user]="user!" (edited)="refreshUserTickets()"
+            class="ticket-list">
+        </app-user-ticket-view>
+    </div>
+</div>

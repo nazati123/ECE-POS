@@ -1,0 +1,52 @@
+.ticket-list-container {
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    flex-basis: 0;
+    align-items: center;
+}
+
+.ticket-view {
+    width: 100%;
+}
+
+.dev-ticket-list, .admin-ticket-list, .user-ticket-list{
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-header {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+}
+
+.dev-header {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    margin: auto;
+}
+
+h1 {
+    margin-bottom: 0;
+}
+
+app-user-ticket-view {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+app-dev-ticket-view {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}

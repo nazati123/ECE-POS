@@ -1,0 +1,34 @@
+<mat-accordion>
+    <mat-expansion-panel [hidden]="!ticket.active" (opened)="getImages()">
+        <mat-expansion-panel-header>
+            <mat-panel-title><strong>Ticket #:</strong> &nbsp;{{ticket.id}}</mat-panel-title>
+            <mat-panel-description><strong>Subject:</strong> &nbsp;{{ticket.subject}}</mat-panel-description>
+            <mat-panel-description><strong>Reason:</strong> &nbsp;{{ticket.reason!.reasonDesc}}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="expanded-items">
+            <div class="expanded-items-left">
+                <h4><strong>User Comment:</strong> &nbsp;{{getComment(ticket.comment)}}</h4>
+                <div matExpansionPanelContent>
+                    <h3>Uploaded Files: {{numberOfFiles}}</h3>
+                    <div class="file-container" *ngIf="retrievedImages.length > 0">
+                        <div class="file" *ngFor="let image of retrievedImages">
+                            <img [src]="image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="expanded-items-right">
+                <h4><strong>Url: </strong> &nbsp;{{ticket.url}}</h4>
+                <h4><strong>Time Submitted:</strong> &nbsp;{{ticket.timeStamp}}</h4>
+                <div class="buttons">
+                    <div class="edit-ticket-button">
+                        <button class="btn btn-warning" (click)="openDialogue(ticket.id!)">Edit Ticket</button>
+                    </div>
+                    <div class="delete-ticket-button">       
+                        <button class="btn btn-danger" (click)="deleteTicket()">Delete Ticket</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

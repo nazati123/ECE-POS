@@ -1,0 +1,4 @@
+<button *ngIf="isLoggedIn" type="button" (click)="logout()">Log Out</button>
+<button *ngIf="!isLoggedIn" type="button" (click)="login()">Log In</button>
+
+<app-landing-page *ngIf="isLoggedIn && dataIsLoaded" [user]="user" [userRoles]="userRoles"></app-landing-page>

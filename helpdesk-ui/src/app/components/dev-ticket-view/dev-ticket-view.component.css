@@ -1,0 +1,93 @@
+
+
+.file-container {
+    display: flex;
+} 
+
+.file {
+    display: flex;
+    width: 100px;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    margin-right: 20px;
+    height: 100px;
+    border-style: solid;
+    border-radius: 25%;
+    border-color: lightgray;
+    max-width: 100px;
+    max-height: 100px;
+    position: relative;
+}
+
+.file img {
+    min-height: 90%;
+    min-width: 90%;
+    object-fit: contain;
+    max-height: 90%;
+    max-width: 90%;
+}
+
+mat-accordion {
+    display: flex;
+    width: 95%;
+    min-width: 500px;
+    flex-direction: column;
+}
+
+mat-expansion-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+mat-accordion .mat-expansion-panel-header-title,
+mat-accordion .mat-expansion-panel-header-description {
+    flex-basis: 0;
+}
+
+.user-expansion-panel {
+    max-width: 500px;
+    min-width: 400px;
+
+}
+
+.buttons {
+    align-self: center;
+    margin-top: 15px;
+    width: 95%;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 15px;
+}
+
+/* .delete-ticket-button {
+    display: flex;
+    justify-content: flex-end;
+} */
+
+.expanded-items {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+h1 {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin-left: none;
+    margin-top: 10px;
+    width: 95%;
+}
+
+.buttons {
+    align-self: baseline;
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 15px;
+}
+
+button {
+    margin: 5px;
+}

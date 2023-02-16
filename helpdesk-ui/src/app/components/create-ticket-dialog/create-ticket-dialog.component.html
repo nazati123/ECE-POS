@@ -1,0 +1,40 @@
+<div class="form-container" style="display: flex; flex-direction:column">
+    <h1>{{title}}</h1>
+    <h3>Name: {{data.user.firstName + ' ' +  data.user.lastName}}</h3>
+    <h3>Email: {{data.user.email}}</h3>
+    <form [formGroup]="createTicketForm" (ngSubmit)="onSubmit(createTicketForm.value)" style="display: flex; justify-content: space-between; flex-direction: column;">
+        <div class="left-side" style="display: flex; align-items: center;">
+            <mat-form-field appearance="fill">
+                <mat-label>Reason: </mat-label>
+                <mat-select name="reason" id="reason" formControlName="reasonId" [(ngModel)]="reasonValue">
+                    <mat-option *ngFor="let reason of reasons | keyvalue" [value]="reason.key">{{reason.value}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="right-side" style="display: flex; flex-direction: column;">
+            <mat-form-field appearance="fill">
+                <mat-label>Subject:</mat-label>
+                <input matInput type="text" name="subject" id="subject" formControlName="subject">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Comments:</mat-label>
+                <input matInput type="text" name="comment" id="comment" formControlName="comment">
+            </mat-form-field>
+        </div>
+
+        <input type="file" name="fileInput" (change)="onFileChange($event)" multiple accept="image/*" *ngIf="!editMode">
+        <div class="file-preview" *ngIf="fileUrls.length > 0">
+            <h3>{{fileTitle}}</h3>
+            <div class="file-container">
+                <div class="file" *ngFor="let fileUrl of fileUrls">
+                    <button type="button" class="btn btn-danger remove-image" (click)="removeFile(fileUrl)" *ngIf="canDeleteFile">X</button>
+                    <img [src]="fileUrl">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" [disabled]="createTicketForm.invalid">{{buttonText}}</button>
+        <button type="button" class="btn btn-danger" (click)="closeModal()">Cancel</button>
+
+    </form>
+</div>
