@@ -1,0 +1,74 @@
+server:
+  port: 8083
+  basic:
+    enable: false
+  # security:
+  #   ignored: /**
+spring:
+  main:
+    allow-circular-references: true
+  application: 
+    name: helpdesk
+  jpa:
+    database: POSTGRESQL
+    show-sql: true   
+    hibernate: 
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      jdbc:
+        lob.non_contextual_creation: true
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://helpdesk.cvuygvkudxwb.us-east-2.rds.amazonaws.com:5432/postgres
+    username: interns
+    password: Synergy123
+    driver-class-name: org.postgresql.Driver
+  servlet: 
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/helpdesk
+          jwk-set-uri: http://localhost:8080/realms/helpdesk/protocol/openid-connect/certs
+cloud:
+  aws:
+    credential:
+      profiles-name: nlpurcell
+    region: 
+      auto: false
+      static: us-east-2
+    rds:
+      instances[0]:
+        db-instance-identifier: helpdesk
+        username: interns
+        password: Synergy123
+        databaseName: helpdesk
+keycloak:
+  #auth-server-url: http://localhost:8080/auth
+  auth-server-url: http://localhost:8080
+  ssl-required: external
+  realm: helpdesk
+  resource: helpdesk-backend
+  #public-client: true
+  bearer-only: true
+  use-resource-role-mappings: true
+  #principal-attribute: perferred_username
+  # security-constraints[0]:
+  #   authRoles[0]: user
+  # securityCollections[0]:
+  #   patterns[0]: /tickets/*
+
+
+
+  # cloud.aws.rds.instances[0].db-instance-identifier=helpdesk
+# cloud.aws.rds.instances[0].username=interns
+# cloud.aws.rds.instances[0].password=Synergy123
+# cloud.aws.rds.instances[0].databaseName=helpdesk
+
+
+
+
+

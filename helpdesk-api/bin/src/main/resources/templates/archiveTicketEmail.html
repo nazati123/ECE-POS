@@ -1,0 +1,30 @@
+<html>
+    <h3 style="font-size: 25px;">
+       [Ticket #<var data-th-text="${ticketId}"></var>]
+    </h3>
+        <body style="font-size: 20px;">
+
+            <b>Reason:</b> <var data-th-text="${reason}"></var>
+            <br>
+            <b>Subject:</b> <var data-th-text="${subject}"></var>
+            <br>
+            <b>Comment:</b> <var data-th-text="${comment}"></var>
+            <br>
+            <b>URL:</b> <var data-th-text="${url}"></var>
+            <br>
+            <!-- NOTE: Below makes images appear in the html inline, and restricts them to a certain height and width (Attachments removed from archive emails)
+                <b>Attachments:</b> 
+                <li th:each="file : ${files}"> 
+                    <img th:src="${file}" width = "400" height="400"/>
+                </li>
+            <br>
+            -->
+            <b>Submit-Time:</b> <var data-th-text="${timestamp}"></var>
+            <br>
+
+            <p>
+            <b>Your ticket has been resolved by the development team, thank you for helping make Eodims as great as possible!</b>
+            </p>
+
+        </body>
+</html>
