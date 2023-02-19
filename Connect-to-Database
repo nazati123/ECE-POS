@@ -1,0 +1,13 @@
+Download pgAdmin 4
+make your own password on the initial setup
+In the "Browser" window on the left, right-click Servers and register a server
+In the pop-up, name the server whatever you would like
+go to the connection tab and enter the following:
+
+host name: ls-ba928ae2be3585780cbed39c970c226b7e3cfdfd.cchbgru4fwbb.us-east-2.rds.amazonaws.com
+port: 5432
+username: dbmasteruser
+password: E.Ni8*j+_7H?9,.sRLD.?ZY<*o0KqQsb
+
+once this is done, save and you should see the server load into the Browser
+there are 4 databases but POS-Database is the only one that we're using
