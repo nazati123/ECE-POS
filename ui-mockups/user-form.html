@@ -1,0 +1,189 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="user-form.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="h3 text-center">
+                    Order Request Form</br>
+                    Department of Electrical and Computer Engineering
+                </div>
+            </div>
+            </br>
+            <form>
+                <div class="form-group row justify-content-center">
+                    <label for="date" class="col-sm-1">Date</label>
+                    <div class="col-sm-2">
+                        <input type="date" class="form-control" id="date" placeholder="Date">
+                    </div>
+                    <label for="requesterEmail" class="col-sm-2">Email Invoice To:</label>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control" id="requesterEmail" placeholder="jdoe@ua.edu">
+                    </div>
+                </div>
+                <div class="form-group user-request-grid">
+                    <div class="row yellow">
+                        <label for="companyName" class="col-sm-2">Company Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control yellow" id="companyName" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="companyAddress" class="col-sm-2">Address:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="companyAddress" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="companyURL" class="col-sm-2">Website URL:</label>
+                        <div class="col-sm-10">
+                            <input type="url" class="form-control" id="companyURL" placeholder="www.example.com">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="companyPhone" class="col-sm-2">Phone Number:</label>
+                        <div class="col-sm-10">
+                            <input type="tel" class="form-control" id="companyPhone" placeholder="205-555-1212">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="companyFax" class="col-sm-2">Fax Number:</label>
+                        <div class="col-sm-10">
+                            <input type="tel" class="form-control" id="companyFax" placeholder="205-555-1212">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="companyContact" class="col-sm-2">Contact Person:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="companyFax" placeholder="Jane Doe">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group user-request-grid">
+                    <div class="row yellow">
+                        <label for="accountNum" class="col text-right">Account Number to be Used:</label>
+                        <div class="col">
+                            <input type="number" class="form-control yellow" id="accountNum" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row yellow">
+                        <label for="endDate" class="col text-right">End date for grant/contract</br>(if purchase is to be made from grant/contract account)</label>
+                        <div class="col">
+                            <input type="date" class="form-control yellow" id="endDate" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="requesterName" class="col text-right">Requester Name:</label>
+                        <div class="col">
+                            <input type="text" class="form-control" id="requesterName" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="requesterPhone" class="col text-right">Requester Phone:</label>
+                        <div class="col">
+                            <input type="tel" class="form-control" id="requesterPhone" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="requesterEmail" class="col text-right">Requester Email:</label>
+                        <div class="col">
+                            <input type="email" class="form-control" id="requesterEmail" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row red">
+                        <label for="room" class="col text-right">Room Location to be used in:</label>
+                        <div class="col">
+                            <input type="text" class="form-control red" id="room" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row red">
+                        <label for="room" class="col text-right">Business purpose of this order:</label>
+                        <div class="col">
+                            <textarea class="form-control red" id="room" placeholder=""></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group user-request-parts-grid">
+                    <div class="row">
+                        <div class="col-sm-1 text-center">Quantity</div>
+                        <div class="col-sm-2 text-center">Part Number</div>
+                        <div class="col-sm-5 text-center">Description</div>
+                        <div class="col-sm-2 text-center">Price</div>
+                        <div class="col-sm-2 text-center">Total</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1 text-center">
+                            <input type="num" class="form-control" id="quantity1" placeholder="">
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <input type="text" class="form-control" id="partNum1" placeholder="">
+                        </div>
+                        <div class="col-sm-5 text-center">
+                            <input type="text" class="form-control" id="description1" placeholder="">
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <input type="text" class="form-control" id="unitPrice1" placeholder="">
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <input type="text" class="form-control" id="totalPrice1" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 text-right">Shipping and Handling (to be included)</div>
+                        <div class="col-sm-2 text-center">
+                            <input type="number" class="form-control" id="shipping" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 text-right">Total</div>
+                        <div class="col-sm-2 text-center">
+                            <input type="number" class="form-control" id="total" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        Note: For smoother and faster processing, the requestor should fill out this form completely as to product specifications etc. Before ordering from off-campus vendors, you will need to check and make sure that your items aren’t found on UA Standing Contracts.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <b>If this request is within 60 days of the end of a contact and a Pcard purchase is requested, I verify that sufficient funds exist in the grant/contract account for this purchase.</b>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="standingContract" id="standingContractYes">
+                                <label class="form-check-label" for="standingContractYes">
+                                    The items on this order are being purchased from a Standing Contract.
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="standingContract" id="standingContractNo">
+                                <label class="form-check-label" for="standingContractNo">
+                                    I have verified that the items on this order are not available through a Standing Contract.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group user-request-grid">
+                    <div class="row">
+                        <label for="companyName" class="col-sm-2">Select Approver(s)</label>
+                        <div class="col-sm-10">
+                            <select multiple class="form-control" id="approvers">
+                                <option>Dr. Ricks</option>
+                                <option>Dr. Taylor</option>
+                                <option>Dr. Sazanov</option>
+                                <option>Dr. Sun</option>
+                                <option>Dr. Gurbuz</option>
+                              </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary justify-content-center">Submit for Approval</button>
+            </form>
+        </div>
+    </body>
+</html>

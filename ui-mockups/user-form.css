@@ -1,0 +1,38 @@
+div.user-request-grid > div.row {
+    border-style: solid;
+    border-color: black;
+    border-top-style: none;
+}
+
+div.user-request-grid > div.row:first-child {
+    border-top-style: solid;
+}
+
+div.user-request-grid > div.row > div {
+    border-left-style: solid;
+    border-left-color: black;
+}
+
+div.user-request-parts-grid > div.row > div:last-child {
+    border-right-style: solid;
+    border-right-color: black;
+}
+
+div.user-request-parts-grid > div.row > div {
+    border-style: solid;
+    border-color: black;
+    border-right-style: none;
+    border-top-style: none;
+}
+
+div.user-request-parts-grid > div.row:first-child {
+    border-top-style: solid;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.red {
+    background-color: palevioletred;
+}
