@@ -47,7 +47,7 @@ async function content(path){
 };
 
 function process(data){
-  sendMail("twrussell@crimson.ua.edu", "Test", data)
+  sendMail("nlpurcell@crimson.ua.edu", "Test", data)
 }
 
 (async function() {
