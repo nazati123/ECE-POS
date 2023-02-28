@@ -1,20 +1,25 @@
 package com.capstone.POS.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
 
 
 @Entity(name = "order_form")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "date_created")
+    private LocalDate dateCreated;
 
     @Column(name = "acc_num")
     private String accountNumber;
@@ -79,6 +84,18 @@ public class Order {
     @Column(name = "contact_person")
     private String contactPerson;
 
+    @Column(name = "date_authorized")
+    private LocalDate dateAuthorized;
+
+    @Column(name = "date_ordered")
+    private LocalDate dateOrdered;
+
+    @Column(name = "date_completed")
+    private LocalDate dateCompleted;
+
+    @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> items = new ArrayList<>();
+
     // default constructor for JPA
     public Order() {}
 
@@ -88,8 +105,8 @@ public class Order {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public LocalDate getDateCreated() { return dateCreated; }
+    public void setDateCreated(LocalDate dateCreated) { this.dateCreated = dateCreated; }
 
     public String getAccountNumber() { return accountNumber; }
     public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
@@ -154,4 +171,16 @@ public class Order {
     public String getContactPerson() { return contactPerson; }
     public void setContactPerson(String contactPerson) { this.contactPerson = contactPerson; }
 
+    public LocalDate getDateAuthorized() { return dateAuthorized; }
+    public void setDateAuthorized(LocalDate dateAuthorized) { this.dateAuthorized = dateAuthorized; }
+
+    public LocalDate getDateOrdered() { return dateOrdered; }
+    public void setDateOrdered(LocalDate dateOrdered) { this.dateOrdered = dateOrdered; }
+
+    public LocalDate getDateCompleted() { return dateCompleted; }
+    public void setDateCompleted(LocalDate dateCompleted) { this.dateCompleted = dateCompleted; }
+
+    public List<Item> getItems() { return items; }
+    public void setItems(List<Item> items) { this.items = items; }
 }
+
