@@ -68,5 +68,5 @@ function process(data){
     content('email_template.html', 0, res.rows[0].fac_email_1)
   })
 
-  //msg = await content('email_template.html')
+  //msg = await content('request_submitted.html')
 })();

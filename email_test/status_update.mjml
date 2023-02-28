@@ -12,7 +12,7 @@
         <mj-divider border-color="#A22137"></mj-divider>
 
         <mj-text font-size="20px" color="#A22137" font-family="helvetica">
-        Your order request #NUM has been submitted for approval to APPROVAL_NAME. You will receive another email when the authorized user reviews your request.
+        The status of order request #ID is now #STATUS. #NEXT_STEPS
         </mj-text>
 
         <mj-button background-color="#A22137">
