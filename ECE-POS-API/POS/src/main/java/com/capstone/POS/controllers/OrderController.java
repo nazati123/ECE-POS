@@ -43,7 +43,7 @@ public class OrderController {
         return orderRepository.findAll();
     }
 
-    @GetMapping("/orders/{id}")
+    @GetMapping("/{id}")
     public Order getOrderById(@PathVariable Long id) {
         Order order = orderService.getById(id);
         if (order == null)
