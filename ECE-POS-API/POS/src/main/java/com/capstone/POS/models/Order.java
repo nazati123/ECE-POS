@@ -22,7 +22,7 @@ public class Order {
     private LocalDate dateCreated;
 
     @Column(name = "acc_num")
-    private String accountNumber;
+    private Long accountNumber;
 
     @Column(name = "grant_end_date")
     private LocalDate grantEndDate;
@@ -40,10 +40,10 @@ public class Order {
     private String room;
 
     @Column(name = "fac_email_1")
-    private String facilityEmail1;
+    private String facultyEmail1;
 
     @Column(name = "fac_email_2")
-    private String facilityEmail2;
+    private String facultyEmail2;
 
     @Column(name = "is_standing_contract")
     private Boolean isStandingContract;
@@ -99,6 +99,59 @@ public class Order {
     // default constructor for JPA
     public Order() {}
 
+    public Order(
+        LocalDate dateCreated,
+        Long accountNumber,
+        LocalDate grantEndDate,
+        String requestPerson,
+        String phone,
+        String email,
+        String room,
+        String facultyEmail1,
+        String facultyEmail2,
+        boolean isStandingContract,
+        boolean isAuthorized,
+        boolean isOrdered,
+        boolean isCompleted,
+        String tracking,
+        BigDecimal shippingTotal,
+        BigDecimal totalCost,
+        String name,
+        String address,
+        String url,
+        String phoneNumber,
+        String faxNumber,
+        String contactPerson,
+        LocalDate dateAuthorized,
+        LocalDate dateOrdered,
+        LocalDate dateCompleted
+    ) {
+        this.dateCreated = dateCreated;
+        this.accountNumber = accountNumber;
+        this.grantEndDate = grantEndDate;
+        this.requestPerson = requestPerson;
+        this.phone = phone;
+        this.email = email;
+        this.room = room;
+        this.facultyEmail1 = facultyEmail1;
+        this.facultyEmail2 = facultyEmail2;
+        this.isStandingContract = isStandingContract;
+        this.isAuthorized = isAuthorized;
+        this.isOrdered = isOrdered;
+        this.isCompleted = isCompleted;
+        this.tracking = tracking;
+        this.shippingTotal = shippingTotal;
+        this.totalCost = totalCost;
+        this.name = name;
+        this.address = address;
+        this.url = url;
+        this.phoneNumber = phoneNumber;
+        this.faxNumber = faxNumber;
+        this.contactPerson = contactPerson;
+        this.dateAuthorized = dateAuthorized;
+        this.dateOrdered = dateOrdered;
+        this.dateCompleted = dateCompleted;
+    }
 
     // getters and setters
 
@@ -108,8 +161,8 @@ public class Order {
     public LocalDate getDateCreated() { return dateCreated; }
     public void setDateCreated(LocalDate dateCreated) { this.dateCreated = dateCreated; }
 
-    public String getAccountNumber() { return accountNumber; }
-    public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
+    public Long getAccountNumber() { return accountNumber; }
+    public void setAccountNumber(Long accountNumber) { this.accountNumber = accountNumber; }
     
     public LocalDate getGrantEndDate() { return grantEndDate;}
     public void setGrantEndDate(LocalDate grantEndDate) { this.grantEndDate = grantEndDate; }
@@ -126,11 +179,11 @@ public class Order {
     public String getRoom() { return room; }
     public void setRoom(String room) { this.room = room; }
 
-    public String getFacilityEmail1() { return facilityEmail1; }
-    public void setFacilityEmail1(String facilityEmail1) { this.facilityEmail1 = facilityEmail1; }
+    public String getFacultyEmail1() { return facultyEmail1; }
+    public void setFacultyEmail1(String facultyEmail1) { this.facultyEmail1 = facultyEmail1; }
 
-    public String getFacilityEmail2() { return facilityEmail2; }
-    public void setFacilityEmail2(String facilityEmail2) { this.facilityEmail2 = facilityEmail2; }
+    public String getFacultyEmail2() { return facultyEmail2; }
+    public void setFacultyEmail2(String facultyEmail2) { this.facultyEmail2 = facultyEmail2; }
 
     public Boolean getIsStandingContract() { return isStandingContract; }
     public void setIsStandingContract(Boolean isStandingContract) { this.isStandingContract = isStandingContract; }

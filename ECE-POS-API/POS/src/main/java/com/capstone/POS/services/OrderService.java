@@ -18,4 +18,8 @@ public class OrderService {
             return null;
         }
     }
+
+    public Order save(Order newOrder) {
+        return orderRepository.save(newOrder);
+    }
 }
