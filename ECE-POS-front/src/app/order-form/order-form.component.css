@@ -13,11 +13,6 @@ div.user-request-grid > div.row > div {
     border-left-color: black;
 }
 
-div.user-request-parts-grid > div.row > div:last-child {
-    border-right-style: solid;
-    border-right-color: black;
-}
-
 div.user-request-parts-grid > div.row > div {
     border-style: solid;
     border-color: black;
@@ -25,8 +20,29 @@ div.user-request-parts-grid > div.row > div {
     border-top-style: none;
 }
 
-div.user-request-parts-grid > div.row:first-child {
+div.user-request-parts-grid > div.row:first-child > div.text-center {
     border-top-style: solid;
+}
+
+div.user-request-parts-grid > div.row > div:last-child {
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+}
+
+div.user-request-total-grid > div.row > div {
+    border-style: solid;
+    border-color: black;
+    border-top-style: none;
+    border-left-style: none;
+}
+
+div.user-request-total-grid > div.row:first-child > div {
+    border-top-style: solid;
+}
+
+div.user-request-total-grid > div.row > div:first-child {
+    border-left-style: solid;
 }
 
 .yellow {
