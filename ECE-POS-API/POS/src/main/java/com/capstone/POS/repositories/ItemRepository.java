@@ -9,5 +9,6 @@ import com.capstone.POS.models.Item;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
+    
     public List<Item> findByOrderId(Long orderId);
 }

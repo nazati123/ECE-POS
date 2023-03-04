@@ -8,6 +8,7 @@ import com.capstone.POS.repositories.OrderRepository;
 
 @Service
 public class OrderService {
+    
     @Autowired
     OrderRepository orderRepository;
 

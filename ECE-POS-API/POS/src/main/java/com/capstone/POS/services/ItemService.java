@@ -8,6 +8,7 @@ import com.capstone.POS.repositories.ItemRepository;
 
 @Service
 public class ItemService {
+    
     @Autowired
     ItemRepository itemRepository;
 
