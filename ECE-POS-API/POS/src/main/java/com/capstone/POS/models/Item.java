@@ -16,7 +16,7 @@ public class Item {
     @Column(name = "part_num")
     private String partNumber;
 
-    @Column(name = "desc")
+    @Column(name = "item_desc")
     private String description;
 
     @Column(name = "price")
