@@ -14,7 +14,7 @@ export class OrderFormComponent implements OnInit {
 
   ngOnInit() {
     this.orderForm = this.fb.group({
-      date: ['', Validators.required, Validators.pattern(/^02\/(?:[01]\d|2\d)\/(?:19|20)(?:0[048]|[13579][26]|[2468][048])|(?:0[13578]|10|12)\/(?:[0-2]\d|3[01])\/(?:19|20)\d{2}|(?:0[469]|11)\/(?:[0-2]\d|30)\/(?:19|20)\d{2}|02\/(?:[0-1]\d|2[0-8])\/(?:19|20)\d{2}$/)],
+      date: ['', Validators.required],
       invoiceEmail: ['', Validators.required, Validators.email],
       company: this.fb.group({
         companyName: ['', Validators.required],
@@ -27,7 +27,7 @@ export class OrderFormComponent implements OnInit {
       accountNum: ['', Validators.required],
       endDate: ['', Validators.required],
       requesterName: ['', Validators.required],
-      requesterPhone: ['', Validators.required],
+      requesterPhone: ['', Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]+$')],
       requesterEmail: ['', Validators.required],
       room: ['', Validators.required],
       purpose: ['', Validators.required],
@@ -62,6 +62,12 @@ export class OrderFormComponent implements OnInit {
     console.log(this.items as FormArray);
     
   }
+
+  getApprovers() {
+    return ['Dr. Ricks', 'Dr. Taylor', 'Dr. Sun', 'Dr. Lemmon', 'Dr. Gurbuz'];
+  }
+
+  approversList: string[] = this.getApprovers();
 
   onSubmit() {
     this.submitted = true;

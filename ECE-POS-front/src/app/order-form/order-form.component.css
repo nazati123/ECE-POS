@@ -52,3 +52,7 @@ div.user-request-total-grid > div.row > div:first-child {
 .red {
     background-color: palevioletred;
 }
+
+div.alert {
+    color: red;
+}

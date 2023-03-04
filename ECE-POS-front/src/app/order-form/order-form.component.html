@@ -54,12 +54,7 @@
             <div class="col-sm-10">
                 <input type="tel" class="form-control" id="companyPhone" formControlName="companyPhone" placeholder="205-555-1212" required>
                 <div *ngIf="f['company'].get('companyPhone')?.invalid && (f['company'].get('companyPhone')?.touched)" class="alert">
-                    <div *ngIf="f['company'].get('companyPhone')?.hasError('required')">
-                        Please enter a phone number.
-                    </div>
-                    <div *ngIf="f['company'].get('companyPhone')?.hasError('pattern')">
-                        Please enter valid phone number.
-                    </div>
+                    Please enter a phone number.
                 </div>
             </div>
         </div>
@@ -112,12 +107,15 @@
             <label for="requesterPhone" class="col text-right">Requester Phone:</label>
             <div class="col">
                 <input type="tel" class="form-control" id="requesterPhone" formControlName="requesterPhone" placeholder="" required>
+                <div *ngIf="f['requesterPhone'].invalid && f['requesterPhone'].touched" class="alert">
+                    Please enter a phone number.
+                </div>
             </div>
         </div>
         <div class="row">
             <label for="requesterEmail" class="col text-right">Requester Email:</label>
             <div class="col">
-                <input type="email" class="form-control" id="requesterEmail" formControlName="requesterEmail" placeholder="" required>
+                <input type="email" class="form-control" id="requesterEmail" formControlName="requesterEmail" placeholder="" required ngModel email>
                 <div *ngIf="f['requesterEmail'].invalid && f['requesterEmail'].touched" class="alert">
                     A valid email is required.
                 </div>
@@ -127,12 +125,18 @@
             <label for="room" class="col text-right">Room Location to be used in:</label>
             <div class="col">
                 <input type="text" class="form-control red" id="room" formControlName="room" placeholder="" required>
+                <div *ngIf="f['room'].invalid && f['room'].touched" class="alert">
+                    A room location is required.
+                </div>
             </div>
         </div>
         <div class="row red">
             <label for="room" class="col text-right">Business purpose of this order:</label>
             <div class="col">
                 <textarea class="form-control red" id="purpose" formControlName="purpose" placeholder="" required></textarea>
+                <div *ngIf="f['purpose'].invalid && f['purpose'].touched" class="alert">
+                    A business purpose is required.
+                </div>
             </div>
         </div>
     </div>
@@ -183,7 +187,7 @@
         <div class="row">
             <div class="col-sm-10 text-right">Total</div>
             <div class="col-sm-1 text-center">
-                <input type="number" class="form-control" id="total" formControlName="total" placeholder="">
+                <input type="number" class="form-control" id="total" formControlName="total" placeholder="" readonly>
             </div>
         </div>
         <div>
@@ -198,11 +202,11 @@
             <div class="col-sm-10">
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" id="standingContract" formControlName="standingContract" value="yes">
+                        <input class="form-check-input" type="radio" id="standingContract" formControlName="standingContract" value="yes" required>
                         The items on this order are being purchased from a Standing Contract.
                     </label>
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" id="standingContract" formControlName="standingContract" value="no">
+                        <input class="form-check-input" type="radio" id="standingContract" formControlName="standingContract" value="no" required>
                         I have verified that the items on this order are not available through a Standing Contract.
                     </label>
                 </div>
@@ -210,20 +214,20 @@
         </div>
     </div>
     <br>
-    <div class="form-group user-request-grid">
+    <div class="form-group">
         <div class="row">
-            <label for="companyName" class="col-sm-2">Select Approver(s)</label>
-            <div class="col-sm-10">
-                <select multiple class="form-control" id="approvers" formControlName="approvers">
-                    <option>Dr. Ricks</option>
-                    <option>Dr. Taylor</option>
-                    <option>Dr. Sazanov</option>
-                    <option>Dr. Sun</option>
-                    <option>Dr. Gurbuz</option>
-                    </select>
+            <div class="">
+                <mat-form-field appearance="fill" class="col-sm-6">
+                    <mat-label>Select Approver(s)</mat-label>
+                    <mat-select formControlName="approvers" multiple appearance="fill">
+                        <mat-option *ngFor="let approver of approversList" [value]="approver">{{approver}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
             </div>
         </div>
     </div>
     <br>
     <button type="submit" class="btn btn-primary justify-content-center">Submit for Approval</button>
+    <br>
+    <br>
 </form>
