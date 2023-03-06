@@ -39,11 +39,8 @@ public class Order {
     @Column(name = "room")
     private String room;
 
-    @Column(name = "fac_email_1")
-    private String facultyEmail1;
-
-    @Column(name = "fac_email_2")
-    private String facultyEmail2;
+    @Column(name = "fac_emails")
+    private String facultyEmails;
 
     @Column(name = "is_standing_contract")
     private Boolean isStandingContract;
@@ -107,8 +104,7 @@ public class Order {
         String phone,
         String email,
         String room,
-        String facultyEmail1,
-        String facultyEmail2,
+        String facultyEmails,
         boolean isStandingContract,
         boolean isAuthorized,
         boolean isOrdered,
@@ -133,8 +129,7 @@ public class Order {
         this.phone = phone;
         this.email = email;
         this.room = room;
-        this.facultyEmail1 = facultyEmail1;
-        this.facultyEmail2 = facultyEmail2;
+        this.facultyEmails = facultyEmails;
         this.isStandingContract = isStandingContract;
         this.isAuthorized = isAuthorized;
         this.isOrdered = isOrdered;
@@ -179,11 +174,8 @@ public class Order {
     public String getRoom() { return room; }
     public void setRoom(String room) { this.room = room; }
 
-    public String getFacultyEmail1() { return facultyEmail1; }
-    public void setFacultyEmail1(String facultyEmail1) { this.facultyEmail1 = facultyEmail1; }
-
-    public String getFacultyEmail2() { return facultyEmail2; }
-    public void setFacultyEmail2(String facultyEmail2) { this.facultyEmail2 = facultyEmail2; }
+    public String getFacultyEmails() { return facultyEmails; }
+    public void setFacultyEmails(String facultyEmails) { this.facultyEmails = facultyEmails; }
 
     public Boolean getIsStandingContract() { return isStandingContract; }
     public void setIsStandingContract(Boolean isStandingContract) { this.isStandingContract = isStandingContract; }
