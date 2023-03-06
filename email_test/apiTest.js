@@ -1,11 +1,16 @@
 const axios = require('axios');
 
-// Make a GET request to a Spring Boot API endpoint
-axios.get('http://localhost:8080/items')
-  .then(response => {
-    // Parse the response and use the data
-    console.log(response.data);
+async function getFacultyEmails(url, orderID) {
+  id_string = orderID.toString();
+  url += '/orders/' + id_string
+  axios.get(url).then(response => {
+    return [response.data.facultyEmail1, response.data.facultyEmail2];
+  }).catch(error => {
+    console.error(error)
   })
-  .catch(error => {
-    console.error(error);
-  });
+};
+
+url = 'http://localhost:8080';
+orderID = 0;
+
+console.log(await getFacultyEmails(url, orderID));
