@@ -2,6 +2,7 @@
 Trevor Russell's folder for getting the email application together.
 
 ## Email templates
+.html files can be viewed in a web browser.
 ### request_submitted.html / request_submitted.mjml
 Email template to be sent out once a request is received.
 
@@ -9,6 +10,7 @@ Email template to be sent out once a request is received.
 Email template for order updates.
 
 ## Node.js testing
+Can currently be executed with `node apiTest.js`
 ### apiTest.js
 Work-in-progress applciation that makes a simple HTTP request to the Spring Boot application running from ECE-POS-API. The Node.js project is currently configured with this file as main.
 
