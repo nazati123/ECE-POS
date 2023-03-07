@@ -1,4 +1,4 @@
-# ECE-POS
+# ECE-POS: Electrical and Computer Engineering Parts Ordering System
 ### CS 495 Team 9: Matt Poirier, Nate Purcell, Trevor Russell, Joey Ruzicka
 
 This project contains the source code for an order management system for the Department of Electrical and Computer Engineering at the University of Alabama. Below is an overview of each portion of the repo.
