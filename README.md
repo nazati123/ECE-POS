@@ -19,6 +19,10 @@ This folder contains the source code for the Angular frontend server. This will 
 
 This folder contains the beginnings of a Node.js email server which will be used to notify users of updates to orders. Emails are generated using the Mail Jet Markup Language, which allows for the simple creation of responsive emails.
 
+## references
+
+This contains the source code for Angular and Spring Boot applications that Nate had previously worked with.
+
 ## ui-mockups
 
 This folder contains the early UI mockups of the interfaces for each type of user.
