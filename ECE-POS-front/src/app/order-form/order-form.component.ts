@@ -31,9 +31,7 @@ export class OrderFormComponent implements OnInit {
       requesterEmail: ['', Validators.required],
       room: ['', Validators.required],
       purpose: ['', Validators.required],
-      items: this.fb.array([
-        this.fb.control(''),
-      ]),
+      items: this.fb.array([this.item()]),
       shipping: ['', Validators.required],
       total: ['', Validators.required],
       standingContract: ['', Validators.required],
@@ -41,6 +39,9 @@ export class OrderFormComponent implements OnInit {
     });
 
     this.orderForm.get("items")?.valueChanges.subscribe(selectedValue => {
+      this.calculate();
+    }) 
+    this.orderForm.get("shipping")?.valueChanges.subscribe(selectedValue => {
       this.calculate();
     }) 
   }
@@ -52,15 +53,31 @@ export class OrderFormComponent implements OnInit {
   get f() { return this.orderForm.controls; }
 
   addItem() {
-    this.items.push(this.fb.control(''));
+    this.items.push(this.item());
   }
   removeItem(index: number) {
     this.items.removeAt(index);
   }
 
+  item(): FormGroup {
+    return this.fb.group({
+      quantity: [''],
+      partNum: [''],
+      description: [''],
+      unitPrice: [''],
+      totalPrice: ['']
+    });
+  }
+
   calculate() {
-    console.log(this.items as FormArray);
-    
+    let newTotal = 0;
+    for (let i = 0; i < this.items.length; i++){
+      const itemTotal = (this.items.at(i).get('quantity')?.value || 0) * (this.items.at(i).get('unitPrice')?.value || 0);
+      this.items.at(i).get('totalPrice')?.setValue(itemTotal, {emitEvent: false})
+      newTotal += itemTotal;
+    }
+    newTotal += this.orderForm.get('shipping')?.value || 0;
+    this.orderForm.get('total')?.setValue(newTotal, {emitEvent: false})
   }
 
   getApprovers() {
