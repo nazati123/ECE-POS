@@ -1,16 +1,21 @@
 const axios = require('axios');
+const prompt = require('prompt-sync')({sigint: true});
 
 async function getFacultyEmails(url, orderID) {
   id_string = orderID.toString();
   url += '/orders/' + id_string
   axios.get(url).then(response => {
-    return [response.data.facultyEmail1, response.data.facultyEmail2];
+    recipients = response.data.facultyEmails.split(',')
+    console.log(recipients)
+    return
   }).catch(error => {
     console.error(error)
   })
 };
 
 url = 'http://localhost:8080';
-orderID = 0;
+orderID = +prompt();
 
-console.log(await getFacultyEmails(url, orderID));
+(async function() {
+  getFacultyEmails(url, orderID)
+})();
