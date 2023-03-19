@@ -40,6 +40,7 @@ public class OrderController {
     
     @PostMapping
     public Order create(@RequestBody Order order) {
+        // FIXME: TRIGGER A CALL TO EMAIL SERVICE
         Order newOrder = orderService.save(order);
         return newOrder;
     }
