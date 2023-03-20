@@ -40,8 +40,26 @@ public class OrderController {
     
     @PostMapping
     public Order create(@RequestBody Order order) {
-        // FIXME: TRIGGER A CALL TO EMAIL SERVICE
         Order newOrder = orderService.save(order);
+        /*  FIXME: TRIGGER A CALL TO EMAIL SERVICE
+        String node_path = "../../../../../../../../email_test/apiTest.js";
+        ProcessBuilder pb = new ProcessBuilder("node", node_path);
+        Process p = pb.start();
+
+        OutputStream os = p.getOutputStream();
+        InputStream is = p.getInputStream();
+
+        PrintWriter w = new PrintWriter(new OutputStreamWriter(os));
+        BufferedReader r = new BufferedReader(new InputStreamReader(is));
+
+        w.println(order.getId().toString());
+        w.flush();
+
+        String output = r.readLine();
+        if (!(output.equals("Success"))) {
+            // some error handling
+        }
+        */
         return newOrder;
     }
 }
