@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Order } from '../order';
+import { Faculty } from '../faculty'
+import { Item } from '../item';
+import { OrdersService } from '../orders.service';
 
 @Component({
   selector: 'app-order-form',
@@ -9,39 +14,40 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class OrderFormComponent implements OnInit {
   orderForm!: FormGroup;
   submitted = false;
+  currentDateTime: string | null;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService) {
+    this.currentDateTime =this.datepipe.transform((new Date), 'MM/dd/yyyy');
+  }
 
   ngOnInit() {
     this.orderForm = this.fb.group({
-      date: ['', Validators.required],
+      dateCreated: [this.currentDateTime, Validators.required],
       invoiceEmail: ['', Validators.required, Validators.email],
-      company: this.fb.group({
-        companyName: ['', Validators.required],
-        companyAddress: ['', Validators.required],
-        companyURL: ['', Validators.required],
-        companyPhone: ['', Validators.required, Validators.pattern(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)],
-        companyFax: [''],
-        companyContact: ['']
-      }),
-      accountNum: ['', Validators.required],
-      endDate: ['', Validators.required],
-      requesterName: ['', Validators.required],
-      requesterPhone: ['', Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]+$')],
-      requesterEmail: ['', Validators.required],
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+      url: ['', Validators.required],
+      phoneNumber: ['', Validators.required, Validators.pattern(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)],
+      faxNumber: [''],
+      contactPerson: [''],
+      accountNumber: ['', Validators.required],
+      grantEndDate: ['', Validators.required],
+      requestPerson: ['', Validators.required],
+      phone: ['', Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]+$')],
+      email: ['', Validators.required],
       room: ['', Validators.required],
       purpose: ['', Validators.required],
       items: this.fb.array([this.item()]),
-      shipping: ['', Validators.required],
-      total: ['', Validators.required],
-      standingContract: ['', Validators.required],
-      approvers: ['', Validators.required]
+      shippingTotal: ['', Validators.required],
+      totalCost: ['', Validators.required],
+      isStandingContract: ['', Validators.required],
+      facultyEmails: ['', Validators.required]
     });
 
     this.orderForm.get("items")?.valueChanges.subscribe(selectedValue => {
       this.calculate();
     }) 
-    this.orderForm.get("shipping")?.valueChanges.subscribe(selectedValue => {
+    this.orderForm.get("shippingTotal")?.valueChanges.subscribe(selectedValue => {
       this.calculate();
     }) 
   }
@@ -76,17 +82,49 @@ export class OrderFormComponent implements OnInit {
       this.items.at(i).get('totalPrice')?.setValue(itemTotal, {emitEvent: false})
       newTotal += itemTotal;
     }
-    newTotal += this.orderForm.get('shipping')?.value || 0;
-    this.orderForm.get('total')?.setValue(newTotal, {emitEvent: false})
+    newTotal += this.orderForm.get('shippingTotal')?.value || 0;
+    this.orderForm.get('totalCost')?.setValue(newTotal, {emitEvent: false})
   }
 
   getApprovers() {
-    return ['Dr. Ricks', 'Dr. Taylor', 'Dr. Sun', 'Dr. Lemmon', 'Dr. Gurbuz'];
+    return [{'name': 'Dr. Ricks', 'email': 'kricks@eng.ua.edu'}, {'name': 'Dr. Taylor', 'email': 'dtaylor@eng.ua.edu'}];
   }
 
-  approversList: string[] = this.getApprovers();
+  approversList: Faculty[] = this.getApprovers();
 
   onSubmit() {
+    let newOrder: Order = {
+      dateCreated: new Date().toISOString(),
+      accountNumber: this.orderForm.value.accountNumber,
+      grantEndDate: new Date(this.orderForm.value.grantEndDate).toISOString(),
+      requestPerson: this.orderForm.value.requestPerson,
+      phone: this.orderForm.value.phone.replace(/\D+/g, ""),
+      email: this.orderForm.value.email,
+      room: this.orderForm.value.room,
+      facultyEmails: this.orderForm.value.facultyEmails.toString(),
+      isStandingContract: this.orderForm.value.isStandingContract,
+      isAuthorized: false,
+      isOrdered: false,
+      isCompleted: false,
+      tracking: "",
+      shippingTotal: this.orderForm.value.shippingTotal,
+      totalCost: this.orderForm.value.totalCost,
+      name: this.orderForm.value.name,
+      address: this.orderForm.value.address,
+      url: this.orderForm.value.url,
+      phoneNumber: this.orderForm.value.phoneNumber.replace(/\D+/g, ""),
+      faxNumber: this.orderForm.value.faxNumber.replace(/\D+/g, ""),
+      contactPerson: this.orderForm.value.contactPerson,
+      // dateAuthorized: '',
+      // dateOrdered: '',
+      // dateCompleted: ''
+    }
+    let items: Item[] = this.orderForm.value.items;
+    console.log(newOrder);
+    console.log(items);
+    console.log(this.ordersService.addOrder(newOrder));
+    
+
     this.submitted = true;
 
     // stop here if form is invalid

@@ -6,12 +6,9 @@
 </div>
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
     <div class="form-group row justify-content-center">
-        <label for="date" class="col-sm-1">Date</label>
+        <label for="dateCreated" class="col-sm-1">Date</label>
         <div class="col-sm-2">
-            <input type="date" class="form-control" id="date" formControlName="date" placeholder="Date" required>
-            <div *ngIf="f['date'].invalid && f['date'].touched" class="alert">
-                A valid date is required.
-            </div>
+            <input type="text" class="form-control" id="dateCreated" formControlName="dateCreated" readonly>
         </div>
         <label for="invoiceEmail" class="col-sm-2">Email Invoice To:</label>
         <div class="col-sm-4">
@@ -21,54 +18,54 @@
             </div>
         </div>
     </div>
-    <div class="form-group user-request-grid" formGroupName="company">
+    <div class="form-group user-request-grid">
         <div class="row yellow">
-            <label for="companyName" class="col-sm-2">Company Name:</label>
+            <label for="name" class="col-sm-2">Company Name:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control yellow" id="companyName" formControlName="companyName" placeholder="" required>
-                <div *ngIf="f['company'].get('companyName')?.invalid && f['company'].get('companyName')?.touched" class="alert">
+                <input type="text" class="form-control yellow" id="name" formControlName="name" placeholder="" required>
+                <div *ngIf="f['name'].invalid && f['name'].touched" class="alert">
                     Company Name is required.
                 </div>
             </div>
         </div>
         <div class="row">
-            <label for="companyAddress" class="col-sm-2">Address:</label>
+            <label for="address" class="col-sm-2">Address:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="companyAddress" formControlName="companyAddress" placeholder="" required>
-                <div *ngIf="f['company'].get('companyAddress')?.invalid && f['company'].get('companyAddress')?.touched" class="alert">
+                <input type="text" class="form-control" id="address" formControlName="address" placeholder="" required>
+                <div *ngIf="f['address'].invalid && f['address'].touched" class="alert">
                     Company Address is required.
                 </div>
             </div>
         </div>
         <div class="row">
-            <label for="companyURL" class="col-sm-2">Website URL:</label>
+            <label for="url" class="col-sm-2">Website URL:</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="companyURL" formControlName="companyURL" placeholder="www.example.com" required>
-                <div *ngIf="f['company'].get('companyURL')?.invalid && f['company'].get('companyURL')?.touched" class="alert">
+                <input type="url" class="form-control" id="url" formControlName="url" placeholder="www.example.com" required>
+                <div *ngIf="f['url'].invalid && f['url'].touched" class="alert">
                     Company URL is required.
                 </div>
             </div>
         </div>
         <div class="row">
-            <label for="companyPhone" class="col-sm-2">Phone Number:</label>
+            <label for="phoneNumber" class="col-sm-2">Phone Number:</label>
             <div class="col-sm-10">
-                <input type="tel" class="form-control" id="companyPhone" formControlName="companyPhone" placeholder="205-555-1212" required>
-                <div *ngIf="f['company'].get('companyPhone')?.invalid && (f['company'].get('companyPhone')?.touched)" class="alert">
+                <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber" placeholder="205-555-1212" required>
+                <div *ngIf="f['phoneNumber'].invalid && (f['phoneNumber'].touched)" class="alert">
                     Please enter a phone number.
                 </div>
             </div>
         </div>
         <div class="row">
-            <label for="companyFax" class="col-sm-2">Fax Number:</label>
+            <label for="faxNumber" class="col-sm-2">Fax Number:</label>
             <div class="col-sm-10">
-                <input type="tel" class="form-control" id="companyFax" formControlName="companyFax" placeholder="205-555-1212">
+                <input type="tel" class="form-control" id="faxNumber" formControlName="faxNumber" placeholder="205-555-1212">
             </div>
         </div>
         <div class="row">
-            <label for="companyContact" class="col-sm-2">Contact Person:</label>
+            <label for="contactPerson" class="col-sm-2">Contact Person:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="companyContact" formControlName="companyContact" placeholder="Jane Doe">
-                <div *ngIf="f['company'].get('companyContact')?.invalid && f['company'].get('companyContact')?.touched" class="alert">
+                <input type="text" class="form-control" id="contactPerson" formControlName="contactPerson" placeholder="Jane Doe">
+                <div *ngIf="f['contactPerson'].invalid && f['contactPerson'].touched" class="alert">
                     Company Contact is required.
                 </div>
             </div>
@@ -77,46 +74,46 @@
     <br>
     <div class="form-group user-request-grid">
         <div class="row yellow">
-            <label for="accountNum" class="col text-right">Account Number to be Used:</label>
+            <label for="accountNumber" class="col text-right">Account Number to be Used:</label>
             <div class="col">
-                <input type="number" class="form-control yellow" id="accountNum" formControlName="accountNum" placeholder="" required>
-                <div *ngIf="f['accountNum'].invalid && f['accountNum'].touched" class="alert">
+                <input type="number" class="form-control yellow" id="accountNumber" formControlName="accountNumber" placeholder="" required>
+                <div *ngIf="f['accountNumber'].invalid && f['accountNumber'].touched" class="alert">
                     A valid account number is required.
                 </div>
             </div>
         </div>
         <div class="row yellow">
-            <label for="endDate" class="col text-right">End date for grant/contract<br>(if purchase is to be made from grant/contract account)</label>
+            <label for="grantEndDate" class="col text-right">End date for grant/contract<br>(if purchase is to be made from grant/contract account)</label>
             <div class="col">
-                <input type="date" class="form-control yellow" id="endDate" formControlName="endDate" placeholder="" required>
-                <div *ngIf="f['endDate'].invalid && f['endDate'].touched" class="alert">
+                <input type="date" class="form-control yellow" id="grantEndDate" formControlName="grantEndDate" placeholder="" required>
+                <div *ngIf="f['grantEndDate'].invalid && f['grantEndDate'].touched" class="alert">
                     A valid end date is required.
                 </div>
             </div>
         </div>
         <div class="row">
-            <label for="requesterName" class="col text-right">Requester Name:</label>
+            <label for="requestPerson" class="col text-right">Requester Name:</label>
             <div class="col">
-                <input type="text" class="form-control" id="requesterName" formControlName="requesterName" placeholder="" required>
-                <div *ngIf="f['requesterName'].invalid && f['requesterName'].touched" class="alert">
+                <input type="text" class="form-control" id="requestPerson" formControlName="requestPerson" placeholder="" required>
+                <div *ngIf="f['requestPerson'].invalid && f['requestPerson'].touched" class="alert">
                     A requester name is required.
                 </div>
             </div>
         </div>
         <div class="row">
-            <label for="requesterPhone" class="col text-right">Requester Phone:</label>
+            <label for="phone" class="col text-right">Requester Phone:</label>
             <div class="col">
-                <input type="tel" class="form-control" id="requesterPhone" formControlName="requesterPhone" placeholder="" required>
-                <div *ngIf="f['requesterPhone'].invalid && f['requesterPhone'].touched" class="alert">
+                <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="" required>
+                <div *ngIf="f['phone'].invalid && f['phone'].touched" class="alert">
                     Please enter a phone number.
                 </div>
             </div>
         </div>
         <div class="row">
-            <label for="requesterEmail" class="col text-right">Requester Email:</label>
+            <label for="email" class="col text-right">Requester Email:</label>
             <div class="col">
-                <input type="email" class="form-control" id="requesterEmail" formControlName="requesterEmail" placeholder="" required email>
-                <div *ngIf="f['requesterEmail'].invalid && f['requesterEmail'].touched" class="alert">
+                <input type="email" class="form-control" id="email" formControlName="email" placeholder="" required email>
+                <div *ngIf="f['email'].invalid && f['email'].touched" class="alert">
                     A valid email is required.
                 </div>
             </div>
@@ -181,13 +178,13 @@
         <div class="row">
             <div class="col-sm-10 text-right">Shipping and Handling (to be included)</div>
             <div class="col-sm-1 text-center">
-                <input type="number" class="form-control" id="shipping" formControlName="shipping" placeholder="">
+                <input type="number" class="form-control" id="shippingTotal" formControlName="shippingTotal" placeholder="">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-10 text-right">Total</div>
             <div class="col-sm-1 text-center">
-                <input type="number" class="form-control" id="total" formControlName="total" placeholder="" readonly>
+                <input type="number" class="form-control" id="totalCost" formControlName="totalCost" placeholder="" readonly>
             </div>
         </div>
         <div>
@@ -202,11 +199,11 @@
             <div class="col-sm-10">
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" id="standingContract" formControlName="standingContract" value="yes" required>
+                        <input class="form-check-input" type="radio" id="isStandingContract" formControlName="isStandingContract" value="True" required>
                         The items on this order are being purchased from a Standing Contract.
                     </label>
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" id="standingContract" formControlName="standingContract" value="no" required>
+                        <input class="form-check-input" type="radio" id="isStandingContract" formControlName="isStandingContract" value="False" required>
                         I have verified that the items on this order are not available through a Standing Contract.
                     </label>
                 </div>
@@ -219,8 +216,8 @@
             <div class="">
                 <mat-form-field appearance="fill" class="col-sm-6">
                     <mat-label>Select Approver(s)</mat-label>
-                    <mat-select formControlName="approvers" multiple appearance="fill">
-                        <mat-option *ngFor="let approver of approversList" [value]="approver">{{approver}}</mat-option>
+                    <mat-select formControlName="facultyEmails" multiple appearance="fill">
+                        <mat-option *ngFor="let approver of approversList" [value]="approver.email">{{approver.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
             </div>
