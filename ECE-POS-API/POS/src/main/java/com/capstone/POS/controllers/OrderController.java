@@ -1,6 +1,6 @@
 package com.capstone.POS.controllers;
 
-import com.capstone.POS.exceptions.OrderNotFoundException;
+import com.capstone.POS.exceptions.ResourceNotFoundException;
 import com.capstone.POS.models.Order;
 import com.capstone.POS.repositories.OrderRepository;
 import com.capstone.POS.services.OrderService;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,5 +68,15 @@ public class OrderController {
         }
         */
         return new ResponseEntity<>(newOrder, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
+        try {
+            Order updatedOrder = orderService.updateOrder(id, order);
+            return ResponseEntity.ok(updatedOrder);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
