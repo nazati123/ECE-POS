@@ -16,14 +16,7 @@ export class OrdersService {
   }
 
   addOrder(order: Order) {
-    return this.http.post(this.baseUrl, order, {observe: 'response'}).subscribe(response => {
-    
-      // You can access status:
-      console.log(response.status);
-      
-      // Or any other header:
-      console.log(response.headers.get('X-Custom-Header'));
-    });
+    return this.http.post(this.baseUrl, order, {observe: 'body'});
   }
 
   editOrder(orderId: number, formData: FormData | Order) {

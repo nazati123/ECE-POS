@@ -152,16 +152,16 @@
                 <input type="number" class="form-control" id="quantity-{{ i }}" formControlName="quantity">
             </div>
             <div class="col-sm-2 text-center">
-                <input type="text" class="form-control" id="partNum-{{ i }}" formControlName="partNum">
+                <input type="text" class="form-control" id="partNumber-{{ i }}" formControlName="partNumber">
             </div>
             <div class="col-sm-6 text-center">
                 <input type="text" class="form-control" id="description-{{ i }}" formControlName="description">
             </div>
             <div class="col-sm-1 text-center">
-                <input type="text" class="form-control" id="unitPrice-{{ i }}" formControlName="unitPrice">
+                <input type="number" class="form-control" id="price-{{ i }}" formControlName="price">
             </div>
             <div class="col-sm-1 text-center">
-                <input type="text" class="form-control" id="totalPrice-{{ i }}" formControlName="totalPrice" readonly>
+                <input type="number" class="form-control" id="total-{{ i }}" formControlName="total" readonly>
             </div>
             <div class="col-sm-1 text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" *ngIf="i != 0" class="bi bi-trash align-center" (click)="removeItem(i)" viewBox="0 0 16 16">
@@ -224,7 +224,7 @@
         </div>
     </div>
     <br>
-    <button type="submit" class="btn btn-primary justify-content-center">Submit for Approval</button>
+    <button type="submit" class="btn btn-primary justify-content-center" [disabled]="!orderForm.valid">Submit for Approval</button>
     <br>
     <br>
 </form>
