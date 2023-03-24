@@ -6,7 +6,10 @@ const http = require('http');
 var nodemailer= require('nodemailer');
 const prompt = require('prompt-sync')({sigint: true});
 
+// URL to Spring Boot Instance
 const SB_URL = 'http://localhost:8080';
+
+// Filenames for email templates
 const REQ_SUB = 'request_submitted.html';
 const REQ_REV = 'request_review.html';
 
@@ -46,17 +49,23 @@ function sendMail(to, subject, message) {
 
 async function order_awaiting(orderID) {
   var url = SB_URL;
+
   id_string = orderID.toString();
-  url += '/orders/' + id_string
+  url += '/orders/' + id_string;
+
   axios.get(url).then(response => {
+    // read in email addresses from order id
     req_recipient = response.data.email;
     fac_recipients = response.data.facultyEmails.split(',');
+
     console.log('emails going to: ');
     fac_recipients.forEach(function (email) {
       console.log(email);
     });
     console.log(req_recipient);
-    // send the email
+
+    // fixme: send the req_sub to the req_recipient and the req_rev to faculty
+
   }).catch(error => {
     console.error(error)
   })
