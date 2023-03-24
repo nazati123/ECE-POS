@@ -8,12 +8,17 @@ import com.capstone.POS.services.OrderService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/orders")
@@ -37,29 +42,23 @@ public class OrderController {
         throw new OrderNotFoundException(id);
         return order;
     }
-    
+
     @PostMapping
     public Order create(@RequestBody Order order) {
         Order newOrder = orderService.save(order);
-        /*  FIXME: TRIGGER A CALL TO EMAIL SERVICE
-        String node_path = "../../../../../../../../email_test/apiTest.js";
-        ProcessBuilder pb = new ProcessBuilder("node", node_path);
-        Process p = pb.start();
 
-        OutputStream os = p.getOutputStream();
-        InputStream is = p.getInputStream();
+        //  FIXME: TRIGGER A CALL TO EMAIL SERVICE
+        String nodeUrl = "http://localhost:3000";
 
-        PrintWriter w = new PrintWriter(new OutputStreamWriter(os));
-        BufferedReader r = new BufferedReader(new InputStreamReader(is));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String jsonPayload = "{\"id\": \"" + order.getId().toString() + "\"}";
+        HttpEntity<String> request = new HttpEntity<>(jsonPayload, headers);
 
-        w.println(order.getId().toString());
-        w.flush();
+        // send the request to the Node.js server
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(nodeUrl + "/order-awaiting", HttpMethod.POST, request, String.class);
 
-        String output = r.readLine();
-        if (!(output.equals("Success"))) {
-            // some error handling
-        }
-        */
         return newOrder;
     }
 }
