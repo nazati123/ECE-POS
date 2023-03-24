@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capstone.POS.exceptions.OrderNotFoundException;
 import com.capstone.POS.exceptions.ResourceNotFoundException;
 import com.capstone.POS.models.Faculty;
+import com.capstone.POS.repositories.FacultyRepository;
 import com.capstone.POS.services.FacultyService;
 
 @RestController
@@ -27,20 +27,24 @@ public class FacultyController {
     @Autowired
     private FacultyService facultyService;
 
+    @Autowired
+    private FacultyRepository facultyRepository;
+
     // Get all faculty members
     @GetMapping
-    public List<Faculty> getAllFaculty() {
-        return facultyService.getAllFaculty();
+    public ResponseEntity<List<Faculty>> getAllFaculty() {
+        List<Faculty> faculty = facultyRepository.findAll();
+        return new ResponseEntity<>(faculty, HttpStatus.OK);
     }
 
     // Get faculty member by email
     @GetMapping("/{email}")
-    public Faculty getFacultyByEmail(@PathVariable String email) {
+    public ResponseEntity<Faculty> getFacultyByEmail(@PathVariable String email) {
         Faculty faculty = facultyService.getFacultyByEmail(email);
         if (faculty != null) {
-            return faculty;
+            return new ResponseEntity<>(faculty, HttpStatus.OK);
         } else {
-            throw new OrderNotFoundException(-99L);
+            return ResponseEntity.notFound().build();
         }
     }
 

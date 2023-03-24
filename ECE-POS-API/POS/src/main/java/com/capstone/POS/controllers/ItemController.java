@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +28,9 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping()
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
+    public ResponseEntity<List<Item>> getAllItems() {
+        List<Item> items = itemRepository.findAll();
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -42,8 +44,8 @@ public class ItemController {
     }
 
     @PostMapping
-    public Item create(@RequestBody Item item) {
+    public ResponseEntity<Item> create(@RequestBody Item item) {
         Item newItem = itemService.save(item);
-        return newItem;
+        return new ResponseEntity<>(newItem, HttpStatus.OK);
     }
 }

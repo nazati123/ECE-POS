@@ -5,6 +5,7 @@ import { Order } from '../order';
 import { Faculty } from '../faculty'
 import { Item } from '../item';
 import { OrdersService } from '../orders.service';
+import { ItemsService } from '../items.service';
 
 @Component({
   selector: 'app-order-form',
@@ -16,30 +17,30 @@ export class OrderFormComponent implements OnInit {
   submitted = false;
   currentDateTime: string | null;
 
-  constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService) {
+  constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService, private itemsService: ItemsService) {
     this.currentDateTime =this.datepipe.transform((new Date), 'MM/dd/yyyy');
   }
 
   ngOnInit() {
     this.orderForm = this.fb.group({
       dateCreated: [this.currentDateTime, Validators.required],
-      invoiceEmail: ['', Validators.required, Validators.email],
+      invoiceEmail: ['', [Validators.required, Validators.email]],
       name: ['', Validators.required],
       address: ['', Validators.required],
       url: ['', Validators.required],
-      phoneNumber: ['', Validators.required, Validators.pattern(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)],
-      faxNumber: [''],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)]],
+      faxNumber: ['', Validators.pattern(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)],
       contactPerson: [''],
       accountNumber: ['', Validators.required],
       grantEndDate: ['', Validators.required],
       requestPerson: ['', Validators.required],
-      phone: ['', Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]+$')],
-      email: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]+$')]],
+      email: ['', [Validators.required, Validators.email]],
       room: ['', Validators.required],
       purpose: ['', Validators.required],
       items: this.fb.array([this.item()]),
-      shippingTotal: ['', Validators.required],
-      totalCost: ['', Validators.required],
+      shippingTotal: [0, Validators.required],
+      totalCost: [0, Validators.required],
       isStandingContract: ['', Validators.required],
       facultyEmails: ['', Validators.required]
     });
@@ -68,18 +69,18 @@ export class OrderFormComponent implements OnInit {
   item(): FormGroup {
     return this.fb.group({
       quantity: [''],
-      partNum: [''],
+      partNumber: [''],
       description: [''],
-      unitPrice: [''],
-      totalPrice: ['']
+      price: [''],
+      total: ['']
     });
   }
 
   calculate() {
     let newTotal = 0;
     for (let i = 0; i < this.items.length; i++){
-      const itemTotal = (this.items.at(i).get('quantity')?.value || 0) * (this.items.at(i).get('unitPrice')?.value || 0);
-      this.items.at(i).get('totalPrice')?.setValue(itemTotal, {emitEvent: false})
+      const itemTotal = (this.items.at(i).get('quantity')?.value || 0) * (this.items.at(i).get('price')?.value || 0);
+      this.items.at(i).get('total')?.setValue(itemTotal, {emitEvent: false})
       newTotal += itemTotal;
     }
     newTotal += this.orderForm.get('shippingTotal')?.value || 0;
@@ -119,18 +120,21 @@ export class OrderFormComponent implements OnInit {
       // dateOrdered: '',
       // dateCompleted: ''
     }
-    let items: Item[] = this.orderForm.value.items;
+    let items: Item[] = this.orderForm.value.items as Item[];
+    
     console.log(newOrder);
     console.log(items);
-    console.log(this.ordersService.addOrder(newOrder));
+    this.ordersService.addOrder(newOrder).subscribe(data => {
+      let orderResponse = data as Order;
+      items.forEach(element => {
+        this.itemsService.addItem(element, orderResponse.id).subscribe(data => {
+          console.log(data);
+        });
+      });
+    });
+    
     
 
-    this.submitted = true;
-
-    // stop here if form is invalid
-    if (this.orderForm.invalid) {
-        return;
-    }
 
     // display form values on success
     alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.orderForm.value, null, 4));
