@@ -45,7 +45,7 @@ function sendMail(to, subject, message) {
 
 }
 
-async function content(path, id, fac_email){
+function content(path, id, fac_email){
   return fs.readFile(path, 'utf-8', (err, message) => {
     if (err) throw err;
     message = message.replace('NUM', id).replace('APPROVAL_NAME', fac_email)
