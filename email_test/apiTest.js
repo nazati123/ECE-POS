@@ -6,18 +6,26 @@ const http = require('http');
 var nodemailer= require('nodemailer');
 const prompt = require('prompt-sync')({sigint: true});
 
+// MAKE THIS FALSE TO STOP SENDING EMAILS
+const SEND_EMAILS = false;
+
 // URL to Spring Boot Instance
 const SB_URL = 'http://localhost:8080';
 
 // Filenames for email templates
-const REQ_SUB = 'request_submitted.html';
-const REQ_REV = 'request_review.html';
+const REQUEST_SUB = 'request_submitted.html';
+const REQUEST_REV = 'request_review.html';
+const STATUS_UPDATE = 'status_update.mjml';
 
 const dkimKey = {
   privateKey: ck.DKIM_PRIVATE_KEY,
   keySelector: ck.DKIM_KEY_SELECTOR,
   domainName: ck.DKIM_DOMAIN
 };
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function sendMail(to, subject, message) {
 
@@ -46,6 +54,36 @@ function sendMail(to, subject, message) {
 
 };
 
+function personalizeMessage(message, type, order_data) {
+  switch(type) {
+    case 'submitted':
+      order_id = order_data.id.toString();
+      recipients = order_data.facultyEmails;
+      recipient_string = recipients.pop();
+      if (recipients.length > 0){
+        if (recipients.length == 1) {
+          recipient_string += ' and ' + recipients.pop();
+        }
+        else {
+          while (recipients.length > 1) {
+            recipient_string += ', ' + recipients.pop();
+          }
+          recipient_string += ', and ' + recipients.pop();
+        }
+      }
+      message = message.replace('#ID', '#' + order_id).replace('#APPROVER', recipient_string)
+      // FIXME add the link to the button
+      break;
+    case 'review':
+      req_name = order_data.requestPerson;
+      message = message.replace('#REQUESTER_NAME', req_name)
+      // FIXME add the link to the button
+      break;
+    default:
+      console.log('unexpected case')
+  };
+  return message
+};
 
 async function order_awaiting(orderID) {
   var url = SB_URL;
@@ -54,9 +92,13 @@ async function order_awaiting(orderID) {
   url += '/orders/' + id_string;
 
   axios.get(url).then(response => {
+    console.log(response.data)
     // read in email addresses from order id
     req_recipient = response.data.email;
-    fac_recipients = response.data.facultyEmails.split(',');
+
+    // THIS MAKES FACULTYEMAILS AN ARRAY FROM HERE ON OUT
+    response.data.facultyEmails = response.data.facultyEmails.split(',');
+    fac_recipients = response.data.facultyEmails;
 
     console.log('emails going to: ');
     fac_recipients.forEach(function (email) {
@@ -64,8 +106,40 @@ async function order_awaiting(orderID) {
     });
     console.log(req_recipient);
 
-    // fixme: send the req_sub to the req_recipient and the req_rev to faculty
+    // requester gets notification that the request was submitted
+    fs.readFile(REQUEST_SUB, 'utf-8', (err, message) => {
+      if (err) throw error;
 
+      subject_line = 'ECE-POS: Request Submitted';
+
+      message = personalizeMessage(message, 'submitted', response.data);
+
+      // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
+      response.data.email = 'twrussell@crimson.ua.edu';
+
+      if (SEND_EMAILS) {
+        sendMail(response.data.email, subject_line, message); 
+      }
+      console.log('sent submitted to ' + response.data.email);
+    })
+
+    // faculty get an email notification of a new order awaiting
+    fs.readFile(REQUEST_REV, 'utf-8', (err, message) => {
+      if (err) throw error;
+
+      subject_line = 'ECE-POS: New Request Awaiting Review';
+
+      message = personalizeMessage(message, 'review', response.data);
+
+      // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
+      response.data.facultyEmails = ['twrussell@crimson.ua.edu'];
+
+      response.data.facultyEmails.forEach(function (email) {
+        if (SEND_EMAILS) sleep(1000).then(() => {sendMail(email, subject_line, message);});
+        console.log('sent review to ' + email)
+      })
+    })
+    
   }).catch(error => {
     console.error(error)
   })
