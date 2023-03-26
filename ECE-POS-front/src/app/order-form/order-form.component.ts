@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router'
 import { Order } from '../order';
 import { Faculty } from '../faculty'
 import { Item } from '../item';
@@ -14,10 +15,9 @@ import { ItemsService } from '../items.service';
 })
 export class OrderFormComponent implements OnInit {
   orderForm!: FormGroup;
-  submitted = false;
   currentDateTime: string | null;
 
-  constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService, private itemsService: ItemsService) {
+  constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService, private itemsService: ItemsService, private router: Router) {
     this.currentDateTime =this.datepipe.transform((new Date), 'MM/dd/yyyy');
   }
 
@@ -34,7 +34,7 @@ export class OrderFormComponent implements OnInit {
       accountNumber: ['', Validators.required],
       grantEndDate: ['', Validators.required],
       requestPerson: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]+$')]],
+      phone: ['', [Validators.required, Validators.maxLength(10), Validators.pattern(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)]],
       email: ['', [Validators.required, Validators.email]],
       room: ['', Validators.required],
       purpose: ['', Validators.required],
@@ -72,7 +72,7 @@ export class OrderFormComponent implements OnInit {
       partNumber: [''],
       description: [''],
       price: [''],
-      total: ['']
+      total: [0]
     });
   }
 
@@ -88,7 +88,7 @@ export class OrderFormComponent implements OnInit {
   }
 
   getApprovers() {
-    return [{'name': 'Dr. Ricks', 'email': 'kricks@eng.ua.edu'}, {'name': 'Dr. Taylor', 'email': 'dtaylor@eng.ua.edu'}];
+    return [{'name': 'Trevor', 'email': 'twrussell@crimson.ua.edu'}, {'name': 'Matt', 'email': 'mjpoirier@crimson.ua.edu'}, {'name': 'Nate', 'email': 'nlpurcell@crimson.ua.edu'}, {'name': 'Joey', 'email': 'jmruzicka@crimson.ua.edu'}];
   }
 
   approversList: Faculty[] = this.getApprovers();
@@ -115,28 +115,16 @@ export class OrderFormComponent implements OnInit {
       url: this.orderForm.value.url,
       phoneNumber: this.orderForm.value.phoneNumber.replace(/\D+/g, ""),
       faxNumber: this.orderForm.value.faxNumber.replace(/\D+/g, ""),
-      contactPerson: this.orderForm.value.contactPerson,
-      // dateAuthorized: '',
-      // dateOrdered: '',
-      // dateCompleted: ''
+      contactPerson: this.orderForm.value.contactPerson
     }
     let items: Item[] = this.orderForm.value.items as Item[];
     
-    console.log(newOrder);
-    console.log(items);
     this.ordersService.addOrder(newOrder).subscribe(data => {
       let orderResponse = data as Order;
       items.forEach(element => {
-        this.itemsService.addItem(element, orderResponse.id).subscribe(data => {
-          console.log(data);
-        });
+        this.itemsService.addItem(element, orderResponse.id).subscribe();
       });
     });
-    
-    
-
-
-    // display form values on success
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.orderForm.value, null, 4));
+    this.router.navigate(['']);
 }
 }
