@@ -145,6 +145,13 @@ async function order_awaiting(orderID) {
   })
 };
 
+async function order_update(orderID) {
+  // idea: check for latest TRUE value between authorized, ordered, and complete to give the most recent status update.
+  // check time of update to avoid redundant emails that don't actually show progress. Check if there's a tracking number
+  // to see if that should be in there.
+  console.log('implement this function, please');
+};
+
 const server = http.createServer((req, res) => {
   if (req.method === 'POST' && req.url === '/order-awaiting') {
     let body = '';
@@ -158,7 +165,21 @@ const server = http.createServer((req, res) => {
       console.log(`received ${id}`);
       await order_awaiting(id);
       res.writeHead(200);
-      res.end('Email sent.');
+      res.end('Emails sent.');
+    });
+  } else if (req.method === 'POST' && req.url ==='/order-update') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    req.on('end', async () => {
+      const update = JSON.parse(body);
+      const id = order.id;
+
+      console.log(`received update for ${id}`);
+      await order_update(id);
+      res.writeHead(200);
+      res.end('Updates sent.')
     });
   } else {
     res.writeHead(404);

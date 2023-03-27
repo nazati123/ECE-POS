@@ -34,6 +34,8 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    private String NODE_URL = "http://localhost:3000";
+
     @GetMapping
     public ResponseEntity<List<Order>> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
@@ -54,8 +56,7 @@ public class OrderController {
     public ResponseEntity<Order> create(@RequestBody Order order) {
         Order newOrder = orderService.save(order);
 
-        //  FIXME: TRIGGER A CALL TO EMAIL SERVICE
-        String nodeUrl = "http://localhost:3000";
+        // call node.js
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -64,7 +65,7 @@ public class OrderController {
 
         // send the request to the Node.js server
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(nodeUrl + "/order-awaiting", HttpMethod.POST, request, String.class);
+        restTemplate.exchange(NODE_URL + "/order-awaiting", HttpMethod.POST, request, String.class);
 
         return new ResponseEntity<>(newOrder, HttpStatus.OK);
     }
@@ -73,6 +74,16 @@ public class OrderController {
     public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
         try {
             Order updatedOrder = orderService.updateOrder(id, order);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            String jsonPayload = "{\"id\": \"" + id.toString() + "\"}";
+            HttpEntity<String> request = new HttpEntity<>(jsonPayload, headers);
+    
+            // send the request to the Node.js server
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.exchange(NODE_URL + "/order-update", HttpMethod.POST, request, String.class);
+
             return ResponseEntity.ok(updatedOrder);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
