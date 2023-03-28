@@ -127,7 +127,7 @@ public class Order {
         LocalDate dateAuthorized,
         LocalDate dateOrdered,
         LocalDate dateCompleted,
-        String invoice_email,
+        String invoiceEmail,
         String purpose
     ) {
         this.dateCreated = dateCreated;
@@ -154,7 +154,7 @@ public class Order {
         this.dateAuthorized = dateAuthorized;
         this.dateOrdered = dateOrdered;
         this.dateCompleted = dateCompleted;
-        this.invoice_email = invoice_email;
+        this.invoiceEmail = invoiceEmail;
         this.purpose = purpose;
     }
 
@@ -238,10 +238,10 @@ public class Order {
     public List<Item> getItems() { return items; }
     public void setItems(List<Item> items) { this.items = items; }
 
-    public String getInvoiceEmail() { return invoice_email; }
-    public void setInvoiceEmail(String invoice_email) { this.invoice_email = invoice_email; }
+    public String getInvoiceEmail() { return invoiceEmail; }
+    public void setInvoiceEmail(String invoiceEmail) { this.invoiceEmail = invoiceEmail; }
 
-    public Sting getPurpose() { return purpose; }
+    public String getPurpose() { return purpose; }
     public void setPurpose(String purpose) { this.purpose = purpose; }
 }
 
