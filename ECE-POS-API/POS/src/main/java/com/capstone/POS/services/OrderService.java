@@ -52,6 +52,8 @@ public class OrderService {
         order.setDateAuthorized(orderDetails.getDateAuthorized());
         order.setDateOrdered(orderDetails.getDateOrdered());
         order.setDateCompleted(orderDetails.getDateCompleted());
+        order.setInvoiceEmail(orderDetails.getInvoiceEmail());
+        order.setPurpose(orderDetails.getPurpose());
 
         return orderRepository.save(order);
     }
