@@ -90,6 +90,12 @@ public class Order {
     @Column(name = "date_completed")
     private LocalDate dateCompleted;
 
+    @Column(name = "invoice_email")
+    private String invoiceEmail;
+
+    @Column(name = "purpose")
+    private String purpose;
+
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
 
@@ -120,7 +126,9 @@ public class Order {
         String contactPerson,
         LocalDate dateAuthorized,
         LocalDate dateOrdered,
-        LocalDate dateCompleted
+        LocalDate dateCompleted,
+        String invoice_email,
+        String purpose
     ) {
         this.dateCreated = dateCreated;
         this.accountNumber = accountNumber;
@@ -146,6 +154,8 @@ public class Order {
         this.dateAuthorized = dateAuthorized;
         this.dateOrdered = dateOrdered;
         this.dateCompleted = dateCompleted;
+        this.invoice_email = invoice_email;
+        this.purpose = purpose;
     }
 
     // getters and setters
@@ -227,5 +237,11 @@ public class Order {
 
     public List<Item> getItems() { return items; }
     public void setItems(List<Item> items) { this.items = items; }
+
+    public String getInvoiceEmail() { return invoice_email; }
+    public void setInvoiceEmail(String invoice_email) { this.invoice_email = invoice_email; }
+
+    public Sting getPurpose() { return purpose; }
+    public void setPurpose(String purpose) { this.purpose = purpose; }
 }
 
