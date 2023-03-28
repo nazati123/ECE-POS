@@ -81,11 +81,12 @@ public class OrderController {
             if (oldOrder.getIsAuthorized() != order.getIsAuthorized()) {
                 update = "authorized";
                 email = true;
-            } else if (oldOrder.getIsOrdered() != oldOrder.getIsOrdered()) {
+            }
+            if (oldOrder.getIsOrdered() != oldOrder.getIsOrdered()) {
                 update = "ordered";
                 email = true;
-            } 
-            else if (oldOrder.getIsCompleted() != order.getIsCompleted()) {
+            }
+            if (oldOrder.getIsCompleted() != order.getIsCompleted()) {
                 update = "completed";
                 email = true;
             }
