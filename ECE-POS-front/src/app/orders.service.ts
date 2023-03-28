@@ -15,6 +15,10 @@ export class OrdersService {
     return this.http.get<Order[]>(`${this.baseUrl}`);
   }
 
+  getOrder(id: number): Observable<Order>{
+    return this.http.get<Order>(`${this.baseUrl}/${id}`, {observe: 'body'});
+  }
+
   addOrder(order: Order) {
     return this.http.post(this.baseUrl, order, {observe: 'body'});
   }

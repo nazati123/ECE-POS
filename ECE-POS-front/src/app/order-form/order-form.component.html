@@ -12,7 +12,7 @@
         </div>
         <label for="invoiceEmail" class="col-sm-2">Email Invoice To:</label>
         <div class="col-sm-4">
-            <input type="email" class="form-control" id="invoiceEmail" formControlName="invoiceEmail" placeholder="jdoe@ua.edu" required email>
+            <input type="email" class="form-control" id="invoiceEmail" formControlName="invoiceEmail" placeholder="jdoe@ua.edu" required [readonly]="viewing" email>
             <div *ngIf="f['invoiceEmail'].invalid && f['invoiceEmail'].touched" class="alert">
                 A valid email is required.
             </div>
@@ -22,7 +22,7 @@
         <div class="row yellow">
             <label for="name" class="col-sm-2">Company Name:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control yellow" id="name" formControlName="name" placeholder="" required>
+                <input type="text" class="form-control yellow" id="name" formControlName="name" placeholder="" required [readonly]="viewing">
                 <div *ngIf="f['name'].invalid && f['name'].touched" class="alert">
                     Company Name is required.
                 </div>
@@ -31,7 +31,7 @@
         <div class="row">
             <label for="address" class="col-sm-2">Address:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="address" formControlName="address" placeholder="" required>
+                <input type="text" class="form-control" id="address" formControlName="address" placeholder="" required [readonly]="viewing">
                 <div *ngIf="f['address'].invalid && f['address'].touched" class="alert">
                     Company Address is required.
                 </div>
@@ -40,7 +40,7 @@
         <div class="row">
             <label for="url" class="col-sm-2">Website URL:</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="url" formControlName="url" placeholder="www.example.com" required>
+                <input type="url" class="form-control" id="url" formControlName="url" placeholder="www.example.com" required [readonly]="viewing">
                 <div *ngIf="f['url'].invalid && f['url'].touched" class="alert">
                     Company URL is required.
                 </div>
@@ -49,7 +49,7 @@
         <div class="row">
             <label for="phoneNumber" class="col-sm-2">Phone Number:</label>
             <div class="col-sm-10">
-                <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber" placeholder="205-555-1212" required>
+                <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber" placeholder="205-555-1212" required [readonly]="viewing">
                 <div *ngIf="f['phoneNumber'].invalid && (f['phoneNumber'].touched)" class="alert">
                     Please enter a phone number.
                 </div>
@@ -58,13 +58,13 @@
         <div class="row">
             <label for="faxNumber" class="col-sm-2">Fax Number:</label>
             <div class="col-sm-10">
-                <input type="tel" class="form-control" id="faxNumber" formControlName="faxNumber" placeholder="205-555-1212">
+                <input type="tel" class="form-control" id="faxNumber" formControlName="faxNumber" placeholder="205-555-1212" [readonly]="viewing" >
             </div>
         </div>
         <div class="row">
             <label for="contactPerson" class="col-sm-2">Contact Person:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="contactPerson" formControlName="contactPerson" placeholder="Jane Doe">
+                <input type="text" class="form-control" id="contactPerson" formControlName="contactPerson" placeholder="Jane Doe" [readonly]="viewing" >
                 <div *ngIf="f['contactPerson'].invalid && f['contactPerson'].touched" class="alert">
                     Company Contact is required.
                 </div>
@@ -76,7 +76,7 @@
         <div class="row yellow">
             <label for="accountNumber" class="col text-right">Account Number to be Used:</label>
             <div class="col">
-                <input type="number" class="form-control yellow" id="accountNumber" formControlName="accountNumber" placeholder="" required>
+                <input type="number" class="form-control yellow" id="accountNumber" formControlName="accountNumber" placeholder="" required [readonly]="viewing">
                 <div *ngIf="f['accountNumber'].invalid && f['accountNumber'].touched" class="alert">
                     A valid account number is required.
                 </div>
@@ -85,7 +85,7 @@
         <div class="row yellow">
             <label for="grantEndDate" class="col text-right">End date for grant/contract<br>(if purchase is to be made from grant/contract account)</label>
             <div class="col">
-                <input type="date" class="form-control yellow" id="grantEndDate" formControlName="grantEndDate" placeholder="" required>
+                <input type="date" class="form-control yellow" id="grantEndDate" formControlName="grantEndDate" placeholder="" required [readonly]="viewing">
                 <div *ngIf="f['grantEndDate'].invalid && f['grantEndDate'].touched" class="alert">
                     A valid end date is required.
                 </div>
@@ -94,7 +94,7 @@
         <div class="row">
             <label for="requestPerson" class="col text-right">Requester Name:</label>
             <div class="col">
-                <input type="text" class="form-control" id="requestPerson" formControlName="requestPerson" placeholder="" required>
+                <input type="text" class="form-control" id="requestPerson" formControlName="requestPerson" placeholder="" required [readonly]="viewing">
                 <div *ngIf="f['requestPerson'].invalid && f['requestPerson'].touched" class="alert">
                     A requester name is required.
                 </div>
@@ -103,7 +103,7 @@
         <div class="row">
             <label for="phone" class="col text-right">Requester Phone:</label>
             <div class="col">
-                <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="" required>
+                <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="" required [readonly]="viewing">
                 <div *ngIf="f['phone'].invalid && f['phone'].touched" class="alert">
                     Please enter a phone number.
                 </div>
@@ -112,7 +112,7 @@
         <div class="row">
             <label for="email" class="col text-right">Requester Email:</label>
             <div class="col">
-                <input type="email" class="form-control" id="email" formControlName="email" placeholder="" required email>
+                <input type="email" class="form-control" id="email" formControlName="email" placeholder="" required [readonly]="viewing" email>
                 <div *ngIf="f['email'].invalid && f['email'].touched" class="alert">
                     A valid email is required.
                 </div>
@@ -121,7 +121,7 @@
         <div class="row red">
             <label for="room" class="col text-right">Room Location to be used in:</label>
             <div class="col">
-                <input type="text" class="form-control red" id="room" formControlName="room" placeholder="" required>
+                <input type="text" class="form-control red" id="room" formControlName="room" placeholder="" required [readonly]="viewing">
                 <div *ngIf="f['room'].invalid && f['room'].touched" class="alert">
                     A room location is required.
                 </div>
@@ -130,7 +130,7 @@
         <div class="row red">
             <label for="room" class="col text-right">Business purpose of this order:</label>
             <div class="col">
-                <textarea class="form-control red" id="purpose" formControlName="purpose" placeholder="" required></textarea>
+                <textarea class="form-control red" id="purpose" formControlName="purpose" placeholder="" required [readonly]="viewing"></textarea>
                 <div *ngIf="f['purpose'].invalid && f['purpose'].touched" class="alert">
                     A business purpose is required.
                 </div>
@@ -149,22 +149,22 @@
         </div>
         <div class="row" *ngFor="let item of items.controls; let i=index" [formGroupName]="i">
             <div class="col-sm-1 text-center">
-                <input type="number" class="form-control" id="quantity-{{ i }}" formControlName="quantity">
+                <input type="number" class="form-control" id="quantity-{{ i }}" formControlName="quantity" min="0" [readonly]="viewing" >
             </div>
             <div class="col-sm-2 text-center">
-                <input type="text" class="form-control" id="partNumber-{{ i }}" formControlName="partNumber">
+                <input type="text" class="form-control" id="partNumber-{{ i }}" formControlName="partNumber" [readonly]="viewing" >
             </div>
             <div class="col-sm-6 text-center">
-                <input type="text" class="form-control" id="description-{{ i }}" formControlName="description">
+                <input type="text" class="form-control" id="description-{{ i }}" formControlName="description" [readonly]="viewing" >
             </div>
             <div class="col-sm-1 text-center">
-                <input type="number" class="form-control" id="price-{{ i }}" formControlName="price">
+                <input type="number" class="form-control" id="price-{{ i }}" formControlName="price"  min="0" [readonly]="viewing" >
             </div>
             <div class="col-sm-1 text-center">
                 <input type="number" class="form-control" id="total-{{ i }}" formControlName="total" readonly>
             </div>
             <div class="col-sm-1 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" *ngIf="i != 0" class="bi bi-trash align-center" (click)="removeItem(i)" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" *ngIf="i != 0 && !viewing" class="bi bi-trash align-center" (click)="removeItem(i)" viewBox="0 0 16 16">
                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                     <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                   </svg>
@@ -172,13 +172,14 @@
         </div>
     </div>
     <div class="col text-center">
-        <button type="button" (click)="addItem()" class="col-sm-2 btn btn-link text-decoration-none">+ Add item</button>
+        <br *ngIf="viewing">
+        <button type="button" (click)="addItem()" class="col-sm-2 btn btn-link text-decoration-none" *ngIf="!viewing">+ Add item</button>
     </div>
     <div class="form-group user-request-total-grid">
         <div class="row">
             <div class="col-sm-10 text-right">Shipping and Handling (to be included)</div>
             <div class="col-sm-1 text-center">
-                <input type="number" class="form-control" id="shippingTotal" formControlName="shippingTotal" placeholder="">
+                <input type="number" class="form-control" id="shippingTotal" formControlName="shippingTotal" min="0" required [readonly]="viewing" >
             </div>
         </div>
         <div class="row">
@@ -197,16 +198,16 @@
         </div>
         <div class="row">
             <div class="col-sm-10">
-                <div class="form-check">
+                <fieldset class="form-check" [disabled]="viewing">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" id="isStandingContract" formControlName="isStandingContract" value="True" required>
+                        <input class="form-check-input" type="radio" id="isStandingContract" formControlName="isStandingContract" [value]="true" required>
                         The items on this order are being purchased from a Standing Contract.
                     </label>
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" id="isStandingContract" formControlName="isStandingContract" value="False" required>
+                        <input class="form-check-input" type="radio" id="isStandingContract" formControlName="isStandingContract" [value]="false" required>
                         I have verified that the items on this order are not available through a Standing Contract.
                     </label>
-                </div>
+                </fieldset>
             </div>
         </div>
     </div>
@@ -214,7 +215,7 @@
     <div class="form-group">
         <div class="row">
             <div class="">
-                <mat-form-field appearance="fill" class="col-sm-6">
+                <mat-form-field appearance="fill" class="col-sm-6" *ngIf="!viewing">
                     <mat-label>Select Approver(s)</mat-label>
                     <mat-select formControlName="facultyEmails" multiple appearance="fill">
                         <mat-option *ngFor="let approver of approversList" [value]="approver.email">{{approver.name}}</mat-option>
@@ -224,7 +225,7 @@
         </div>
     </div>
     <br>
-    <button type="submit" class="btn btn-primary justify-content-center" [disabled]="!orderForm.valid">Submit for Approval</button>
+    <button type="submit" class="btn btn-primary justify-content-center" *ngIf="!viewing" [disabled]="!orderForm.valid">Submit for Approval</button>
     <br>
     <br>
 </form>

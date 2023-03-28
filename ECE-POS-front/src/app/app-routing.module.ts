@@ -5,6 +5,7 @@ import { OrdersDashboardComponent } from './orders-dashboard/orders-dashboard.co
 
 const routes: Routes = [
   { path: 'order-form', component: OrderFormComponent},
+  { path: 'order-form/:id', component: OrderFormComponent},
   { path: 'dashboard', component: OrdersDashboardComponent },
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 ];

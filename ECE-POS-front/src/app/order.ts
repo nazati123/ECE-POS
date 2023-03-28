@@ -1,3 +1,5 @@
+import { Item } from './item';
+
 export interface Order {
     id?: number;
     dateCreated?: string;
@@ -24,4 +26,7 @@ export interface Order {
     dateAuthorized?: string;
     dateOrdered?: string;
     dateCompleted?: string;
+    purpose: string;
+    invoiceEmail: string;
+    items?: Item[];
 }

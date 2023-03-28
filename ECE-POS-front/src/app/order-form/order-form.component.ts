@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 import { Order } from '../order';
-import { Faculty } from '../faculty'
+import { Faculty } from '../faculty';
 import { Item } from '../item';
 import { OrdersService } from '../orders.service';
 import { ItemsService } from '../items.service';
@@ -16,8 +16,11 @@ import { ItemsService } from '../items.service';
 export class OrderFormComponent implements OnInit {
   orderForm!: FormGroup;
   currentDateTime: string | null;
+  approving = false;
+  viewing = false;
 
-  constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService, private itemsService: ItemsService, private router: Router) {
+  constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService,
+              private itemsService: ItemsService, private router: Router, private currentRoute: ActivatedRoute) {
     this.currentDateTime =this.datepipe.transform((new Date), 'MM/dd/yyyy');
   }
 
@@ -37,14 +40,35 @@ export class OrderFormComponent implements OnInit {
       phone: ['', [Validators.required, Validators.maxLength(10), Validators.pattern(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)]],
       email: ['', [Validators.required, Validators.email]],
       room: ['', Validators.required],
-      purpose: ['', Validators.required],
-      items: this.fb.array([this.item()]),
-      shippingTotal: [0, Validators.required],
-      totalCost: [0, Validators.required],
+      purpose: ['', [Validators.required, Validators.maxLength(250)]],
+      items: this.fb.array([]),
+      shippingTotal: [0, [Validators.required, Validators.min(0)]],
+      totalCost: [0, [Validators.required, Validators.min(0)]],
       isStandingContract: ['', Validators.required],
       facultyEmails: ['', Validators.required]
     });
 
+    this.checkViewing();
+    if(!this.approving && !this.viewing) {
+      this.enableCalculations();
+      this.items.push(this.item());
+    }
+  }
+
+  checkViewing() {
+    const id = parseInt(this.currentRoute.snapshot.paramMap.get('id')!, 10);
+    if (!Number.isNaN(id)) {
+      this.viewing = true;
+      this.ordersService.getOrder(id).subscribe(order => {
+        this.orderForm.patchValue(order);
+        order['items']?.forEach(item => {
+          this.items.push(this.item(item as Item));
+        });
+      });
+    }
+  }
+
+  enableCalculations() {
     this.orderForm.get("items")?.valueChanges.subscribe(selectedValue => {
       this.calculate();
     }) 
@@ -66,13 +90,13 @@ export class OrderFormComponent implements OnInit {
     this.items.removeAt(index);
   }
 
-  item(): FormGroup {
+  item(item? : Item): FormGroup {
     return this.fb.group({
-      quantity: [''],
-      partNumber: [''],
-      description: [''],
-      price: [''],
-      total: [0]
+      quantity: [item?.quantity, [Validators.required, Validators.min(0)]],
+      partNumber: [item?.partNumber, Validators.required],
+      description: [item?.description, Validators.required],
+      price: [item?.price, [Validators.required, Validators.min(0)]],
+      total: [item?.total]
     });
   }
 
@@ -94,37 +118,41 @@ export class OrderFormComponent implements OnInit {
   approversList: Faculty[] = this.getApprovers();
 
   onSubmit() {
-    let newOrder: Order = {
-      dateCreated: new Date().toISOString(),
-      accountNumber: this.orderForm.value.accountNumber,
-      grantEndDate: new Date(this.orderForm.value.grantEndDate).toISOString(),
-      requestPerson: this.orderForm.value.requestPerson,
-      phone: this.orderForm.value.phone.replace(/\D+/g, ""),
-      email: this.orderForm.value.email,
-      room: this.orderForm.value.room,
-      facultyEmails: this.orderForm.value.facultyEmails.toString(),
-      isStandingContract: this.orderForm.value.isStandingContract,
-      isAuthorized: false,
-      isOrdered: false,
-      isCompleted: false,
-      tracking: "",
-      shippingTotal: this.orderForm.value.shippingTotal,
-      totalCost: this.orderForm.value.totalCost,
-      name: this.orderForm.value.name,
-      address: this.orderForm.value.address,
-      url: this.orderForm.value.url,
-      phoneNumber: this.orderForm.value.phoneNumber.replace(/\D+/g, ""),
-      faxNumber: this.orderForm.value.faxNumber.replace(/\D+/g, ""),
-      contactPerson: this.orderForm.value.contactPerson
-    }
-    let items: Item[] = this.orderForm.value.items as Item[];
-    
-    this.ordersService.addOrder(newOrder).subscribe(data => {
-      let orderResponse = data as Order;
-      items.forEach(element => {
-        this.itemsService.addItem(element, orderResponse.id).subscribe();
+    if(!this.approving) {
+      let newOrder: Order = {
+        dateCreated: new Date().toISOString(),
+        accountNumber: this.orderForm.value.accountNumber,
+        grantEndDate: new Date(this.orderForm.value.grantEndDate).toISOString(),
+        requestPerson: this.orderForm.value.requestPerson,
+        phone: this.orderForm.value.phone.replace(/\D+/g, ""),
+        email: this.orderForm.value.email,
+        room: this.orderForm.value.room,
+        facultyEmails: this.orderForm.value.facultyEmails.toString(),
+        isStandingContract: this.orderForm.value.isStandingContract,
+        isAuthorized: false,
+        isOrdered: false,
+        isCompleted: false,
+        tracking: "",
+        shippingTotal: this.orderForm.value.shippingTotal,
+        totalCost: this.orderForm.value.totalCost,
+        name: this.orderForm.value.name,
+        address: this.orderForm.value.address,
+        url: this.orderForm.value.url,
+        phoneNumber: this.orderForm.value.phoneNumber.replace(/\D+/g, ""),
+        faxNumber: this.orderForm.value.faxNumber.replace(/\D+/g, ""),
+        contactPerson: this.orderForm.value.contactPerson,
+        purpose: this.orderForm.value.purpose,
+        invoiceEmail: this.orderForm.value.invoiceEmail
+      }
+      let items: Item[] = this.orderForm.value.items as Item[];
+      
+      this.ordersService.addOrder(newOrder).subscribe(data => {
+        let orderResponse = data as Order;
+        items.forEach(element => {
+          this.itemsService.addItem(element, orderResponse.id).subscribe();
+        });
       });
-    });
-    this.router.navigate(['']);
+      this.router.navigate(['/dashboard']);
+    }
 }
 }

@@ -14,7 +14,7 @@ export class OrdersDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.api.getOrders().subscribe((data: Order[]) => {
-      console.log(data);
+      // console.log(data);
       this.orders = data;
     });
   }

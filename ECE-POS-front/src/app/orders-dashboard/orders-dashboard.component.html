@@ -28,14 +28,16 @@
         </tr>
       </thead>
       <tbody>
+        
         <tr *ngFor = "let order of orders">
-          <td>{{ order.id}}</td>
+          <td><a routerLink="/order-form/{{order.id}}">{{ order.id}}</a></td>
           <td>{{ order.dateCreated}}</td>
           <td>{{ order.requestPerson}}</td>
           <td>Status here</td>
           <td>{{ order.contactPerson}}</td>
           <td>{{ order.phoneNumber}}</td>
-      </tr>
+        </tr>
+
       </tbody>
     </table>
   </div>
