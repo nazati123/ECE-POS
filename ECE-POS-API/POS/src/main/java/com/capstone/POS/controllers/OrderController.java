@@ -84,8 +84,7 @@ public class OrderController {
             } else if (oldOrder.getIsOrdered() != oldOrder.getIsOrdered()) {
                 update = "ordered";
                 email = true;
-            } 
-            else if (oldOrder.getIsCompleted() != order.getIsCompleted()) {
+            } else if (oldOrder.getIsCompleted() != order.getIsCompleted()) {
                 update = "completed";
                 email = true;
             }
