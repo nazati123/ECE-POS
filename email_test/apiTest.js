@@ -79,6 +79,17 @@ function personalizeMessage(message, type, order_data) {
       message = message.replace('#REQUESTER_NAME', req_name)
       // FIXME add the link to the button
       break;
+    case 'update':
+      _auth = order_data.isAuthorized;
+      _ord = order_data.isOrdered;
+      _comp = order_data.isCompleted;
+
+      const most_recent = _auth ? (_ord ? (_comp ? "Completed" : "Ordered") : "Authorized") : "Requested";
+      console.log(most_recent);
+
+      message = message.replace('#ID', '#' + order_id).replace('#STATUS', most_recent);
+      console.log('please finish update case for personaliztaion');
+
     default:
       console.log('unexpected case')
   };
@@ -149,7 +160,39 @@ async function order_update(orderID) {
   // idea: check for latest TRUE value between authorized, ordered, and complete to give the most recent status update.
   // check time of update to avoid redundant emails that don't actually show progress. Check if there's a tracking number
   // to see if that should be in there.
-  console.log('implement this function, please');
+  var url = SB_URL;
+  
+  id_string = orderID.toString();
+  url += '/orders/' + id_string;
+
+  axios.get(url).then(response => {
+    console.log(response.data)
+
+    // only requester gets an update email? double check this
+    recipient = response.data.email;
+
+    console.log('email going to: ');
+    console.log(recipient);
+
+    // requester gets notification that the request was submitted
+    fs.readFile(STATUS_UPDATE, 'utf-8', (err, message) => {
+      if (err) throw error;
+
+      subject_line = 'ECE-POS: Status Update';
+
+      message = personalizeMessage(message, 'update', response.data);
+
+      // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
+      response.data.email = 'twrussell@crimson.ua.edu';
+
+      if (SEND_EMAILS) {
+        sendMail(response.data.email, subject_line, message); 
+      }
+      console.log('sent submitted to ' + response.data.email);
+    })
+  }).catch(error => {
+    console.error(error)
+  })
 };
 
 const server = http.createServer((req, res) => {
