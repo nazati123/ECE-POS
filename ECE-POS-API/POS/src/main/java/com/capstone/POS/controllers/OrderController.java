@@ -75,16 +75,33 @@ public class OrderController {
     @PutMapping("/{id}")
     public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
         try {
+            String update = "none";
+            Boolean email = false;
+            Order oldOrder = orderService.getById(id);
+            if (oldOrder.getIsAuthorized() != order.getIsAuthorized()) {
+                update = "authorized";
+                email = true;
+            } else if (oldOrder.getIsOrdered() != oldOrder.getIsOrdered()) {
+                update = "ordered";
+                email = true;
+            } 
+            else if (oldOrder.getIsCompleted() != order.getIsCompleted()) {
+                update = "completed";
+                email = true;
+            }
+
             Order updatedOrder = orderService.updateOrder(id, order);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            String jsonPayload = "{\"id\": \"" + id.toString() + "\"}";
-            HttpEntity<String> request = new HttpEntity<>(jsonPayload, headers);
-    
-            // send the request to the Node.js server
-            RestTemplate restTemplate = new RestTemplate();
-            restTemplate.exchange(NODE_URL + "/order-update", HttpMethod.POST, request, String.class);
+            if (email) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                String jsonPayload = "{\"id\": \"" + id.toString() + "\"\n" + "\"update\": \"" + update + "\"}";
+                HttpEntity<String> request = new HttpEntity<>(jsonPayload, headers);
+        
+                // send the request to the Node.js server
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.exchange(NODE_URL + "/order-update", HttpMethod.POST, request, String.class);
+            }
 
             return ResponseEntity.ok(updatedOrder);
         } catch (ResourceNotFoundException e) {
