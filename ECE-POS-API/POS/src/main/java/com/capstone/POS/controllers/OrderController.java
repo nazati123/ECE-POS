@@ -99,7 +99,7 @@ public class OrderController {
             if (email) {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
-                String jsonPayload = "{\"id\": \"" + id.toString() + "\"\n" + "\"update\": \"" + update + "\"}";
+                String jsonPayload = "{\"id\": \"" + id.toString() + "\",\n" + "\"update\": \"" + update + "\"}";
                 HttpEntity<String> request = new HttpEntity<>(jsonPayload, headers);
         
                 // send the request to the Node.js server
