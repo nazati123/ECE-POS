@@ -7,7 +7,7 @@ var nodemailer= require('nodemailer');
 const prompt = require('prompt-sync')({sigint: true});
 
 // MAKE THIS FALSE TO STOP SENDING EMAILS
-const SEND_EMAILS = true;
+const SEND_EMAILS = false;
 
 // URL to Spring Boot Instance
 const SB_URL = 'http://localhost:8080';
@@ -171,9 +171,6 @@ async function order_awaiting(orderID) {
 };
 
 async function order_update(orderID, update) {
-  // idea: check for latest TRUE value between authorized, ordered, and complete to give the most recent status update.
-  // check time of update to avoid redundant emails that don't actually show progress. Check if there's a tracking number
-  // to see if that should be in there.
   var url = SB_URL;
   
   id_string = orderID.toString();
@@ -199,10 +196,12 @@ async function order_update(orderID, update) {
       // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
       response.data.email = 'twrussell@crimson.ua.edu';
 
+      // do these emails need to go to associated faculty as well??
+
       if (SEND_EMAILS) {
         sendMail(response.data.email, subject_line, message); 
       }
-      console.log('sent submitted to ' + response.data.email);
+      console.log('sent status update to ' + response.data.email);
     })
   }).catch(error => {
     console.error(error)
