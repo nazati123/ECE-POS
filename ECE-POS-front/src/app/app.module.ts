@@ -11,12 +11,14 @@ import { OrdersDashboardComponent } from './orders-dashboard/orders-dashboard.co
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { ApproveOrderComponent } from './approve-order/approve-order.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OrderFormComponent,
-    OrdersDashboardComponent
+    OrdersDashboardComponent,
+    ApproveOrderComponent
   ],
   imports: [
     BrowserModule,

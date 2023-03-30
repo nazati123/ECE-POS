@@ -23,7 +23,7 @@ export class OrdersService {
     return this.http.post(this.baseUrl, order, {observe: 'body'});
   }
 
-  editOrder(orderId: number, formData: FormData | Order) {
-    return this.http.put(this.baseUrl + orderId, formData);
+  editOrder(id: number, formData: FormData | Order) {
+    return this.http.put(`${this.baseUrl}/${id}`, formData);
   }
 }

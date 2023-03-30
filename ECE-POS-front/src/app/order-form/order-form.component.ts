@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router'
@@ -14,9 +14,11 @@ import { ItemsService } from '../items.service';
   styleUrls: ['./order-form.component.css']
 })
 export class OrderFormComponent implements OnInit {
+  @Input() approving = false;
+  @Input() approvingId?: Number;
+
   orderForm!: FormGroup;
   currentDateTime: string | null;
-  approving = false;
   viewing = false;
 
   constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService,
@@ -26,6 +28,7 @@ export class OrderFormComponent implements OnInit {
 
   ngOnInit() {
     this.orderForm = this.fb.group({
+      id: [],
       dateCreated: [this.currentDateTime, Validators.required],
       invoiceEmail: ['', [Validators.required, Validators.email]],
       name: ['', Validators.required],
@@ -45,7 +48,8 @@ export class OrderFormComponent implements OnInit {
       shippingTotal: [0, [Validators.required, Validators.min(0)]],
       totalCost: [0, [Validators.required, Validators.min(0)]],
       isStandingContract: ['', Validators.required],
-      facultyEmails: ['', Validators.required]
+      facultyEmails: ['', Validators.required],
+      isAuthorized: ['', Validators.required]
     });
 
     this.checkViewing();
@@ -60,6 +64,15 @@ export class OrderFormComponent implements OnInit {
     if (!Number.isNaN(id)) {
       this.viewing = true;
       this.ordersService.getOrder(id).subscribe(order => {
+        this.orderForm.patchValue(order);
+        order['items']?.forEach(item => {
+          this.items.push(this.item(item as Item));
+        });
+      });
+    }
+    else if (this.approving == true) {
+      this.viewing = true;
+      this.ordersService.getOrder(this.approvingId as number).subscribe(order => {
         this.orderForm.patchValue(order);
         order['items']?.forEach(item => {
           this.items.push(this.item(item as Item));
@@ -153,6 +166,10 @@ export class OrderFormComponent implements OnInit {
         });
       });
       this.router.navigate(['/dashboard']);
+    }
+    else {
+      let newOrder = this.orderForm.getRawValue() as Order;
+      this.ordersService.editOrder(newOrder.id as number, newOrder).subscribe();
     }
 }
 }
