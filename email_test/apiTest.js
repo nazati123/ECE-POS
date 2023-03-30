@@ -55,6 +55,8 @@ function sendMail(to, subject, message) {
 };
 
 function personalizeMessage(message, type, order_data) {
+  new_status = type.toUpperCase();
+
   switch(type) {
     case 'submitted':
       order_id = order_data.id.toString();
@@ -80,14 +82,27 @@ function personalizeMessage(message, type, order_data) {
       // FIXME add the link to the button
       break;
     case 'authorized':
-      message = message.replace('#ID', '#' + order_id).replace('#STATUS', most_recent);
-      console.log('please finish update case for personaliztaion');
+      message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
+      // next steps
+      next_steps = 'You will receive another email when your order has been placed.';
+      message = message.replace('#NEXT_STEPS', next_steps);
+      // FIXME add the link to the button
       break;
     case 'ordered':
       console.log('ordered');
+      message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
+      // next steps
+      next_steps = 'Shipping numbers will be visible online when available.';
+      message = message.replace('#NEXT_STEPS', next_steps);
+      // FIXME add the link to the button
       break;
     case 'completed':
       console.log('completed');
+      message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
+      // next steps
+      next_steps = 'You may now pick up your item at the delivery locatio.';
+      message = message.replace('#NEXT_STEPS', next_steps);
+      // FIXME add the link to the button
       break;
     default:
       console.log('unexpected case')

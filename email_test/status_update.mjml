@@ -18,7 +18,7 @@
         <mj-button background-color="#A22137">
           <mj-text font-size="20px" font-family="helvetica">
             <a style = "color:#FFFFFF; text-decoration:none !important; text-decoration:none;" href="https://www.google.com" class="link-nostyle">
-            CHECK REQUEST STATUS
+            CHECK ORDER STATUS
             </a>
           </mj-text>
         </mj-button>
