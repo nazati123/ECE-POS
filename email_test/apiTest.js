@@ -7,7 +7,7 @@ var nodemailer= require('nodemailer');
 const prompt = require('prompt-sync')({sigint: true});
 
 // MAKE THIS FALSE TO STOP SENDING EMAILS
-const SEND_EMAILS = true;
+const SEND_EMAILS = false;
 
 // URL to Spring Boot Instance
 const SB_URL = 'http://localhost:8080';
