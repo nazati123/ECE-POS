@@ -20,10 +20,11 @@ export class OrderFormComponent implements OnInit {
   orderForm!: FormGroup;
   currentDateTime: string | null;
   viewing = false;
+  isStudentGroup = false;
 
   constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService,
               private itemsService: ItemsService, private router: Router, private currentRoute: ActivatedRoute) {
-    this.currentDateTime =this.datepipe.transform((new Date), 'MM/dd/yyyy');
+    this.currentDateTime =this.datepipe.transform((new Date), 'yyyy-MM-dd');
   }
 
   ngOnInit() {
@@ -49,13 +50,53 @@ export class OrderFormComponent implements OnInit {
       totalCost: [0, [Validators.required, Validators.min(0)]],
       isStandingContract: ['', Validators.required],
       facultyEmails: ['', Validators.required],
-      isAuthorized: ['', Validators.required]
-    });
+      isAuthorized: [],
+      isStudentGroup: [],
+      groupId: [],
+      capstoneId: ['', [Validators.required, Validators.min(100), Validators.max(999)]]
+    }); 
 
     this.checkViewing();
     if(!this.approving && !this.viewing) {
       this.enableCalculations();
       this.items.push(this.item());
+
+      this.orderForm.get("isStudentGroup")?.valueChanges.subscribe(selectedValue => {
+        this.isStudentGroup = selectedValue;
+        if(selectedValue) {
+          this.orderForm.get('address')?.disable();
+          this.orderForm.get('url')?.disable();
+          this.orderForm.get('phoneNumber')?.disable();
+          this.orderForm.get('faxNumber')?.disable();
+          this.orderForm.get('contactPerson')?.disable();
+          this.orderForm.get('accountNumber')?.disable();
+          this.orderForm.get('grantEndDate')?.disable();
+          this.orderForm.get('room')?.disable();
+          this.orderForm.get('purpose')?.disable();
+        }
+        else {
+          this.orderForm.get('address')?.enable();
+          this.orderForm.get('url')?.enable();
+          this.orderForm.get('phoneNumber')?.enable();
+          this.orderForm.get('faxNumber')?.enable();
+          this.orderForm.get('contactPerson')?.enable();
+          this.orderForm.get('accountNumber')?.enable();
+          this.orderForm.get('grantEndDate')?.enable();
+          this.orderForm.get('room')?.enable();
+          this.orderForm.get('purpose')?.enable();
+          this.orderForm.get('groupId')?.setValue("")
+        }
+      });
+      this.orderForm.get('capstoneId')?.disable();
+      this.orderForm.get("groupId")?.valueChanges.subscribe(selectedValue => {
+        this.isStudentGroup = selectedValue;
+        if(selectedValue == 'Capstone') {
+          this.orderForm.get('capstoneId')?.enable();
+        }
+        else {
+          this.orderForm.get('capstoneId')?.disable();
+        }
+      });
     }
   }
 
@@ -78,6 +119,7 @@ export class OrderFormComponent implements OnInit {
           this.items.push(this.item(item as Item));
         });
       });
+      this.orderForm.get('isAuthorized')?.setValidators([Validators.required]);
     }
   }
 
@@ -129,6 +171,12 @@ export class OrderFormComponent implements OnInit {
   }
 
   approversList: Faculty[] = this.getApprovers();
+
+  getGroups() {
+    return ['Astrobotics', 'EcoCar', 'Capstone', 'HKN', 'IEEE Student Chapter'];
+  }
+
+  groupsList: string[] = this.getGroups();
 
   onSubmit() {
     if(!this.approving) {
