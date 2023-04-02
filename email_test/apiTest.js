@@ -7,7 +7,7 @@ var nodemailer= require('nodemailer');
 const prompt = require('prompt-sync')({sigint: true});
 
 // MAKE THIS FALSE TO STOP SENDING EMAILS
-const SEND_EMAILS = false;
+const SEND_EMAILS = true;
 
 // URL to Spring Boot Instance
 const SB_URL = 'http://localhost:8080';
@@ -57,6 +57,10 @@ function sendMail(to, subject, message) {
 function personalizeMessage(message, type, order_data) {
   new_status = type.toUpperCase();
 
+  // FIXME these need to go to actual pages in the system
+  requester_link = 'https://www.google.com'
+  approver_link = 'https://www.google.com'
+
   switch(type) {
     case 'submitted':
       order_id = order_data.id.toString();
@@ -73,36 +77,31 @@ function personalizeMessage(message, type, order_data) {
           recipient_string += ', and ' + recipients.pop();
         }
       }
-      message = message.replace('#ID', '#' + order_id).replace('#APPROVER', recipient_string)
-      // FIXME add the link to the button
+      message = message.replace('#ID', '#' + order_id).replace('#APPROVER', recipient_string).replace('#LINK', requester_link);
       break;
     case 'review':
       req_name = order_data.requestPerson;
-      message = message.replace('#REQUESTER_NAME', req_name)
-      // FIXME add the link to the button
+      message = message.replace('#REQUESTER_NAME', req_name).replace('#LINK', approver_link);
       break;
     case 'authorized':
       message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
       // next steps
       next_steps = 'You will receive another email when your order has been placed.';
-      message = message.replace('#NEXT_STEPS', next_steps);
-      // FIXME add the link to the button
+      message = message.replace('#NEXT_STEPS', next_steps).replace('#LINK', requester_link);
       break;
     case 'ordered':
       console.log('ordered');
       message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
       // next steps
       next_steps = 'Shipping numbers will be visible online when available.';
-      message = message.replace('#NEXT_STEPS', next_steps);
-      // FIXME add the link to the button
+      message = message.replace('#NEXT_STEPS', next_steps).replace('#LINK', requester_link);
       break;
     case 'completed':
       console.log('completed');
       message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
       // next steps
-      next_steps = 'You may now pick up your item at the delivery locatio.';
-      message = message.replace('#NEXT_STEPS', next_steps);
-      // FIXME add the link to the button
+      next_steps = 'You may now pick up your item at the delivery location.';
+      message = message.replace('#NEXT_STEPS', next_steps).replace('#LINK', requester_link);
       break;
     default:
       console.log('unexpected case')

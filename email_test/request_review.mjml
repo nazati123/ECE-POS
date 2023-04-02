@@ -17,7 +17,7 @@
 
         <mj-button background-color="#A22137">
           <mj-text font-size="20px" font-family="helvetica">
-            <a style = "color:#FFFFFF; text-decoration:none !important; text-decoration:none;" href="https://www.google.com" class="link-nostyle">
+            <a style = "color:#FFFFFF; text-decoration:none !important; text-decoration:none;" href="#LINK" class="link-nostyle">
             VIEW REQUEST
             </a>
           </mj-text>
