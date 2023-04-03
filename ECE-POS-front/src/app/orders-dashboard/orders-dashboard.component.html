@@ -40,7 +40,7 @@
           <td>{{ order.id}}</td>
           <td>{{ order.dateCreated}}</td>
           <td>{{ order.requestPerson}}</td>
-          <td>Status here</td>
+          <td>{{ computeStatus(order) }}</td>
           <td>{{ order.contactPerson}}</td>
           <td>{{ order.phoneNumber}}</td>
         </tr>

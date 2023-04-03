@@ -47,4 +47,19 @@ export class OrdersDashboardComponent implements OnInit {
   }
   }
 
+  computeStatus(order : Order) {
+    if(order.isCompleted) {
+      return "Completed";
+    }
+    else if (order.isOrdered) {
+      return "Ordered";
+    }
+    else if (order.isAuthorized) {
+      return "Authorized";
+    }
+    else {
+      return "Submitted";
+    }
+  }
+
 }

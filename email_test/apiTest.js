@@ -9,13 +9,14 @@ const prompt = require('prompt-sync')({sigint: true});
 // MAKE THIS FALSE TO STOP SENDING EMAILS
 const SEND_EMAILS = false;
 
-// URL to Spring Boot Instance
+// URLs
 const SB_URL = 'http://localhost:8080';
+const POS_URL = 'http://localhost:4200';
 
 // Filenames for email templates
 const REQUEST_SUB = 'request_submitted.html';
 const REQUEST_REV = 'request_review.html';
-const STATUS_UPDATE = 'status_update.mjml';
+const STATUS_UPDATE = 'status_update.html';
 
 const dkimKey = {
   privateKey: ck.DKIM_PRIVATE_KEY,
@@ -56,14 +57,14 @@ function sendMail(to, subject, message) {
 
 function personalizeMessage(message, type, order_data) {
   new_status = type.toUpperCase();
+  order_id = order_data.id.toString();
 
-  // FIXME these need to go to actual pages in the system
-  requester_link = 'https://www.google.com'
-  approver_link = 'https://www.google.com'
+  // build links to actual pages in the system
+  requester_link = POS_URL + '/order-form/' + order_id
+  approver_link = POS_URL + '/approve-order/' + order_id
 
   switch(type) {
     case 'submitted':
-      order_id = order_data.id.toString();
       recipients = order_data.facultyEmails;
       recipient_string = recipients.pop();
       if (recipients.length > 0){
@@ -83,7 +84,7 @@ function personalizeMessage(message, type, order_data) {
       req_name = order_data.requestPerson;
       message = message.replace('#REQUESTER_NAME', req_name).replace('#LINK', approver_link);
       break;
-    case 'authorized':
+    case 'approved':
       message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
       // next steps
       next_steps = 'You will receive another email when your order has been placed.';
@@ -142,7 +143,7 @@ async function order_awaiting(orderID) {
       response.data.email = 'twrussell@crimson.ua.edu';
 
       if (SEND_EMAILS) {
-        sendMail(response.data.email, subject_line, message); 
+        sendMail(response.data.email, subject_line, message);
       }
       console.log('sent submitted to ' + response.data.email);
     })
@@ -159,7 +160,7 @@ async function order_awaiting(orderID) {
       response.data.facultyEmails = ['twrussell@crimson.ua.edu'];
 
       response.data.facultyEmails.forEach(function (email) {
-        if (SEND_EMAILS) sleep(1000).then(() => {sendMail(email, subject_line, message);});
+        if (SEND_EMAILS) sleep(3000).then(() => {sendMail(email, subject_line, message);});
         console.log('sent review to ' + email)
       })
     })
