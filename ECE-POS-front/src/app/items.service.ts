@@ -17,7 +17,6 @@ export class ItemsService {
 
   addItem(item: Item, orderId: number | undefined) {
     item.orderId = orderId as number;
-    console.log(item);
     return this.http.post(this.baseUrl, item as Item);
   }
 }

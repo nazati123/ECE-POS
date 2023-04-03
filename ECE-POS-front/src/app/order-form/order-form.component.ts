@@ -51,7 +51,7 @@ export class OrderFormComponent implements OnInit {
       isStandingContract: ['', Validators.required],
       facultyEmails: ['', Validators.required],
       isAuthorized: [],
-      isStudentGroup: [],
+      isStudentGroup: [false],
       groupId: [],
       capstoneId: ['', [Validators.required, Validators.min(100), Validators.max(999)]]
     }); 

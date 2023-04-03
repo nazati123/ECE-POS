@@ -5,22 +5,38 @@
     </div>
 </div>
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-    <div class="form-group row justify-content-center">
-        <span>
-            <input class="" type="checkbox" id="isStudentGroup" formControlName="isStudentGroup" required [readonly]="viewing">
-            <label for="isStudentGroup">&emsp;This order is for a student group&emsp;</label>
+    <div class="form-group row">
+        <div class="col-sm-3">
+            This order is for a student group:
+            <div class="form-check form-check-inline">
+                <input class="form-check-input radio-inline" type="radio" id="isStudentGroup" formControlName="isStudentGroup" [value]="true" required>
+                <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input radio-inline" type="radio" id="isStudentGroup" formControlName="isStudentGroup" [value]="false" required>
+                <label class="form-check-label">No</label>
+            </div>
+        </div>
+        <div class="col-sm-3" *ngIf="isStudentGroup">
+            Choose your group:
             <select *ngIf="isStudentGroup" formControlName="groupId">
                 <option disabled selected value></option>
                 <option *ngFor="let group of groupsList" [value]="group" >{{group}}</option>
             </select>
-            <label *ngIf="this.orderForm.get('capstoneId')?.enabled" for="capstoneId">&emsp;Enter 3-digit group number&emsp;</label>
-            <input *ngIf="this.orderForm.get('capstoneId')?.enabled" class="" type="number" id="capstoneId" formControlName="capstoneId" [readonly]="viewing">
+        </div>
+        <div class="col-sm-4 row">
+            <div class="col">
+                <label *ngIf="this.orderForm.get('capstoneId')?.enabled" for="capstoneId" class="form-check-label">Enter 3-digit group number</label>
+            </div>
+            <div class="col">
+                <input *ngIf="this.orderForm.get('capstoneId')?.enabled" class="" type="number" id="capstoneId" formControlName="capstoneId" [readonly]="viewing">
+            </div>
             <div *ngIf="f['capstoneId'].invalid && f['capstoneId'].touched" class="alert">
                 Enter valid 3-digit Capstone group number.
             </div>
-        </span>
-        <br><br>
+        </div>
     </div>
+    <hr>
     <div class="form-group row justify-content-center">
         <label for="dateCreated" class="col-sm-1">Date</label>
         <div class="col-sm-2">
