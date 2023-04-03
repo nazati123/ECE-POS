@@ -46,14 +46,20 @@ export class OrderFormComponent implements OnInit {
       room: ['', Validators.required],
       purpose: ['', [Validators.required, Validators.maxLength(250)]],
       items: this.fb.array([]),
+      tracking: [],
       shippingTotal: [0, [Validators.required, Validators.min(0)]],
       totalCost: [0, [Validators.required, Validators.min(0)]],
       isStandingContract: ['', Validators.required],
       facultyEmails: ['', Validators.required],
       isAuthorized: [],
+      isOrdered: [],
+      isCompleted: [],
       isStudentGroup: [false],
       groupId: [],
-      capstoneId: ['', [Validators.required, Validators.min(100), Validators.max(999)]]
+      capstoneId: ['', [Validators.required, Validators.min(100), Validators.max(999)]],
+      dateAuthorized: [],
+      dateOrdered: [],
+      dateCompleted: []
     }); 
 
     this.checkViewing();
@@ -102,7 +108,23 @@ export class OrderFormComponent implements OnInit {
 
   checkViewing() {
     const id = parseInt(this.currentRoute.snapshot.paramMap.get('id')!, 10);
-    if (!Number.isNaN(id)) {
+    if (this.approving == true) {
+      this.viewing = true;
+      this.ordersService.getOrder(this.approvingId as number).subscribe(order => {
+        this.orderForm.patchValue(order);
+        if(order.dateAuthorized == null) {
+          this.orderForm.get('isAuthorized')?.setValue(null);
+        }
+        else {
+          this.orderForm.get('isAuthorized')?.disable();
+        }
+        order['items']?.forEach(item => {
+          this.items.push(this.item(item as Item));
+        });
+      });
+      this.orderForm.get('isAuthorized')?.setValidators([Validators.required]);
+    }
+    else if (!Number.isNaN(id)) {
       this.viewing = true;
       this.ordersService.getOrder(id).subscribe(order => {
         this.orderForm.patchValue(order);
@@ -110,16 +132,6 @@ export class OrderFormComponent implements OnInit {
           this.items.push(this.item(item as Item));
         });
       });
-    }
-    else if (this.approving == true) {
-      this.viewing = true;
-      this.ordersService.getOrder(this.approvingId as number).subscribe(order => {
-        this.orderForm.patchValue(order);
-        order['items']?.forEach(item => {
-          this.items.push(this.item(item as Item));
-        });
-      });
-      this.orderForm.get('isAuthorized')?.setValidators([Validators.required]);
     }
   }
 
@@ -217,6 +229,9 @@ export class OrderFormComponent implements OnInit {
     }
     else {
       let newOrder = this.orderForm.getRawValue() as Order;
+      if (newOrder.isAuthorized) {
+        newOrder.dateAuthorized = this.currentDateTime as string;
+      }
       this.ordersService.editOrder(newOrder.id as number, newOrder).subscribe();
     }
 }

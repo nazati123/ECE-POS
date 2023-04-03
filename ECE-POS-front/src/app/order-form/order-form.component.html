@@ -6,7 +6,7 @@
 </div>
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
     <div class="form-group row">
-        <div class="col-sm-3">
+        <fieldset class="col-sm-4" [disabled]="viewing">
             This order is for a student group:
             <div class="form-check form-check-inline">
                 <input class="form-check-input radio-inline" type="radio" id="isStudentGroup" formControlName="isStudentGroup" [value]="true" required>
@@ -16,10 +16,10 @@
                 <input class="form-check-input radio-inline" type="radio" id="isStudentGroup" formControlName="isStudentGroup" [value]="false" required>
                 <label class="form-check-label">No</label>
             </div>
-        </div>
-        <div class="col-sm-3" *ngIf="isStudentGroup">
+        </fieldset>
+        <div class="col-sm-4" *ngIf="isStudentGroup">
             Choose your group:
-            <select *ngIf="isStudentGroup" formControlName="groupId">
+            <select *ngIf="isStudentGroup" formControlName="groupId"  [disabled]="viewing">
                 <option disabled selected value></option>
                 <option *ngFor="let group of groupsList" [value]="group" >{{group}}</option>
             </select>
