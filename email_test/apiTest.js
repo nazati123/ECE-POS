@@ -9,8 +9,9 @@ const prompt = require('prompt-sync')({sigint: true});
 // MAKE THIS FALSE TO STOP SENDING EMAILS
 const SEND_EMAILS = false;
 
-// URL to Spring Boot Instance
+// URLs
 const SB_URL = 'http://localhost:8080';
+const POS_URL = 'http://localhost:4200';
 
 // Filenames for email templates
 const REQUEST_SUB = 'request_submitted.html';
@@ -56,14 +57,14 @@ function sendMail(to, subject, message) {
 
 function personalizeMessage(message, type, order_data) {
   new_status = type.toUpperCase();
+  order_id = order_data.id.toString();
 
   // FIXME these need to go to actual pages in the system
-  requester_link = 'https://www.google.com'
-  approver_link = 'https://www.google.com'
+  requester_link = POS_URL + '/order-form/' + order_id
+  approver_link = POS_URL + '/approve-order/' + order_id
 
   switch(type) {
     case 'submitted':
-      order_id = order_data.id.toString();
       recipients = order_data.facultyEmails;
       recipient_string = recipients.pop();
       if (recipients.length > 0){
