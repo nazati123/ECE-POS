@@ -80,16 +80,16 @@ public class OrderController {
         try {
             String update = "none";
             Boolean email = false;
-            Order oldOrder = orderService.getById(id);
-            if (oldOrder.getIsAuthorized() != order.getIsAuthorized()) {
-                update = "authorized";
+            // Order oldOrder = orderService.getById(id);
+            if (order.getIsAuthorized() != null && order.getIsAuthorized()) {
+                update = "approved";
                 email = true;
             }
-            if (oldOrder.getIsOrdered() != oldOrder.getIsOrdered()) {
+            if (order.getIsOrdered() != null && order.getIsOrdered()) {
                 update = "ordered";
                 email = true;
             }
-            if (oldOrder.getIsCompleted() != order.getIsCompleted()) {
+            if (order.getIsCompleted() != null && order.getIsCompleted()) {
                 update = "completed";
                 email = true;
             }
