@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PosApplication<POS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.capstone.POS.PosApplication",
+            "projectName": "POS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

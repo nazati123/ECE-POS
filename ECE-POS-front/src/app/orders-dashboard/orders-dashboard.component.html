@@ -5,6 +5,14 @@
         <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
         <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
       </div>
+
+      <div>
+        <input type="text" 
+          placeholder="Search Orders" 
+          style="width: 450px; padding: 2px 20px; margin: 10px 0px;height: 30px;"
+          [(ngModel)]="filterText">
+      </div>
+
       <!-- <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
         <span data-feather="calendar" class="align-text-bottom"></span>
         This week
@@ -28,9 +36,8 @@
         </tr>
       </thead>
       <tbody>
-        
-        <tr *ngFor = "let order of orders">
-          <td><a routerLink="/order-form/{{order.id}}">{{ order.id}}</a></td>
+        <tr *ngFor = "let order of filteredOrders">
+          <td>{{ order.id}}</td>
           <td>{{ order.dateCreated}}</td>
           <td>{{ order.requestPerson}}</td>
           <td>Status here</td>
