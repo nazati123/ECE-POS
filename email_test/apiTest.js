@@ -4,10 +4,9 @@ const dkim = require('dkim');
 const fs = require('fs');
 const http = require('http');
 var nodemailer= require('nodemailer');
-const prompt = require('prompt-sync')({sigint: true});
 
 // MAKE THIS FALSE TO STOP SENDING EMAILS
-const SEND_EMAILS = false;
+const SEND_EMAILS = true;
 
 // URLs
 const SB_URL = 'http://localhost:8080';
@@ -135,15 +134,13 @@ async function order_awaiting(orderID) {
     fs.readFile(REQUEST_SUB, 'utf-8', (err, message) => {
       if (err) throw error;
 
-      subject_line = 'ECE-POS: Request Submitted';
-
       message = personalizeMessage(message, 'submitted', response.data);
 
       // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
       response.data.email = 'twrussell@crimson.ua.edu';
 
       if (SEND_EMAILS) {
-        sendMail(response.data.email, subject_line, message);
+        sendMail(response.data.email, 'ECE-POS: Request Submitted', message);
       }
       console.log('sent submitted to ' + response.data.email);
     })
@@ -152,15 +149,13 @@ async function order_awaiting(orderID) {
     fs.readFile(REQUEST_REV, 'utf-8', (err, message) => {
       if (err) throw error;
 
-      subject_line = 'ECE-POS: New Request Awaiting Review';
-
       message = personalizeMessage(message, 'review', response.data);
 
       // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
       response.data.facultyEmails = ['twrussell@crimson.ua.edu'];
 
       response.data.facultyEmails.forEach(function (email) {
-        if (SEND_EMAILS) sleep(3000).then(() => {sendMail(email, subject_line, message);});
+        if (SEND_EMAILS) sleep(3000).then(() => {sendMail(email, 'ECE-POS: New Request Awaiting Review', message);});
         console.log('sent review to ' + email)
       })
     })

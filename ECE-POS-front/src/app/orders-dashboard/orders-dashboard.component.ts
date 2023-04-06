@@ -11,10 +11,9 @@ import { filter } from 'rxjs';
 export class OrdersDashboardComponent implements OnInit {
   orders: Order[] = [];
   _filterText : string = '';
-  filteredOrders: Order[]; // list that holds filter
+  filteredOrders!: Order[]; // list that holds filter
 
   constructor(private api: OrdersService) { }
-
 
   get filterText(){
     return this._filterText;
@@ -30,8 +29,8 @@ export class OrdersDashboardComponent implements OnInit {
     this.api.getOrders().subscribe((data: Order[]) => {
       // console.log(data);
       this.orders = data;
+      this.filteredOrders = this.orders;
     });
-    this.filteredOrders = this.orders
   }
 
   filterOrderByContact(filterTerm: string){
@@ -41,11 +40,11 @@ export class OrdersDashboardComponent implements OnInit {
       return this.orders.filter((order) => 
       { 
         if (order.contactPerson?.toLowerCase() === filterTerm.toLowerCase())
-        return order.contactPerson?.toLowerCase() === filterTerm.toLowerCase();
+        return order.contactPerson??.toLowerCase() === filterTerm.toLowerCase();
         if (order.requestPerson?.toLowerCase() === filterTerm.toLowerCase())  
         return order.requestPerson?.toLowerCase() === filterTerm.toLowerCase();
         if (order.phoneNumber?.toLowerCase() === filterTerm.toLowerCase())  
-        return order.phoneNumber?.toLowerCase() === filterTerm.toLowerCase();
+        return order.phoneNumber??.toLowerCase() === filterTerm.toLowerCase();
 
         return;
       })
