@@ -20,7 +20,11 @@ public class OrderService {
             return null;
         }
     }
-
+/*
+    public List<Order> getOrdersByGroupId(String groupId) {
+        return orderRepository.findByGroupId(groupId);
+    }
+*/
     public Order save(Order newOrder) {
         return orderRepository.save(newOrder);
     }
@@ -54,6 +58,8 @@ public class OrderService {
         order.setDateCompleted(orderDetails.getDateCompleted());
         order.setInvoiceEmail(orderDetails.getInvoiceEmail());
         order.setPurpose(orderDetails.getPurpose());
+        order.setIsStudentForm(orderDetails.getIsStudentForm());
+        order.setGroupId(orderDetails.getGroupId());
 
         return orderRepository.save(order);
     }

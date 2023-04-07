@@ -96,6 +96,12 @@ public class Order {
     @Column(name = "purpose")
     private String purpose;
 
+    @Column(name = "is_student_form")
+    private Boolean isStudentForm;
+
+    @Column(name = "group_id")
+    private String groupId;
+
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
 
@@ -128,7 +134,9 @@ public class Order {
         LocalDate dateOrdered,
         LocalDate dateCompleted,
         String invoiceEmail,
-        String purpose
+        String purpose,
+        Boolean isStudentForm,
+        String groupId
     ) {
         this.dateCreated = dateCreated;
         this.accountNumber = accountNumber;
@@ -156,6 +164,8 @@ public class Order {
         this.dateCompleted = dateCompleted;
         this.invoiceEmail = invoiceEmail;
         this.purpose = purpose;
+        this.isStudentForm = isStudentForm;
+        this.groupId = groupId;
     }
 
     // getters and setters
@@ -243,5 +253,11 @@ public class Order {
 
     public String getPurpose() { return purpose; }
     public void setPurpose(String purpose) { this.purpose = purpose; }
+
+    public Boolean getIsStudentForm() { return isStudentForm; }
+    public void setIsStudentForm(Boolean isStudentForm) { this.isStudentForm = isStudentForm; }
+
+    public String getGroupId() { return groupId; }
+    public void setGroupId(String groupId) { this.groupId = groupdId; }
 }
 

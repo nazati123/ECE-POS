@@ -54,7 +54,12 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
     }
-
+/*
+    @GetMapping("/group/{id}")
+    public List<Order> getOrdersByGroupId(@RequestParam String groupId) {
+        return orderService.getOrdersByGroupId(groupId);
+    }
+*/
     @PostMapping
     public ResponseEntity<Order> create(@RequestBody Order order) {
         Order newOrder = orderService.save(order);
