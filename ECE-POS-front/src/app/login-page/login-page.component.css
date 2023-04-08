@@ -1,0 +1,25 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .login-form label {
+    margin-bottom: 10px;
+  }
+
+  .login-image {
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .login-form input[type="password"] {
+    margin-bottom: 20px;
+  }

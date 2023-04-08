@@ -12,13 +12,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { ApproveOrderComponent } from './approve-order/approve-order.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OrderFormComponent,
     OrdersDashboardComponent,
-    ApproveOrderComponent
+    ApproveOrderComponent,
+    LoginPageComponent
   ],
   imports: [
     BrowserModule,
