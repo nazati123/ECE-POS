@@ -20,7 +20,7 @@ export class OrderFormComponent implements OnInit {
   orderForm!: FormGroup;
   currentDateTime: string | null;
   viewing = false;
-  isStudentGroup = false;
+  isStudentForm = false;
 
   constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService,
               private itemsService: ItemsService, private router: Router, private currentRoute: ActivatedRoute) {
@@ -54,9 +54,9 @@ export class OrderFormComponent implements OnInit {
       isAuthorized: [],
       isOrdered: [],
       isCompleted: [],
-      isStudentGroup: [false],
+      isStudentForm: [false],
       groupId: [],
-      capstoneId: ['', [Validators.required, Validators.min(100), Validators.max(999)]],
+      capstoneId: [{value: '', disabled: true}, [Validators.required, Validators.min(100), Validators.max(999)]],
       dateAuthorized: [],
       dateOrdered: [],
       dateCompleted: []
@@ -67,8 +67,8 @@ export class OrderFormComponent implements OnInit {
       this.enableCalculations();
       this.items.push(this.item());
 
-      this.orderForm.get("isStudentGroup")?.valueChanges.subscribe(selectedValue => {
-        this.isStudentGroup = selectedValue;
+      this.orderForm.get("isStudentForm")?.valueChanges.subscribe(selectedValue => {
+        this.isStudentForm = selectedValue;
         if(selectedValue) {
           this.orderForm.get('address')?.disable();
           this.orderForm.get('url')?.disable();
@@ -93,9 +93,9 @@ export class OrderFormComponent implements OnInit {
           this.orderForm.get('groupId')?.setValue("")
         }
       });
-      this.orderForm.get('capstoneId')?.disable();
+      // this.orderForm.get('capstoneId')?.disable();
       this.orderForm.get("groupId")?.valueChanges.subscribe(selectedValue => {
-        this.isStudentGroup = selectedValue;
+        this.isStudentForm = selectedValue;
         if(selectedValue == 'Capstone') {
           this.orderForm.get('capstoneId')?.enable();
         }
@@ -112,6 +112,23 @@ export class OrderFormComponent implements OnInit {
       this.viewing = true;
       this.ordersService.getOrder(this.approvingId as number).subscribe(order => {
         this.orderForm.patchValue(order);
+        if(order.isStudentForm) {
+          this.isStudentForm = true;
+          this.orderForm.get('address')?.disable();
+          this.orderForm.get('url')?.disable();
+          this.orderForm.get('phoneNumber')?.disable();
+          this.orderForm.get('faxNumber')?.disable();
+          this.orderForm.get('contactPerson')?.disable();
+          this.orderForm.get('accountNumber')?.disable();
+          this.orderForm.get('grantEndDate')?.disable();
+          this.orderForm.get('room')?.disable();
+          this.orderForm.get('purpose')?.disable();
+          this.orderForm.get('groupId')?.disable();
+          if (order.groupId?.startsWith('Capstone')) {
+            this.orderForm.get('groupId')?.setValue("Capstone");
+            this.orderForm.get('capstoneId')?.setValue(order.groupId?.split(" ")[1]);
+          }
+        }
         if(order.dateAuthorized == null) {
           this.orderForm.get('isAuthorized')?.setValue(null);
         }
@@ -121,6 +138,7 @@ export class OrderFormComponent implements OnInit {
         order['items']?.forEach(item => {
           this.items.push(this.item(item as Item));
         });
+        
       });
       this.orderForm.get('isAuthorized')?.setValidators([Validators.required]);
     }
@@ -128,6 +146,24 @@ export class OrderFormComponent implements OnInit {
       this.viewing = true;
       this.ordersService.getOrder(id).subscribe(order => {
         this.orderForm.patchValue(order);
+        if(order.isStudentForm) {
+          this.isStudentForm = true;
+          this.orderForm.get('address')?.disable();
+          this.orderForm.get('url')?.disable();
+          this.orderForm.get('phoneNumber')?.disable();
+          this.orderForm.get('faxNumber')?.disable();
+          this.orderForm.get('contactPerson')?.disable();
+          this.orderForm.get('accountNumber')?.disable();
+          this.orderForm.get('grantEndDate')?.disable();
+          this.orderForm.get('room')?.disable();
+          this.orderForm.get('purpose')?.disable();
+          this.orderForm.get('groupId')?.disable();
+          if (order.groupId?.startsWith('Capstone')) {
+            this.orderForm.get('capstoneId')?.enable();
+            this.orderForm.get('groupId')?.setValue("Capstone");
+            this.orderForm.get('capstoneId')?.setValue(order.groupId?.split(" ")[1]);
+          }
+        }
         order['items']?.forEach(item => {
           this.items.push(this.item(item as Item));
         });
@@ -192,35 +228,67 @@ export class OrderFormComponent implements OnInit {
 
   onSubmit() {
     if(!this.approving) {
-      let newOrder: Order = {
-        dateCreated: new Date().toISOString(),
-        accountNumber: this.orderForm.value.accountNumber,
-        grantEndDate: new Date(this.orderForm.value.grantEndDate).toISOString(),
-        requestPerson: this.orderForm.value.requestPerson,
-        phone: this.orderForm.value.phone.replace(/\D+/g, ""),
-        email: this.orderForm.value.email,
-        room: this.orderForm.value.room,
-        facultyEmails: this.orderForm.value.facultyEmails.toString(),
-        isStandingContract: this.orderForm.value.isStandingContract,
-        isAuthorized: false,
-        isOrdered: false,
-        isCompleted: false,
-        tracking: "",
-        shippingTotal: this.orderForm.value.shippingTotal,
-        totalCost: this.orderForm.value.totalCost,
-        name: this.orderForm.value.name,
-        address: this.orderForm.value.address,
-        url: this.orderForm.value.url,
-        phoneNumber: this.orderForm.value.phoneNumber.replace(/\D+/g, ""),
-        faxNumber: this.orderForm.value.faxNumber.replace(/\D+/g, ""),
-        contactPerson: this.orderForm.value.contactPerson,
-        purpose: this.orderForm.value.purpose,
-        invoiceEmail: this.orderForm.value.invoiceEmail
+      let newOrder: Order;
+      if(this.isStudentForm == false) {
+        newOrder = {
+          dateCreated: new Date().toISOString(),
+          accountNumber: this.orderForm.value.accountNumber,
+          grantEndDate: new Date(this.orderForm.value.grantEndDate).toISOString(),
+          requestPerson: this.orderForm.value.requestPerson,
+          phone: this.orderForm.value.phone.replace(/\D+/g, ""),
+          email: this.orderForm.value.email,
+          room: this.orderForm.value.room,
+          facultyEmails: this.orderForm.value.facultyEmails.toString(),
+          isStandingContract: this.orderForm.value.isStandingContract,
+          isAuthorized: false,
+          isOrdered: false,
+          isCompleted: false,
+          tracking: "",
+          shippingTotal: this.orderForm.value.shippingTotal,
+          totalCost: this.orderForm.value.totalCost,
+          name: this.orderForm.value.name,
+          address: this.orderForm.value.address,
+          url: this.orderForm.value.url,
+          phoneNumber: this.orderForm.value.phoneNumber.replace(/\D+/g, ""),
+          faxNumber: this.orderForm.value.faxNumber.replace(/\D+/g, ""),
+          contactPerson: this.orderForm.value.contactPerson,
+          purpose: this.orderForm.value.purpose,
+          invoiceEmail: this.orderForm.value.invoiceEmail,
+          isStudentForm: this.orderForm.value.isStudentForm
+        }
       }
+      else {
+        newOrder = {
+          dateCreated: new Date().toISOString(),
+          requestPerson: this.orderForm.value.requestPerson,
+          phone: this.orderForm.value.phone.replace(/\D+/g, ""),
+          email: this.orderForm.value.email,
+          facultyEmails: this.orderForm.value.facultyEmails.toString(),
+          isStandingContract: this.orderForm.value.isStandingContract,
+          isAuthorized: false,
+          isOrdered: false,
+          isCompleted: false,
+          tracking: "",
+          shippingTotal: this.orderForm.value.shippingTotal,
+          totalCost: this.orderForm.value.totalCost,
+          name: this.orderForm.value.name,
+          contactPerson: this.orderForm.value.contactPerson,
+          invoiceEmail: this.orderForm.value.invoiceEmail,
+          isStudentForm: this.orderForm.value.isStudentForm,
+        }
+        if (this.orderForm.value.groupId == 'Capstone') {
+          newOrder.groupId = this.orderForm.value.groupId + " " + this.orderForm.value.capstoneId;
+        }
+        else {
+          newOrder.groupId = this.orderForm.value.groupId;
+        }
+      }
+      
       let items: Item[] = this.orderForm.value.items as Item[];
+      console.log(newOrder);
       
       this.ordersService.addOrder(newOrder).subscribe(data => {
-        let orderResponse = data as Order;
+        let orderResponse = data as Order;  
         items.forEach(element => {
           this.itemsService.addItem(element, orderResponse.id).subscribe();
         });
