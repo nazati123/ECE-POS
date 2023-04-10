@@ -103,7 +103,6 @@ function personalizeMessage(message, type, order_data) {
 
 
   token = hash(year, month, day, id)
-  console.log(token)
 
   // build links to actual pages in the system
   requester_link = POS_URL + '/order-form/' + order_id
