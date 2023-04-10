@@ -102,11 +102,8 @@ function personalizeMessage(message, type, order_data) {
   const day = parseInt(timestamp[2])
 
 
-  token = hash(year, month, day, id)
-
   // build links to actual pages in the system
   requester_link = POS_URL + '/order-form/' + order_id
-  approver_link = POS_URL + '/approve-order/' + order_id + `/${token}`;
 
   switch(type) {
     case 'submitted':
@@ -126,6 +123,8 @@ function personalizeMessage(message, type, order_data) {
       message = message.replace('#ID', '#' + order_id).replace('#APPROVER', recipient_string).replace('#LINK', requester_link);
       break;
     case 'review':
+      token = hash(year, month, day, id)
+      approver_link = POS_URL + '/approve-order/' + order_id + `/${token}`;
       req_name = order_data.requestPerson;
       message = message.replace('#REQUESTER_NAME', req_name).replace('#LINK', approver_link);
       break;
