@@ -6,7 +6,7 @@ const http = require('http');
 var nodemailer= require('nodemailer');
 
 // MAKE THIS FALSE TO STOP SENDING EMAILS
-const SEND_EMAILS = true;
+const SEND_EMAILS = false;
 
 // URLs
 const SB_URL = 'http://localhost:8080';
@@ -58,9 +58,12 @@ function personalizeMessage(message, type, order_data) {
   new_status = type.toUpperCase();
   order_id = order_data.id.toString();
 
+  // build token
+  token = order_id;
+
   // build links to actual pages in the system
   requester_link = POS_URL + '/order-form/' + order_id
-  approver_link = POS_URL + '/approve-order/' + order_id
+  approver_link = POS_URL + '/approve-order/' + order_id + `?token=${token}` + `?id=${order_id}`;
 
   switch(type) {
     case 'submitted':
