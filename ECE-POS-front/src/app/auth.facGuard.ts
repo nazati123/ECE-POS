@@ -61,7 +61,7 @@ export class FacGuard implements CanActivate {
       objectSubject.complete();
     }, error => {
       console.log('could not fetch order.');
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     });
     return new Promise((resolve, reject) => {
       objectSubject.pipe(take(1)).subscribe(order => {
