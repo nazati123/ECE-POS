@@ -79,9 +79,6 @@ export class FacGuard implements CanActivate {
           console.log('nope');
           this.router.navigate(['/']);
         }
-        else {
-          console.log('yep');
-        }
         resolve(canActivate);
       }, error => {
         console.log('error in Promise');
