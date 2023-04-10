@@ -258,6 +258,6 @@ public class Order {
     public void setIsStudentForm(Boolean isStudentForm) { this.isStudentForm = isStudentForm; }
 
     public String getGroupId() { return groupId; }
-    public void setGroupId(String groupId) { this.groupId = groupdId; }
+    public void setGroupId(String groupId) { this.groupId = groupId; }
 }
 
