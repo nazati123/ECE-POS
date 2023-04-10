@@ -29,4 +29,6 @@ export interface Order {
     purpose?: string;
     invoiceEmail?: string;
     items?: Item[];
+    isStudentForm?: boolean;
+    groupId?: string;
 }
