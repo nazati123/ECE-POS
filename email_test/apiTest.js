@@ -6,7 +6,7 @@ const http = require('http');
 var nodemailer= require('nodemailer');
 
 // MAKE THIS FALSE TO STOP SENDING EMAILS
-const SEND_EMAILS = false;
+const SEND_EMAILS = true;
 
 // URLs
 const SB_URL = 'http://localhost:8080';
@@ -22,6 +22,42 @@ const dkimKey = {
   keySelector: ck.DKIM_KEY_SELECTOR,
   domainName: ck.DKIM_DOMAIN
 };
+
+function hash(num1, num2, num3, num4) {
+  const m = 0x5bd1e995;
+  const r = 24;
+  let h1 = 0x8a2ae2ba ^ num1;
+  let h2 = 0x8b3c113c ^ num2;
+  let h3 = 0x2a17eb2c ^ num3;
+  let h4 = 0x08c9d639 ^ num4;
+
+  h1 = (h1 * m) >>> 0;
+  h1 = (h1 ^ (h1 >>> 16)) >>> 0;
+  h2 = (h2 * m) >>> 0;
+  h2 = (h2 ^ (h2 >>> 16)) >>> 0;
+  h3 = (h3 * m) >>> 0;
+  h3 = (h3 ^ (h3 >>> 16)) >>> 0;
+  h4 = (h4 * m) >>> 0;
+  h4 = (h4 ^ (h4 >>> 16)) >>> 0;
+
+  h1 = ((h1 * m) ^ h2) >>> 0;
+  h2 = ((h2 * m) ^ h3) >>> 0;
+  h3 = ((h3 * m) ^ h4) >>> 0;
+  h4 = ((h4 * m) ^ h1) >>> 0;
+
+  h1 = (h1 * m) >>> 0;
+  h1 = (h1 ^ (h1 >>> r)) >>> 0;
+  h2 = (h2 * m) >>> 0;
+  h2 = (h2 ^ (h2 >>> r)) >>> 0;
+  h3 = (h3 * m) >>> 0;
+  h3 = (h3 ^ (h3 >>> r)) >>> 0;
+  h4 = (h4 * m) >>> 0;
+  h4 = (h4 ^ (h4 >>> r)) >>> 0;
+
+  const hashHex = (h1 ^ h2 ^ h3 ^ h4).toString(16).padStart(32, '0');
+  return hashHex.substring(24, 32);
+}
+
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -56,14 +92,22 @@ function sendMail(to, subject, message) {
 
 function personalizeMessage(message, type, order_data) {
   new_status = type.toUpperCase();
-  order_id = order_data.id.toString();
-
+  id = order_data.id;
+  order_id = id.toString();
+  
   // build token
-  token = order_id;
+  const timestamp = order_data.dateCreated.split('-')
+  const year = parseInt(timestamp[0])
+  const month = parseInt(timestamp[1])
+  const day = parseInt(timestamp[2])
+
+
+  token = hash(year, month, day, id)
+  console.log(token)
 
   // build links to actual pages in the system
   requester_link = POS_URL + '/order-form/' + order_id
-  approver_link = POS_URL + '/approve-order/' + order_id + `?token=${token}` + `?id=${order_id}`;
+  approver_link = POS_URL + '/approve-order/' + order_id + `/${token}`;
 
   switch(type) {
     case 'submitted':
