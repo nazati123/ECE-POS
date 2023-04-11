@@ -56,6 +56,9 @@ export class OrdersDashboardComponent implements OnInit {
     if(order.isCompleted) {
       return "Completed";
     }
+    else if (order.tracking) {
+      return "Shipped";
+    }
     else if (order.isOrdered) {
       return "Ordered";
     }

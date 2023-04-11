@@ -1,3 +1,17 @@
+<div *ngIf="currentStatus">
+    <h4>
+        Order Status
+    </h4>
+    <div class="progress">
+        <div *ngIf="currentStatus == 'Submitted'" class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{currentStatus}}</div>
+        <div *ngIf="currentStatus == 'Authorized'" class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">{{currentStatus}}</div>
+        <div *ngIf="currentStatus == 'Ordered'" class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">{{currentStatus}}</div>
+        <div *ngIf="currentStatus == 'Shipped'" class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">{{currentStatus}}</div>
+        <div *ngIf="currentStatus == 'Completed'" class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{currentStatus}}</div>
+    </div>
+    <hr style="border-width:3px;">
+    <br>
+</div>
 <div class="row justify-content-center">
     <div class="h3 text-center">
         Order Request Form<br>

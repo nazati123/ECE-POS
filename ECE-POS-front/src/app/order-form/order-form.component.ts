@@ -21,6 +21,7 @@ export class OrderFormComponent implements OnInit {
   currentDateTime: string | null;
   viewing = false;
   isStudentForm = false;
+  currentStatus: string | undefined;
 
   constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService,
               private itemsService: ItemsService, private router: Router, private currentRoute: ActivatedRoute) {
@@ -167,6 +168,7 @@ export class OrderFormComponent implements OnInit {
         order['items']?.forEach(item => {
           this.items.push(this.item(item as Item));
         });
+        this.currentStatus = this.computeStatus(order);
       });
     }
   }
@@ -225,6 +227,24 @@ export class OrderFormComponent implements OnInit {
   }
 
   groupsList: string[] = this.getGroups();
+
+  computeStatus(order : Order) {
+    if(order.isCompleted) {
+      return "Completed";
+    }
+    else if (order.tracking) {
+      return "Shipped";
+    }
+    else if (order.isOrdered) {
+      return "Ordered";
+    }
+    else if (order.isAuthorized) {
+      return "Authorized";
+    }
+    else {
+      return "Submitted";
+    }
+  }
 
   onSubmit() {
     if(!this.approving) {
