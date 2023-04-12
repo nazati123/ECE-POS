@@ -102,6 +102,9 @@ public class Order {
     @Column(name = "group_id")
     private String groupId;
 
+    @Column(name = "approved_by")
+    private String approvedBy;
+
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
 
@@ -136,7 +139,8 @@ public class Order {
         String invoiceEmail,
         String purpose,
         Boolean isStudentForm,
-        String groupId
+        String groupId,
+        String approvedBy
     ) {
         this.dateCreated = dateCreated;
         this.accountNumber = accountNumber;
@@ -166,6 +170,7 @@ public class Order {
         this.purpose = purpose;
         this.isStudentForm = isStudentForm;
         this.groupId = groupId;
+        this.approvedBy = approvedBy;
     }
 
     // getters and setters
@@ -259,5 +264,8 @@ public class Order {
 
     public String getGroupId() { return groupId; }
     public void setGroupId(String groupId) { this.groupId = groupId; }
+
+    public String getApprovedBy() { return approvedBy; }
+    public void setApprovedBy(String approvedBy) { this.approvedBy = approvedBy; }
 }
 

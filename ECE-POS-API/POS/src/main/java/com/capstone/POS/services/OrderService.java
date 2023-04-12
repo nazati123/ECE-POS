@@ -60,6 +60,7 @@ public class OrderService {
         order.setPurpose(orderDetails.getPurpose());
         order.setIsStudentForm(orderDetails.getIsStudentForm());
         order.setGroupId(orderDetails.getGroupId());
+        order.setApprovedBy(orderDetails.getApprovedBy());
 
         return orderRepository.save(order);
     }
