@@ -1,9 +1,12 @@
 <div class="login-container">
     <img src="https://i.imgur.com/Df5kxu5.jpg" alt="Roll Tide" class="login-image">
-    <form (ngSubmit)="onSubmit()" class="login-form">
+    <form (ngSubmit)="onSubmit(password)" class="login-form">
       <label>Password:</label>
-      <input type="password" name="password" [(ngModel)]="password">
-      <button type="submit" class="login-button">Login</button>
+      <input type="password" name="password" [(ngModel)]="password" required>
+      <button type="submit">Login</button>
+      <div *ngIf="errorMessage">
+        <p style="color:red;">{{errorMessage}}</p>
+      </div>
     </form>
-  </div>
+  
   

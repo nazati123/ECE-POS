@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { ApproveOrderComponent } from './approve-order/approve-order.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { PaLoginPageComponent } from './pa-login-page/pa-login-page.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
     OrderFormComponent,
     OrdersDashboardComponent,
     ApproveOrderComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    PaLoginPageComponent
   ],
   imports: [
     BrowserModule,

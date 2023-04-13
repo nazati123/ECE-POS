@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class SuperAuthService {
   isLoggedIn = false;
 
-  login(password: string): Observable<boolean> {
-    if (password === 'password') {
+  login(username: string, password: string): Observable<boolean> {
+    if (username === 'username' && password === 'password') {
       this.isLoggedIn = true;
       return of(true);
     }
