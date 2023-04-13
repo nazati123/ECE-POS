@@ -39,12 +39,12 @@ export class OrdersDashboardComponent implements OnInit {
   } else {
       return this.orders.filter((order) => 
       { 
-        if (order.contactPerson?.toLowerCase() === filterTerm.toLowerCase())
-        return order.contactPerson?.toLowerCase() === filterTerm.toLowerCase();
-        if (order.requestPerson?.toLowerCase() === filterTerm.toLowerCase())  
-        return order.requestPerson?.toLowerCase() === filterTerm.toLowerCase();
-        if (order.phoneNumber?.toLowerCase() === filterTerm.toLowerCase())  
-        return order.phoneNumber?.toLowerCase() === filterTerm.toLowerCase();
+        if (order.contactPerson?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return order.contactPerson?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        if (order.requestPerson?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return order.requestPerson?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        if (order.phoneNumber?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return order.phoneNumber?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
 
         return;
       })
