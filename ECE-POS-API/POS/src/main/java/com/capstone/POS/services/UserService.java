@@ -20,7 +20,7 @@ public class UserService {
     public User getUserByUsername(String username) {
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()) {
-            return user;
+            return user.orElse(null);
         } else {
             throw new ResourceNotFoundException("User member not found with username " + username);
         }
