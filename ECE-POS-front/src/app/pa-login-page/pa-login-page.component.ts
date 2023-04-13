@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { SuperAuthService } from '../superauth.service';
   templateUrl: './pa-login-page.component.html',
   styleUrls: ['./pa-login-page.component.css']
 })
-export class PaLoginPageComponent {
+export class PaLoginPageComponent implements OnDestroy {
   errorMessage: any = null;
   private destroy$ = new Subject<void>();
   username = '';
