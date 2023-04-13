@@ -22,8 +22,9 @@ export class PaLoginPageComponent {
     this.destroy$.complete();
   }
 
-  onSubmit(username: string, password: string): void {
-    this.authService.login(username, password).pipe(takeUntil(this.destroy$)).subscribe((result) => {
+  async onSubmit(username: string, password: string): Promise<void> {
+    const login = await this.authService.login(username, password);
+    login.pipe(takeUntil(this.destroy$)).subscribe((result) => {
       if (!result) {
         this.errorMessage = 'Invalid Credentials.';
       } else {

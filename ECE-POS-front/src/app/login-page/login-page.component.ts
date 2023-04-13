@@ -22,8 +22,9 @@ export class LoginPageComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  onSubmit(password: string): void {
-    this.authService.login(password).pipe(takeUntil(this.destroy$)).subscribe((result) => {
+  async onSubmit(password: string): Promise<void> {
+    const login = await this.authService.login(password)
+    login.pipe(takeUntil(this.destroy$)).subscribe((result) => {
       if (!result) {
         console.log(`password: ${password}`)
         this.errorMessage = 'Invalid password.';
