@@ -3,14 +3,14 @@ package com.capstone.POS.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
-    @Column(name = "username")
+    @Column(name = "user_name")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "pass_word")
     private String password;
 
     public User() {
