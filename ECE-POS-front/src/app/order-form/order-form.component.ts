@@ -16,6 +16,7 @@ import { ItemsService } from '../items.service';
 export class OrderFormComponent implements OnInit {
   @Input() approving = false;
   @Input() approvingId?: Number;
+  @Input() approver?: string;
 
   orderForm!: FormGroup;
   currentDateTime: string | null;
@@ -60,7 +61,8 @@ export class OrderFormComponent implements OnInit {
       capstoneId: [{value: '', disabled: true}, [Validators.required, Validators.min(100), Validators.max(999)]],
       dateAuthorized: [],
       dateOrdered: [],
-      dateCompleted: []
+      dateCompleted: [],
+      approvedBy: []
     }); 
 
     this.checkViewing();
@@ -319,8 +321,11 @@ export class OrderFormComponent implements OnInit {
       let newOrder = this.orderForm.getRawValue() as Order;
       if (newOrder.isAuthorized) {
         newOrder.dateAuthorized = this.currentDateTime as string;
+        newOrder.approvedBy = this.approver;
+        console.log(`Approved by: ${newOrder.approvedBy}`)
       }
       this.ordersService.editOrder(newOrder.id as number, newOrder).subscribe();
+      this.router.navigate(['/login']);
     }
 }
 }

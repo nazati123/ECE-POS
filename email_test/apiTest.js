@@ -90,7 +90,7 @@ function sendMail(to, subject, message) {
 
 };
 
-function personalizeMessage(message, type, order_data) {
+function personalizeMessage(message, type, order_data, faculty_email='') {
   new_status = type.toUpperCase();
   id = order_data.id;
   order_id = id.toString();
@@ -124,7 +124,7 @@ function personalizeMessage(message, type, order_data) {
       break;
     case 'review':
       token = hash(year, month, day, id)
-      approver_link = POS_URL + '/approve-order/' + order_id + `/${token}`;
+      approver_link = POS_URL + '/approve-order/' + order_id + `/${token}/${faculty_email}`;
       req_name = order_data.requestPerson;
       message = message.replace('#REQUESTER_NAME', req_name).replace('#LINK', approver_link);
       break;
@@ -194,13 +194,12 @@ async function order_awaiting(orderID) {
     fs.readFile(REQUEST_REV, 'utf-8', (err, message) => {
       if (err) throw error;
 
-      message = personalizeMessage(message, 'review', response.data);
-
       // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
       response.data.facultyEmails = ['twrussell@crimson.ua.edu'];
 
       response.data.facultyEmails.forEach(function (email) {
-        if (SEND_EMAILS) sleep(3000).then(() => {sendMail(email, 'ECE-POS: New Request Awaiting Review', message);});
+        newMessage = personalizeMessage(message, 'review', response.data, email);
+        if (SEND_EMAILS) sleep(3000).then(() => {sendMail(email, 'ECE-POS: New Request Awaiting Review', newMessage);});
         console.log('sent review to ' + email)
       })
     })

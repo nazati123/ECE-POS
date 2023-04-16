@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'order-form', component: OrderFormComponent, canActivate: [AuthGuard] },
   { path: 'order-form/:id', component: OrderFormComponent},
   { path: 'dashboard', component: OrdersDashboardComponent, canActivate: [SuperAuthGuard] },
-  { path: 'approve-order/:id/:token', component: ApproveOrderComponent, canActivate: [FacGuard] },
+  { path: 'approve-order/:id/:token/:approver', component: ApproveOrderComponent, canActivate: [FacGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
