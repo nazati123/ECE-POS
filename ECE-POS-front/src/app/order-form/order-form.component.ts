@@ -343,7 +343,7 @@ export class OrderFormComponent implements OnInit {
           this.itemsService.addItem(element, orderResponse.id).subscribe();
         });
       });
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/login']);
     }
     else if(this.approving) {
       let newOrder = this.orderForm.getRawValue() as Order;
@@ -353,6 +353,7 @@ export class OrderFormComponent implements OnInit {
         console.log(`Approved by: ${newOrder.approvedBy}`)
       }
       this.ordersService.editOrder(newOrder.id as number, newOrder).subscribe();
+      this.router.navigate(['/login']);
     }
     else if(this.editing) {
       let newOrder = this.orderForm.getRawValue() as Order;
@@ -362,6 +363,7 @@ export class OrderFormComponent implements OnInit {
       items.forEach(element => {
         this.itemsService.editItem(element, newOrder.id).subscribe();
       });
+      this.router.navigate(['/dashboard'])
     }
 }
 }
