@@ -9,6 +9,12 @@
         <div *ngIf="currentStatus == 'Shipped'" class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">{{currentStatus}}</div>
         <div *ngIf="currentStatus == 'Completed'" class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{currentStatus}}</div>
     </div>
+    <br>
+    <div class="row justify-content-right">
+        <div class="col-sm-4">
+            <button (click)="advanceStatus(currentStatus)" class="btn btn-primary" *ngIf="editing">Update Status</button>
+        </div>
+    </div>
     <hr style="border-width:3px;">
     <br>
 </div>
@@ -265,7 +271,7 @@
     <div class="form-group">
         <div class="row">
             <div class="">
-                <mat-form-field appearance="fill" class="col-sm-6" *ngIf="!viewing">
+                <mat-form-field appearance="fill" class="col-sm-6" *ngIf="!viewing && !editing">
                     <mat-label>Select Approver(s)</mat-label>
                     <mat-select formControlName="facultyEmails" multiple appearance="fill">
                         <mat-option *ngFor="let approver of approversList" [value]="approver.email">{{approver.name}}</mat-option>
@@ -292,8 +298,9 @@
         </div>
     </div>
     <br>
-    <button type="submit" class="btn btn-primary justify-content-center" *ngIf="!viewing" [disabled]="!orderForm.valid">Submit for Approval</button>
+    <button type="submit" class="btn btn-primary justify-content-center" *ngIf="!viewing && !editing" [disabled]="!orderForm.valid">Submit for Approval</button>
     <button type="submit" class="btn btn-primary justify-content-center" *ngIf="approving" [disabled]="!orderForm.get('isAuthorized')?.valid">Submit Approval</button>
+    <button type="submit" class="btn btn-primary justify-content-center" *ngIf="editing">Update Order</button>
     <br>
     <br>
 </form>

@@ -19,4 +19,9 @@ export class ItemsService {
     item.orderId = orderId as number;
     return this.http.post(this.baseUrl, item as Item);
   }
+
+  editItem(item: Item, orderId: number | undefined) {
+    item.orderId = orderId as number;
+    return this.http.put(`${this.baseUrl}/${item.id as number}`, item);
+  }
 }

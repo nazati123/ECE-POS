@@ -16,6 +16,8 @@ import { ItemsService } from '../items.service';
 export class OrderFormComponent implements OnInit {
   @Input() approving = false;
   @Input() approvingId?: Number;
+  @Input() editing = false;
+  @Input() editingId?: Number;
 
   orderForm!: FormGroup;
   currentDateTime: string | null;
@@ -66,7 +68,7 @@ export class OrderFormComponent implements OnInit {
     this.checkViewing();
     if(!this.approving && !this.viewing) {
       this.enableCalculations();
-      this.items.push(this.item());
+      if(!this.editing) this.items.push(this.item());
 
       this.orderForm.get("isStudentForm")?.valueChanges.subscribe(selectedValue => {
         this.isStudentForm = selectedValue;
@@ -143,6 +145,15 @@ export class OrderFormComponent implements OnInit {
       });
       this.orderForm.get('isAuthorized')?.setValidators([Validators.required]);
     }
+    else if (this.editing && !Number.isNaN(id)) {
+      this.ordersService.getOrder(id).subscribe(order => {
+        this.orderForm.patchValue(order);
+        order['items']?.forEach(item => {
+          this.items.push(this.item(item as Item));
+        });
+        this.currentStatus = this.computeStatus(order);
+      });
+    }
     else if (!Number.isNaN(id)) {
       this.viewing = true;
       this.ordersService.getOrder(id).subscribe(order => {
@@ -201,7 +212,8 @@ export class OrderFormComponent implements OnInit {
       partNumber: [item?.partNumber, Validators.required],
       description: [item?.description, Validators.required],
       price: [item?.price, [Validators.required, Validators.min(0)]],
-      total: [item?.total]
+      total: [item?.total],
+      id: [item?.id]
     });
   }
 
@@ -246,8 +258,24 @@ export class OrderFormComponent implements OnInit {
     }
   }
 
+  advanceStatus(status: string) {
+    let newOrder = this.orderForm.getRawValue() as Order;
+    if(status == "Authorized") {
+      newOrder.isOrdered = true;
+      newOrder.dateOrdered = this.currentDateTime as string;
+    }
+    else if (status == "Ordered") {
+      // tracking number should be updated
+    }
+    else if (status == "Shipped") {
+      newOrder.isCompleted = true;
+      newOrder.dateCompleted = this.currentDateTime as string;
+    }
+    this.ordersService.editOrder(newOrder.id as number, newOrder).subscribe();
+  }
+
   onSubmit() {
-    if(!this.approving) {
+    if(!this.approving && !this.editing) {
       let newOrder: Order;
       if(this.isStudentForm == false) {
         newOrder = {
@@ -315,12 +343,21 @@ export class OrderFormComponent implements OnInit {
       });
       this.router.navigate(['/dashboard']);
     }
-    else {
+    else if(this.approving) {
       let newOrder = this.orderForm.getRawValue() as Order;
       if (newOrder.isAuthorized) {
         newOrder.dateAuthorized = this.currentDateTime as string;
       }
       this.ordersService.editOrder(newOrder.id as number, newOrder).subscribe();
+    }
+    else if(this.editing) {
+      let newOrder = this.orderForm.getRawValue() as Order;
+      this.ordersService.editOrder(newOrder.id as number, newOrder).subscribe();
+      // add update items
+      let items: Item[] = this.orderForm.value.items as Item[];
+      items.forEach(element => {
+        this.itemsService.editItem(element, newOrder.id).subscribe();
+      });
     }
 }
 }

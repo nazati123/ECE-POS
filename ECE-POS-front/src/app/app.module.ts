@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { ApproveOrderComponent } from './approve-order/approve-order.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { PaLoginPageComponent } from './pa-login-page/pa-login-page.component';
+import { EditOrderComponent } from './edit-order/edit-order.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PaLoginPageComponent } from './pa-login-page/pa-login-page.component';
     OrdersDashboardComponent,
     ApproveOrderComponent,
     LoginPageComponent,
-    PaLoginPageComponent
+    PaLoginPageComponent,
+    EditOrderComponent
   ],
   imports: [
     BrowserModule,
