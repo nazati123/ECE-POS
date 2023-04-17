@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcryptjs';
+
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -43,7 +45,7 @@ export class SuperAuthService {
         const correct_username = user.username;
         const correct_password = user.password;
 
-        success = (correct_username === username) && (correct_password === password)
+        success = (correct_username === username) && (bcrypt.compareSync(password, correct_password))
         if (success) {
           this.isLoggedIn = true;
         }

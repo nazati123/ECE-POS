@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcryptjs';
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -34,7 +36,7 @@ export class AuthService {
         const correct_username = user.username;
         const correct_password = user.password;
 
-        success = (correct_username === 'orderform') && (correct_password === password)
+        success = (correct_username === 'orderform') && (bcrypt.compareSync(password, correct_password))
         if (success) {
           this.isLoggedIn = true;
         }
