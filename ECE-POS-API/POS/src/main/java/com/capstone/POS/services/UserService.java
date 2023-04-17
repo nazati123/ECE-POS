@@ -36,7 +36,6 @@ public class UserService {
     }
 
     public User updateUser(String username, User userDetails) {
-
         User user = userRepository.findById(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User member not found with username " + username));
 
