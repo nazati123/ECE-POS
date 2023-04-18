@@ -11,16 +11,6 @@ import com.capstone.POS.exceptions.ResourceNotFoundException;
 import com.capstone.POS.models.Faculty;
 import com.capstone.POS.repositories.FacultyRepository;
 
-// @Service
-// public class FacultyService {
-    
-//     @Autowired
-//     FacultyRepository facultyRepository;
-
-//     public Faculty save(Faculty newFaculty) {
-//         return facultyRepository.save(newFaculty);
-//     }
-// }
 @Service
 public class FacultyService {
 
