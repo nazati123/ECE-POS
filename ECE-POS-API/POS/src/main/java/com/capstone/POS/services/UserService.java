@@ -30,6 +30,7 @@ public class UserService {
         if (userRepository.existsById(user.getUsername())) {
             throw new DuplicateKeyException("User member already exists with username " + user.getUsername());
         } else {
+            user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
             return userRepository.save(user);
         }
     }
@@ -38,7 +39,8 @@ public class UserService {
         User user = userRepository.findById(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User member not found with username " + username));
 
-        user.setPassword(userDetails.getPassword());
+        String safepw = PasswordHasher.hashPassword(userDetails.getPassword());
+        user.setPassword(safepw);
 
         return userRepository.save(user);
     }

@@ -13,6 +13,7 @@ import { OrdersService } from '../orders.service';
 export class ApproveOrderComponent {
   approving = true;
   orderId!: number;
+  approver = this.currentRoute.snapshot.paramMap.get('approver')!;
 
   constructor(private router: Router, private currentRoute: ActivatedRoute, private ordersService: OrdersService) {
 

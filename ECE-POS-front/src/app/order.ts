@@ -31,4 +31,5 @@ export interface Order {
     items?: Item[];
     isStudentForm?: boolean;
     groupId?: string;
+    approvedBy?: string
 }
