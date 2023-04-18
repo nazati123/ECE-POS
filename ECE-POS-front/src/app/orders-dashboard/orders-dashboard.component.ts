@@ -45,6 +45,14 @@ export class OrdersDashboardComponent implements OnInit {
         return order.requestPerson?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
         if (order.phoneNumber?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
         return order.phoneNumber?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        if (order.dateCreated?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return order.dateCreated?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        if (this.computeStatus(order).trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return this.computeStatus(order).trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        if (order.id?.toString().trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return order.id?.toString().trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        
+
 
         return;
       })
