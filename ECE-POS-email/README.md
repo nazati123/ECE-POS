@@ -16,8 +16,8 @@ Email template sent to faculty for the purpose of reviewing and approving an ord
 ### status_update.html / status_update.mjml
 Email template for order updates.
 
-## Node.js testing
-Start server from terminal with `node index.js`
+## Node.js Server
+Start server from terminal with `node index.js`, which listens on port 3000
 ### index.js
 Handles email requests from Angular front end and sends out relevant updates to users.
 
