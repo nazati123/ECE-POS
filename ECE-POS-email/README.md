@@ -1,5 +1,5 @@
-# email_test
-Trevor Russell's folder for getting the email application together.
+# ECE-POS-email
+Node.js application that sends emails to uses of the ECE Part Ordering System. By Trevor Russell
 
 ## Email templates
 .html files can be viewed in a web browser.
