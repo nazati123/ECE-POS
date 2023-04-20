@@ -3,16 +3,21 @@ Trevor Russell's folder for getting the email application together.
 
 ## Email templates
 .html files can be viewed in a web browser.
+
+### .env
+Email account credentials are stored in a local .env file, and must be updated to match whatever account is desired.
+
 ### request_submitted.html / request_submitted.mjml
 Email template to be sent out once a request is received.
+
+### request_review.html / request_review.mjml
+Email template sent to faculty for the purpose of reviewing and approving an order.
 
 ### status_update.html / status_update.mjml
 Email template for order updates.
 
 ## Node.js testing
-Can currently be executed with `node apiTest.js`
-### apiTest.js
-Work-in-progress application that makes a simple HTTP request to the Spring Boot application running from ECE-POS-API. This also handles email requests from the Spring Boot application and will send notifications. The Node.js project is currently configured with this file as main.
-
+Start server from terminal with `node index.js`
 ### index.js
-Proof-of-concept application for sending emails from node.js. Email credentials are not stored in-repo, so this cannot run without a local .env file. This also includes a query to the database outside of Spring Boot, which will be phased out of later versions.
+Handles email requests from Angular front end and sends out relevant updates to users.
+

@@ -1,3 +1,4 @@
+// MUST 'npm install' ALL MODULES BELOW TO RUN SERVER
 const axios = require('axios');
 const ck = require('ckey');
 const dkim = require('dkim');
@@ -8,8 +9,9 @@ var nodemailer= require('nodemailer');
 // MAKE THIS FALSE TO STOP SENDING EMAILS
 const SEND_EMAILS = true;
 
-// URLs
+// API URL
 const SB_URL = 'http://localhost:8080';
+// Frontend URL
 const POS_URL = 'http://localhost:4200';
 
 // Filenames for email templates
@@ -23,7 +25,9 @@ const dkimKey = {
   domainName: ck.DKIM_DOMAIN
 };
 
+// Creates hash to protect authorization link
 function hash(num1, num2, num3, num4) {
+  // Hash based on MurmurHash3
   const m = 0x5bd1e995;
   const r = 24;
   let h1 = 0x8a2ae2ba ^ num1;
@@ -58,11 +62,12 @@ function hash(num1, num2, num3, num4) {
   return hashHex.substring(24, 32);
 }
 
-
+// Sleep function used to stagger calls to sendMail
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// NodeMailer email function
 function sendMail(to, subject, message) {
 
   const transporter = nodemailer.createTransport({
@@ -90,12 +95,13 @@ function sendMail(to, subject, message) {
 
 };
 
+// Edit email templates to include relevant information
 function personalizeMessage(message, type, order_data, faculty_email='') {
   new_status = type.toUpperCase();
   id = order_data.id;
   order_id = id.toString();
   
-  // build token
+  // split fields from timestamp in case token needs to be created from a hash
   const timestamp = order_data.dateCreated.split('-')
   const year = parseInt(timestamp[0])
   const month = parseInt(timestamp[1])
@@ -107,6 +113,8 @@ function personalizeMessage(message, type, order_data, faculty_email='') {
 
   switch(type) {
     case 'submitted':
+      
+      // handling formatting of faculty emails (1, 2, or 3+ emails are split by grammatical comma patterns)
       recipients = order_data.facultyEmails;
       recipient_string = recipients.pop();
       if (recipients.length > 0){
@@ -120,31 +128,41 @@ function personalizeMessage(message, type, order_data, faculty_email='') {
           recipient_string += ', and ' + recipients.pop();
         }
       }
+
+      // user sees order ID and faculty who received their request.
       message = message.replace('#ID', '#' + order_id).replace('#APPROVER', recipient_string).replace('#LINK', requester_link);
       break;
     case 'review':
+      // create link security token
       token = hash(year, month, day, id)
+
+      // add token and email into approval link
       approver_link = POS_URL + '/approve-order/' + order_id + `/${token}/${faculty_email}`;
+
+      // add requester name
       req_name = order_data.requestPerson;
+
+      // update fields in message
       message = message.replace('#REQUESTER_NAME', req_name).replace('#LINK', approver_link);
       break;
     case 'approved':
       message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
-      // next steps
+
+      // approved message
       next_steps = 'You will receive another email when your order has been placed.';
       message = message.replace('#NEXT_STEPS', next_steps).replace('#LINK', requester_link);
       break;
     case 'ordered':
-      console.log('ordered');
       message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
-      // next steps
+
+      // ordered message
       next_steps = 'Shipping numbers will be visible online when available.';
       message = message.replace('#NEXT_STEPS', next_steps).replace('#LINK', requester_link);
       break;
     case 'completed':
-      console.log('completed');
       message = message.replace('#ID', '#' + order_id).replace('#STATUS', new_status);
-      // next steps
+      
+      // completed message
       next_steps = 'You may now pick up your item at the delivery location.';
       message = message.replace('#NEXT_STEPS', next_steps).replace('#LINK', requester_link);
       break;
@@ -154,14 +172,15 @@ function personalizeMessage(message, type, order_data, faculty_email='') {
   return message
 };
 
+// Called when order request is made and is awaiting review.
 async function order_awaiting(orderID) {
   var url = SB_URL;
 
   id_string = orderID.toString();
   url += '/orders/' + id_string;
 
+  // pull order info from Spring Boot API
   axios.get(url).then(response => {
-    console.log(response.data)
     // read in email addresses from order id
     req_recipient = response.data.email;
 
@@ -169,16 +188,19 @@ async function order_awaiting(orderID) {
     response.data.facultyEmails = response.data.facultyEmails.split(',');
     fac_recipients = response.data.facultyEmails;
 
+    /* DEBUG MESSAGES
     console.log('emails going to: ');
     fac_recipients.forEach(function (email) {
       console.log(email);
     });
     console.log(req_recipient);
+    */
 
-    // requester gets notification that the request was submitted
+    // read email template for a submitted request, send to requester
     fs.readFile(REQUEST_SUB, 'utf-8', (err, message) => {
       if (err) throw error;
 
+      // update message with order info
       message = personalizeMessage(message, 'submitted', response.data);
 
       // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
@@ -187,7 +209,6 @@ async function order_awaiting(orderID) {
       if (SEND_EMAILS) {
         sendMail(response.data.email, 'ECE-POS: Request Submitted', message);
       }
-      console.log('sent submitted to ' + response.data.email);
     })
 
     // faculty get an email notification of a new order awaiting
@@ -200,7 +221,6 @@ async function order_awaiting(orderID) {
       response.data.facultyEmails.forEach(function (email) {
         newMessage = personalizeMessage(message, 'review', response.data, email);
         if (SEND_EMAILS) sleep(3000).then(() => {sendMail(email, 'ECE-POS: New Request Awaiting Review', newMessage);});
-        console.log('sent review to ' + email)
       })
     })
     
@@ -209,6 +229,7 @@ async function order_awaiting(orderID) {
   })
 };
 
+// Called when order status is updated.
 async function order_update(orderID, update) {
   var url = SB_URL;
   
@@ -216,13 +237,11 @@ async function order_update(orderID, update) {
   url += '/orders/' + id_string;
 
   axios.get(url).then(response => {
-    console.log(response.data)
-
-    // only requester gets an update email? double check this
+    // only requester gets an update email
     recipient = response.data.email;
 
-    console.log('email going to: ');
-    console.log(recipient);
+    // console.log('email going to: ');
+    // console.log(recipient);
 
     // requester gets notification that the request was submitted
     fs.readFile(STATUS_UPDATE, 'utf-8', (err, message) => {
@@ -230,23 +249,22 @@ async function order_update(orderID, update) {
 
       subject_line = 'ECE-POS: Status Update';
 
+      // see personalizeMessage for cases in various update statuses
       message = personalizeMessage(message, update, response.data);
 
       // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
       response.data.email = 'twrussell@crimson.ua.edu';
 
-      // do these emails need to go to associated faculty as well??
-
       if (SEND_EMAILS) {
         sendMail(response.data.email, subject_line, message); 
       }
-      console.log('sent status update to ' + response.data.email);
     })
   }).catch(error => {
     console.error(error)
   })
 };
 
+// Define server: can receive requests for new orders and order updates
 const server = http.createServer((req, res) => {
   if (req.method === 'POST' && req.url === '/order-awaiting') {
     let body = '';
@@ -254,6 +272,7 @@ const server = http.createServer((req, res) => {
       body += chunk.toString();
     });
     req.on('end', async () => {
+      // new order request just has order id
       const order = JSON.parse(body);
       const id = order.id;
 
@@ -268,6 +287,7 @@ const server = http.createServer((req, res) => {
       body += chunk.toString();
     });
     req.on('end', async () => {
+      // update request has id and update (authorized, ordered, completed)
       const payload = JSON.parse(body);
       const id = payload.id;
       const update = payload.update;
@@ -285,6 +305,7 @@ const server = http.createServer((req, res) => {
 
 const PORT = 3000;
 
+// Run server.
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
