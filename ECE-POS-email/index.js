@@ -9,9 +9,9 @@ var nodemailer= require('nodemailer');
 // MAKE THIS FALSE TO STOP SENDING EMAILS
 const SEND_EMAILS = true;
 
-// API URL
+// API URL for database access
 const SB_URL = 'http://localhost:8080';
-// Frontend URL
+// Frontend URL for putting links into emails
 const POS_URL = 'http://localhost:4200';
 
 // Filenames for email templates
