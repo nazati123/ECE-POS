@@ -207,7 +207,7 @@ async function order_awaiting(orderID) {
       response.data.email = 'twrussell@crimson.ua.edu';
 
       if (SEND_EMAILS) {
-        sendMail(response.data.email, 'ECE-POS: Request Submitted', message);
+        sleep(1100 * response.data.facultyEmails.length).then(() => {sendMail(response.data.email, 'ECE-POS: Request Submitted', message)});
       }
     })
 
@@ -220,7 +220,7 @@ async function order_awaiting(orderID) {
 
       response.data.facultyEmails.forEach(function (email) {
         newMessage = personalizeMessage(message, 'review', response.data, email);
-        if (SEND_EMAILS) sleep(3000).then(() => {sendMail(email, 'ECE-POS: New Request Awaiting Review', newMessage);});
+        if (SEND_EMAILS) sleep(1000).then(() => {sendMail(email, 'ECE-POS: New Request Awaiting Review', newMessage);});
       })
     })
     
