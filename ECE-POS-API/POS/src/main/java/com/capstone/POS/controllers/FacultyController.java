@@ -59,6 +59,7 @@ public class FacultyController {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @PutMapping("/{email}")
     public ResponseEntity<Faculty> updateFaculty(@PathVariable String email, @RequestBody Faculty faculty) {
         try {
