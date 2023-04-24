@@ -1,8 +1,11 @@
 package com.capstone.POS.controllers;
 
 import com.capstone.POS.models.User;
+import com.capstone.POS.repositories.UserRepository;
 import com.capstone.POS.services.UserService;
 import com.capstone.POS.exceptions.ResourceNotFoundException;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +18,16 @@ import org.springframework.dao.DuplicateKeyException;
 public class UserController {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserService userService;
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
 
     @GetMapping("/{username}")
     public ResponseEntity<User> getByUsername(@PathVariable String username) {
