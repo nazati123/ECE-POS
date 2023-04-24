@@ -1,0 +1,30 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+
+        <mj-image width="100px" src="https://i.imgur.com/Df5kxu5.jpg"></mj-image>
+
+        <mj-text  align="center" font-style="italic" font-size="32px" color="#A22137">
+        ECE-POS Email Service
+        </mj-text>
+
+        <mj-divider border-color="#A22137"></mj-divider>
+
+        <mj-text font-size="20px" color="#A22137" font-family="helvetica">
+        Your order request #ID has been submitted for approval to #APPROVER. You will receive another email when the authorized user reviews your request.
+        </mj-text>
+
+        <mj-button background-color="#A22137">
+          <mj-text font-size="20px" font-family="helvetica">
+            <a style = "color:#FFFFFF; text-decoration:none !important; text-decoration:none;" href="#LINK" class="link-nostyle">
+            CHECK REQUEST STATUS
+            </a>
+          </mj-text>
+        </mj-button>
+
+      </mj-column>
+    </mj-section>
+
+  </mj-body>
+</mjml>

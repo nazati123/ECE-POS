@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrdersService } from '../orders.service';
 import { Order } from '../order';
 import { filter } from 'rxjs';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-orders-dashboard',
@@ -45,11 +46,34 @@ export class OrdersDashboardComponent implements OnInit {
         return order.requestPerson?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
         if (order.phoneNumber?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
         return order.phoneNumber?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        if (order.dateCreated?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return order.dateCreated?.trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        if (this.computeStatus(order).trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return this.computeStatus(order).trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        if (order.id?.toString().trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase()) )
+        return order.id?.toString().trim().toLocaleLowerCase().includes(filterTerm.trim().toLocaleLowerCase());
+        
+
 
         return;
       })
     
   }
+  }
+
+  exportexcel(): void
+  {
+    /* pass here the table id */
+    let element = document.getElementById('excel-table');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, "Group-Orders.xlsx");
+ 
   }
 
   computeStatus(order : Order) {

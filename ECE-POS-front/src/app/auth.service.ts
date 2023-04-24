@@ -38,6 +38,7 @@ export class AuthService {
 
         success = (correct_username === 'orderform') && (bcrypt.compareSync(password, correct_password))
         if (success) {
+          console.log('correct.');
           this.isLoggedIn = true;
         }
         else {
