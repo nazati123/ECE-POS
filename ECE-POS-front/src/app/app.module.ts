@@ -15,6 +15,7 @@ import { ApproveOrderComponent } from './approve-order/approve-order.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { PaLoginPageComponent } from './pa-login-page/pa-login-page.component';
 import { EditOrderComponent } from './edit-order/edit-order.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { EditOrderComponent } from './edit-order/edit-order.component';
     ApproveOrderComponent,
     LoginPageComponent,
     PaLoginPageComponent,
-    EditOrderComponent
+    EditOrderComponent,
+    AdminPanelComponent
   ],
   imports: [
     BrowserModule,
