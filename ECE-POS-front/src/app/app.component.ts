@@ -12,12 +12,12 @@ export class AppComponent {
   title = 'ECE-POS-front';
   isLoggedIn: boolean;
   isSuperLoggedIn: boolean;
-  showLogoutButton: boolean;
+  notLoginPage: boolean;
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showLogoutButton = !(event.url.split('?')[0] === '/login' || event.url.split('?')[0] ==='/pa-login')
+        this.notLoginPage = !(event.url.split('?')[0] === '/login' || event.url.split('?')[0] ==='/pa-login')
       }
     });
   }
@@ -26,7 +26,7 @@ export class AppComponent {
   constructor(public authService: AuthService, public superAuthService: SuperAuthService, private router: Router) { 
     this.isSuperLoggedIn = this.superAuthService.isLoggedIn;
     this.isLoggedIn = this.authService.isLoggedIn || this.isSuperLoggedIn;
-    this.showLogoutButton = false;
+    this.notLoginPage = false;
   }
 
   logout() {

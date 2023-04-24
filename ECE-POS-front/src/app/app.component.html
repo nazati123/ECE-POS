@@ -10,7 +10,7 @@
     <!--
       <input *ngIf="authService.isLoggedIn" class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
     -->
-      <div  *ngIf="(authService.isLoggedIn || superAuthService.isLoggedIn) && showLogoutButton" class="navbar-nav">
+      <div *ngIf="(authService.isLoggedIn || superAuthService.isLoggedIn) && notLoginPage" class="navbar-nav">
       <div class="nav-item text-nowrap">
         <a class="nav-link px-3" href="/order-form" (click)="logout()">Sign out</a>
       </div>
@@ -18,7 +18,7 @@
   </header>
   <div class="container-fluid">
     <div class="row">
-      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <nav *ngIf="notLoginPage" id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="position-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
