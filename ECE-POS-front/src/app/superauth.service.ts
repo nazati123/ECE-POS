@@ -16,7 +16,9 @@ export class SuperAuthService {
   isLoggedIn = false;
   validUser = false;
 
-  constructor(private usersService: UsersService, private router: Router) { }
+  constructor(private usersService: UsersService, private router: Router) {
+    this.checkAuthentication();
+   }
 
   async login(username: string, password: string): Promise<Observable<boolean>> {
     if (username === 'orderform') {
@@ -51,6 +53,7 @@ export class SuperAuthService {
         success = (correct_username === username) && (bcrypt.compareSync(password, correct_password))
         if (success) {
           console.log('correct');
+          localStorage.setItem('superAuthData', JSON.stringify(user.password));
           this.isLoggedIn = true;
         }
         else {
@@ -64,18 +67,17 @@ export class SuperAuthService {
         reject(error);
       })
     })
-
-
-
-/*    
-    if (username === 'username' && password === 'password') {
-      this.isLoggedIn = true;
-      return of(true);
-    }
-    return of(false);
-*/
   }
+
+  public checkAuthentication(): void {
+    const authData = localStorage.getItem('superAuthData');
+    if (authData) {
+      this.isLoggedIn = true;
+    }
+  }
+
   logout(): void {
+    localStorage.removeItem('superAuthData');
     this.isLoggedIn = false;
   }
 }

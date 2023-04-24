@@ -1,5 +1,5 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SuperAuthService } from '../superauth.service';
@@ -14,8 +14,13 @@ export class PaLoginPageComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
   username = '';
   password = '';
+  returnUrl = '';
 
-  constructor(private authService: SuperAuthService, private router: Router) {}
+  constructor(private authService: SuperAuthService, private route: ActivatedRoute, private router: Router) {}
+
+  ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -28,7 +33,7 @@ export class PaLoginPageComponent implements OnDestroy {
       if (!result) {
         this.errorMessage = 'Invalid Credentials.';
       } else {
-        this.router.navigate(['/dashboard'])
+        this.router.navigateByUrl(this.returnUrl);
       }
     }, (error) => {
       this.errorMessage = 'Authentication error. Please try again later.';

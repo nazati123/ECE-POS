@@ -16,7 +16,9 @@ import { delay } from 'rxjs/operators';
 export class AuthService {
   isLoggedIn = false;
 
-  constructor(private usersService: UsersService, private router: Router) { }
+  constructor(private usersService: UsersService, private router: Router) { 
+    this.checkAuthentication();
+  }
 
   async login(password: string): Promise<Observable<boolean>>{
     const userSubject = new Subject<User>();
@@ -39,6 +41,7 @@ export class AuthService {
         success = (correct_username === 'orderform') && (bcrypt.compareSync(password, correct_password))
         if (success) {
           console.log('correct.');
+          localStorage.setItem('authData', JSON.stringify(user.password));
           this.isLoggedIn = true;
         }
         else {
@@ -62,7 +65,17 @@ export class AuthService {
 */
   }
 
+  public checkAuthentication(): void {
+    const authData = localStorage.getItem('authData');
+    const superAuthData = localStorage.getItem('superAuthData');
+    if (authData || superAuthData) {
+      this.isLoggedIn = true;
+    }
+  }
+
+
   logout(): void {
+    localStorage.removeItem('authData');
     this.isLoggedIn = false;
   }
 }

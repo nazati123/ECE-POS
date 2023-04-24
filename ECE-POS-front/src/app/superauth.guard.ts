@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { SuperAuthService } from './superauth.service';
 
 @Injectable({
@@ -8,10 +8,10 @@ import { SuperAuthService } from './superauth.service';
 export class SuperAuthGuard implements CanActivate {
     constructor(private authService: SuperAuthService, private router: Router) {}
 
-    canActivate(): boolean {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
+      this.authService.checkAuthentication();
         if (!this.authService.isLoggedIn) {
-          this.router.navigate(['/pa-login']);
-          return false;
+          return this.router.createUrlTree(['/pa-login'], { queryParams: {returnUrl: state.url}});
         }
         return true;
     }
