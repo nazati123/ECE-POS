@@ -7,6 +7,10 @@ This project contains the source code for an order management system for the Dep
 
 This folder contains a brief Node.js authentication server test. Authentication will be further developed in a later sprint.
 
+## ECE-POS-DB-schema
+
+This folder contains all necessary SQL CREATE statements to build the database required for the application.
+
 ## ECE-POS-API
 
 This folder contains the source code for the Spring Boot backend server. This server interfaces between Angular and the database stored in AWS.
