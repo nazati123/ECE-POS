@@ -47,13 +47,15 @@ public class GroupController {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody Group group) {
-        try {
-            groupService.addGroup(group);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Group created successfully");
-        } catch (DuplicateKeyException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("This group already exists");
-        }
+    public ResponseEntity<Group> create(@RequestBody Group group) {
+        Group newGroup = groupService.save(group);
+        return new ResponseEntity<>(newGroup, HttpStatus.OK);
+        // try {
+        //     groupService.addGroup(group);
+        //     return ResponseEntity.status(HttpStatus.CREATED).body("Group created successfully");
+        // } catch (DuplicateKeyException e) {
+        //     return ResponseEntity.status(HttpStatus.CONFLICT).body("This group already exists");
+        // }
     }
 
     @PutMapping("/{id}")

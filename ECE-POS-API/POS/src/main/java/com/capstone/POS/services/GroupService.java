@@ -47,6 +47,10 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
+    public Group save(Group newGroup) {
+        return groupRepository.save(newGroup);
+    }
+
     public void deleteGroup(Long id) {
         Group group = groupRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Group not found with id " + id));
