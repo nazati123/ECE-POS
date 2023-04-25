@@ -207,7 +207,7 @@ async function order_awaiting(orderID) {
       response.data.email = 'twrussell@crimson.ua.edu';
 
       if (SEND_EMAILS) {
-        sleep(1100 * response.data.facultyEmails.length).then(() => {sendMail(response.data.email, 'ECE-POS: Request Submitted', message)});
+        sendMail(response.data.email, 'ECE-POS: Request Submitted', message);
       }
     })
 
