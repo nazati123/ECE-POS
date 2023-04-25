@@ -40,7 +40,7 @@ export class AuthService {
 
         success = (correct_username === 'orderform') && (bcrypt.compareSync(password, correct_password))
         if (success) {
-          console.log('correct.');
+          console.log('correct, writing to authData');
           localStorage.setItem('authData', JSON.stringify(user.password));
           this.isLoggedIn = true;
         }
@@ -55,14 +55,6 @@ export class AuthService {
         reject(error);
       })
     })
-
-/*
-    if (password === 'password') {
-      this.isLoggedIn = true;
-      return of(true);
-    }
-    return of(false);
-*/
   }
 
   public checkAuthentication(): void {
@@ -76,6 +68,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('authData');
+    localStorage.removeItem('superAuthData');
     this.isLoggedIn = false;
   }
 }

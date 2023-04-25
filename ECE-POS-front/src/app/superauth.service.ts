@@ -13,11 +13,11 @@ import { take } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class SuperAuthService {
-  isLoggedIn = false;
+  isLoggedIn: boolean;
   validUser = false;
 
   constructor(private usersService: UsersService, private router: Router) {
-    this.checkAuthentication();
+    this.isLoggedIn = this.checkAuthentication();
    }
 
   async login(username: string, password: string): Promise<Observable<boolean>> {
@@ -52,7 +52,7 @@ export class SuperAuthService {
 
         success = (correct_username === username) && (bcrypt.compareSync(password, correct_password))
         if (success) {
-          console.log('correct');
+          console.log('writing superAutData');
           localStorage.setItem('superAuthData', JSON.stringify(user.password));
           this.isLoggedIn = true;
         }
@@ -62,21 +62,27 @@ export class SuperAuthService {
         }
         resolve(of(success))
       }, error => {
-        console.log('error in  auth Promise');
+        console.log('error in auth Promise');
         this.router.navigate(['/pa-login']);
         reject(error);
       })
     })
   }
 
-  public checkAuthentication(): void {
+  public checkAuthentication(): boolean {
+    console.log('superCheck');
     const authData = localStorage.getItem('superAuthData');
     if (authData) {
       this.isLoggedIn = true;
     }
+    else{
+      this.isLoggedIn = false;
+    }
+    return this.isLoggedIn
   }
 
   logout(): void {
+    localStorage.removeItem('authData');
     localStorage.removeItem('superAuthData');
     this.isLoggedIn = false;
   }
