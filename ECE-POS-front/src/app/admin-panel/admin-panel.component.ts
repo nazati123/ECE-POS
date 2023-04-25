@@ -18,7 +18,10 @@ export class AdminPanelComponent implements OnInit {
   groups! : Group[];
   users! : User[];
 
+  editing = false;
+  editingId?: number;
   approverForm!: FormGroup;
+  oldApprover?: Faculty;
 
   constructor(private facultyApi: FacultyService, private groupApi: GroupService, private userApi: UsersService, private fb: FormBuilder, private router: Router) { }
 
@@ -31,9 +34,9 @@ export class AdminPanelComponent implements OnInit {
       this.groups = data;
     });
 
-    // this.userApi.getUsers().subscribe((data: User[]) => {
-    //   this.users = data;
-    // });
+    this.userApi.getUsers().subscribe((data: User[]) => {
+      this.users = data;
+    });
 
     this.approverForm  = this.fb.group({
       name: ['', Validators.required],
@@ -41,10 +44,26 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-  addApprover() {
-    this.facultyApi.addApprover(this.approverForm.value as Faculty).subscribe();
-    this.approvers.push(this.approverForm.value as Faculty);
+  saveApprover() {
+    if(this.editing){
+      let editedFaculty = this.approverForm.value;
+      this.facultyApi.editApprover(this.oldApprover?.email as string, editedFaculty).subscribe();
+      this.editingId = undefined;
+      this.editing = false;
+      this.approvers[this.approvers.indexOf(this.oldApprover as Faculty)] = editedFaculty;
+    }
+    else {
+      this.facultyApi.addApprover(this.approverForm.value as Faculty).subscribe();
+      this.approvers.push(this.approverForm.value as Faculty);
+    }
     this.approverForm.reset();
+  }
+
+  editApprover(faculty: Faculty) {
+    this.editing = true;
+    this.editingId = this.approvers.indexOf(faculty);
+    this.oldApprover = faculty;
+    this.approverForm.patchValue(faculty);
   }
 
   removeApprover(faculty: Faculty) {
