@@ -16,6 +16,7 @@ export class GroupService {
   }
 
   addGroup(group: Group) {
+    console.log(group);
     return this.http.post(`${this.baseUrl}`, group, {observe: 'body'});
   }
 

@@ -13,11 +13,13 @@ export class AppComponent {
   isLoggedIn: boolean;
   isSuperLoggedIn: boolean;
   notLoginPage: boolean;
+  sidebarPage: boolean;
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.notLoginPage = !(event.url.split('?')[0] === '/login' || event.url.split('?')[0] ==='/pa-login')
+        this.notLoginPage = !(event.url.split('?')[0] === '/login' || event.url.split('?')[0] ==='/pa-login' || event.url === '/');
+        this.sidebarPage = (event.url.split('?')[0] === '/order-form' && this.isSuperLoggedInFunc) || (event.url.split('?')[0] !== '/order-form' && this.notLoginPage);
       }
     });
   }
@@ -27,6 +29,11 @@ export class AppComponent {
     this.isSuperLoggedIn = this.superAuthService.isLoggedIn;
     this.isLoggedIn = this.authService.isLoggedIn || this.isSuperLoggedIn;
     this.notLoginPage = false;
+    this.sidebarPage = false;
+  }
+  
+  get isSuperLoggedInFunc(): boolean {
+    return this.superAuthService.isLoggedIn;
   }
 
   logout() {
