@@ -26,4 +26,8 @@ export class UsersService {
   editUser(username: string, userData: User) {
     return this.http.put(`${this.baseUrl}/${username}`, userData);
   }
+
+  removeUser(username: string) {
+    return this.http.delete(`${this.baseUrl}/${username}`);
+  }
 }
