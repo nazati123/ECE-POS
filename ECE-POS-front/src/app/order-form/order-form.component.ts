@@ -1,7 +1,9 @@
+import { AuthService } from '../auth.service';
+import { SuperAuthService } from '../superauth.service';
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router';
 import { Order } from '../order';
 import { Faculty } from '../faculty';
 import { Item } from '../item';
@@ -34,8 +36,11 @@ export class OrderFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService,
               private itemsService: ItemsService, private router: Router, private currentRoute: ActivatedRoute,
-              private groupsApi: GroupService, private facultyApi: FacultyService) {
+              private groupsApi: GroupService, private facultyApi: FacultyService, private authService: AuthService,
+              private superAuthService: SuperAuthService) {
     this.currentDateTime =this.datepipe.transform((new Date), 'yyyy-MM-dd');
+    this.authService.checkAuthentication();
+    this.superAuthService.checkAuthentication();
   }
 
   ngOnInit() {
@@ -354,6 +359,9 @@ export class OrderFormComponent implements OnInit {
           this.itemsService.addItem(element, orderResponse.id).subscribe();
         });
       });
+      if (!this.superAuthService.isLoggedIn) {
+        this.authService.logout();
+      }
       this.router.navigate(['/login']);
     }
     else if(this.approving) {

@@ -19,7 +19,7 @@ export class AppComponent {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.notLoginPage = !(event.url.split('?')[0] === '/login' || event.url.split('?')[0] ==='/pa-login' || event.url === '/');
-        this.sidebarPage = (event.url.split('?')[0] === '/order-form' && this.isSuperLoggedInFunc) || (event.url.split('?')[0].substring(0, 11) !== '/order-form' && this.notLoginPage && this.isLoggedInFunc);
+        this.sidebarPage = (event.url.split('?')[0].substring(0, 11) === '/order-form' && this.isSuperLoggedInFunc) || (event.url.split('?')[0].substring(0, 11) !== '/order-form' && this.notLoginPage && this.isLoggedInFunc);
       }
     });
   }
@@ -33,7 +33,7 @@ export class AppComponent {
   }
 
   get isLoggedInFunc(): boolean {
-    return this.authService.isLoggedIn
+    return this.authService.isLoggedIn || this.superAuthService.isLoggedIn
   }
   
   get isSuperLoggedInFunc(): boolean {

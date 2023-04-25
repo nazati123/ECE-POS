@@ -188,14 +188,6 @@ async function order_awaiting(orderID) {
     response.data.facultyEmails = response.data.facultyEmails.split(',');
     fac_recipients = response.data.facultyEmails;
 
-    /* DEBUG MESSAGES
-    console.log('emails going to: ');
-    fac_recipients.forEach(function (email) {
-      console.log(email);
-    });
-    console.log(req_recipient);
-    */
-
     // read email template for a submitted request, send to requester
     fs.readFile(REQUEST_SUB, 'utf-8', (err, message) => {
       if (err) throw error;
@@ -209,21 +201,20 @@ async function order_awaiting(orderID) {
       if (SEND_EMAILS) {
         sendMail(response.data.email, 'ECE-POS: Request Submitted', message);
       }
-    })
 
-    // faculty get an email notification of a new order awaiting
-    fs.readFile(REQUEST_REV, 'utf-8', (err, message) => {
-      if (err) throw error;
+      // faculty get an email notification of a new order awaiting
+      fs.readFile(REQUEST_REV, 'utf-8', (err, message) => {
+        if (err) throw error;
 
-      // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
-      response.data.facultyEmails = ['twrussell@crimson.ua.edu'];
+        // THIS LINE MAKES THIS EMAIL GO TO TREVOR FOR TESTING
+        response.data.facultyEmails = ['twrussell@crimson.ua.edu'];
 
-      response.data.facultyEmails.forEach(function (email) {
-        newMessage = personalizeMessage(message, 'review', response.data, email);
-        if (SEND_EMAILS) sleep(1000).then(() => {sendMail(email, 'ECE-POS: New Request Awaiting Review', newMessage);});
+        response.data.facultyEmails.forEach(function (email) {
+          newMessage = personalizeMessage(message, 'review', response.data, email);
+          if (SEND_EMAILS) sleep(1000).then(() => {sendMail(email, 'ECE-POS: New Request Awaiting Review', newMessage);});
+        })
       })
     })
-    
   }).catch(error => {
     console.error(error)
   })
