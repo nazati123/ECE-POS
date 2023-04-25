@@ -4,6 +4,7 @@ import { ApproveOrderComponent } from './approve-order/approve-order.component';
 import { EditOrderComponent } from './edit-order/edit-order.component';
 import { OrderFormComponent } from './order-form/order-form.component';
 import { OrdersDashboardComponent } from './orders-dashboard/orders-dashboard.component';
+import { GroupDashboardComponent } from './group-dashboard/group-dashboard.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { PaLoginPageComponent } from './pa-login-page/pa-login-page.component'
 import { AuthGuard } from './auth.guard';
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'pa-login', component: PaLoginPageComponent },
   { path: 'order-form', component: OrderFormComponent, canActivate: [AuthGuard] },
+  { path: 'group-dashboard', component: GroupDashboardComponent},
   { path: 'order-form/:id', component: OrderFormComponent},
   { path: 'dashboard', component: OrdersDashboardComponent, canActivate: [SuperAuthGuard] },
   { path: 'admin-panel', component: AdminPanelComponent, canActivate: [SuperAuthGuard] },

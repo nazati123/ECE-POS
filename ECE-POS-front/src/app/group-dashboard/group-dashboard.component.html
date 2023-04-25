@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <!-- <h1 class="h2">Order States</h1> -->
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+      </div>
+
+      <div>
+        <input type="text" 
+          placeholder="Search Groups" 
+          style="width: 450px; padding: 2px 20px; margin: 10px 0px;height: 30px;"
+          [ngModel]="filterText">
+      </div>
+
+      <!-- <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+        <span data-feather="calendar" class="align-text-bottom"></span>
+        This week
+      </button> -->
+    </div>
+  </div>
+
+  <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
+<!-- add buttons to the side too share/export -->
+<!-- <div class="container">
+  <div class = "row padding-200px">
+    <div class = "col-sm-3">
+      <select class = "dropdown-toggle">
+        <option * ngFor = "let order of orders">
+           {{order} -->
+          <!-- {{order.orders.contactPerson}} -->
+        <!-- </option>
+      </select>
+    </div>
+  </div>
+</div> -->
+
+
+  <h2>All Groups:</h2>
+  <div class="table-responsive">
+    <button (click)="exportexcel()">Export to Excel</button>
+    <table id = "excel-table" class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Group ID</th>
+          <th scope="col">Contact Person</th>
+          <th scope="col">Total Cost $</th>
+          <th scope="col">requestPerson</th>
+          <!-- <th scope="col">Shipping</th>
+          <th scope="col">Items</th>
+          <th scope="col">OrderID</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor = "let order of filterOrders">
+          <td>{{ order.groupId}}</td>
+          <td>{{ order.contactPerson}}</td>
+          <td>{{ order.totalCost}}</td>
+          <td>{{ order.requestPerson}}</td>
+          <!-- <td>{{ order.items}}</td> -->
+          <!-- <td>{{ order.items}}</td>
+          <td>{{ order.items}}</td>
+          <td>{{ order.items}}</td> -->
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
