@@ -7,6 +7,9 @@ import { Faculty } from '../faculty';
 import { Item } from '../item';
 import { OrdersService } from '../orders.service';
 import { ItemsService } from '../items.service';
+import { FacultyService } from '../faculty.service';
+import { GroupService } from '../group.service';
+import { Group } from '../group';
 
 @Component({
   selector: 'app-order-form',
@@ -26,12 +29,19 @@ export class OrderFormComponent implements OnInit {
   isStudentForm = false;
   currentStatus: string | undefined;
 
+  approversList!: Faculty[];
+  groupsList!: Group[];
+
   constructor(private fb: FormBuilder, private datepipe: DatePipe, private ordersService: OrdersService,
-              private itemsService: ItemsService, private router: Router, private currentRoute: ActivatedRoute) {
+              private itemsService: ItemsService, private router: Router, private currentRoute: ActivatedRoute,
+              private groupsApi: GroupService, private facultyApi: FacultyService) {
     this.currentDateTime =this.datepipe.transform((new Date), 'yyyy-MM-dd');
   }
 
   ngOnInit() {
+    this.getApprovers();
+    this.getGroups();
+    
     this.orderForm = this.fb.group({
       id: [],
       dateCreated: [this.currentDateTime, Validators.required],
@@ -230,17 +240,18 @@ export class OrderFormComponent implements OnInit {
     this.orderForm.get('totalCost')?.setValue(newTotal, {emitEvent: false})
   }
 
+  
   getApprovers() {
-    return [{'name': 'Trevor', 'email': 'twrussell@crimson.ua.edu'}, {'name': 'Matt', 'email': 'mjpoirier@crimson.ua.edu'}, {'name': 'Nate', 'email': 'nlpurcell@crimson.ua.edu'}, {'name': 'Joey', 'email': 'jmruzicka@crimson.ua.edu'}];
+    this.facultyApi.getApprovers().subscribe(data => {
+      this.approversList = data;
+    });
   }
-
-  approversList: Faculty[] = this.getApprovers();
 
   getGroups() {
-    return ['Astrobotics', 'EcoCar', 'Capstone', 'HKN', 'IEEE Student Chapter'];
+    this.groupsApi.getGroups().subscribe(data => {
+      this.groupsList = data;
+    });
   }
-
-  groupsList: string[] = this.getGroups();
 
   computeStatus(order : Order) {
     if(order.isCompleted) {
