@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { Router, NavigationEnd } from '@angular/router';
+import { SuperAuthService } from './superauth.service';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

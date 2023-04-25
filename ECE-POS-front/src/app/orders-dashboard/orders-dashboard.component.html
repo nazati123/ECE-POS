@@ -38,7 +38,7 @@
         <tr *ngFor = "let order of filteredOrders">
           <td><a routerLink="/edit-order/{{order.id}}">{{ order.id}}</a></td>
           <td>{{ order.dateCreated}}</td>
-          <td>{{ order.requestPerson}}</td>
+          <td>{{ order.requestPerson}}</td> 
           <td>{{ computeStatus(order) }}</td>
           <td>{{ order.contactPerson}}</td>
           <td>{{ order.phoneNumber}}</td>

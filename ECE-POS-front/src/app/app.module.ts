@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSelectModule} from '@angular/material/select';
 import { OrdersDashboardComponent } from './orders-dashboard/orders-dashboard.component';
+import { GroupDashboardComponent } from './group-dashboard/group-dashboard.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
@@ -22,6 +23,7 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
     AppComponent,
     OrderFormComponent,
     OrdersDashboardComponent,
+    GroupDashboardComponent,
     ApproveOrderComponent,
     LoginPageComponent,
     PaLoginPageComponent,
