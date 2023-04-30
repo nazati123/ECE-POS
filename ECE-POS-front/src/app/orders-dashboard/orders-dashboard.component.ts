@@ -66,6 +66,11 @@ export class OrdersDashboardComponent implements OnInit {
     /* pass here the table id */
     let element = document.getElementById('excel-table');
     const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+    const cols: any = XLSX.utils.sheet_to_json(ws, { header: 1 }).slice(1)
+
+
+    const sum = cols.slice(1).reduce((acc: string, val: string[]) => parseFloat(acc) + parseFloat(val[6]), 0);
+    XLSX.utils.sheet_add_aoa(ws, [[null, null, null, null, null, null, sum]], { origin: -1 })
  
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();

@@ -32,6 +32,7 @@
           <th scope="col">Stage</th>
           <th scope="col">Contact</th>
           <th scope="col">Phone Number</th>
+          <th scope="col" style="display: none">Total Cost</th>
         </tr>
       </thead>
       <tbody>
@@ -42,6 +43,7 @@
           <td>{{ computeStatus(order) }}</td>
           <td>{{ order.contactPerson}}</td>
           <td>{{ order.phoneNumber}}</td>
+          <td style="display:none">{{ order.totalCost}}</td>
         </tr>
 
       </tbody>
